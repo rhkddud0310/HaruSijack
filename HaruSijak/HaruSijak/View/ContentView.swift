@@ -18,15 +18,30 @@ struct ContentView: View {
                 Spacer()
                     
                 NavigationLink(destination: PredictView()) {
-                    Text("혼잡도 예측보기")
-                        .frame(width: 320, height: 200)
-                        .padding()
-                        .font(.system(.largeTitle, design: .rounded))
-                        .fontWeight(.black)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                        .scaleEffect(1.0)
+                    ZStack(content: {
+                        
+                        // 배경 이미지
+                        Image(systemName: "tram.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200, height: 300)
+                            .opacity(0.3)
+                        
+                        // 버튼 텍스트
+                        Text("지하철 혼잡도\n예측보기")
+                            .multilineTextAlignment(.center)
+                        
+                            .frame(width: 320, height: 200)
+                            .padding()
+                            .font(.system(.largeTitle, design: .rounded))
+                            .fontWeight(.black)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+//                            .scaleEffect(isPressed /*? 0.95 : 1.0)*/
+                        
+                        
+                    })
                 }
                 
                 HStack(content: {
