@@ -1,0 +1,391 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */; };
+		54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F072C0AF4EE00D83A08 /* ContentView.swift */; };
+		54F80F0A2C0AF4EF00D83A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F80F092C0AF4EF00D83A08 /* Assets.xcassets */; };
+		54F80F0D2C0AF4EF00D83A08 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F80F0C2C0AF4EF00D83A08 /* Preview Assets.xcassets */; };
+		54F80F172C0AF59300D83A08 /* TodoLists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F162C0AF59300D83A08 /* TodoLists.swift */; };
+		54F80F192C0AF67200D83A08 /* TodoListDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F182C0AF67200D83A08 /* TodoListDB.swift */; };
+		54F80F1B2C0B5D7B00D83A08 /* PredictView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1A2C0B5D7B00D83A08 /* PredictView.swift */; };
+		54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1C2C0B641200D83A08 /* NewsView.swift */; };
+		54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1E2C0B649500D83A08 /* TodoListView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		54F80F022C0AF4EE00D83A08 /* HaruSijak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HaruSijak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaruSijakApp.swift; sourceTree = "<group>"; };
+		54F80F072C0AF4EE00D83A08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		54F80F092C0AF4EF00D83A08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		54F80F0C2C0AF4EF00D83A08 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		54F80F162C0AF59300D83A08 /* TodoLists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoLists.swift; sourceTree = "<group>"; };
+		54F80F182C0AF67200D83A08 /* TodoListDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListDB.swift; sourceTree = "<group>"; };
+		54F80F1A2C0B5D7B00D83A08 /* PredictView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictView.swift; sourceTree = "<group>"; };
+		54F80F1C2C0B641200D83A08 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
+		54F80F1E2C0B649500D83A08 /* TodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		54F80EFF2C0AF4EE00D83A08 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		54F80EF92C0AF4EE00D83A08 = {
+			isa = PBXGroup;
+			children = (
+				54F80F042C0AF4EE00D83A08 /* HaruSijak */,
+				54F80F032C0AF4EE00D83A08 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		54F80F032C0AF4EE00D83A08 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				54F80F022C0AF4EE00D83A08 /* HaruSijak.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		54F80F042C0AF4EE00D83A08 /* HaruSijak */ = {
+			isa = PBXGroup;
+			children = (
+				54F80F152C0AF57900D83A08 /* Model */,
+				54F80F142C0AF57100D83A08 /* ViM */,
+				54F80F132C0AF56900D83A08 /* View */,
+				54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */,
+				54F80F092C0AF4EF00D83A08 /* Assets.xcassets */,
+				54F80F0B2C0AF4EF00D83A08 /* Preview Content */,
+			);
+			path = HaruSijak;
+			sourceTree = "<group>";
+		};
+		54F80F0B2C0AF4EF00D83A08 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				54F80F0C2C0AF4EF00D83A08 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		54F80F132C0AF56900D83A08 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54F80F072C0AF4EE00D83A08 /* ContentView.swift */,
+				54F80F1A2C0B5D7B00D83A08 /* PredictView.swift */,
+				54F80F1C2C0B641200D83A08 /* NewsView.swift */,
+				54F80F1E2C0B649500D83A08 /* TodoListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		54F80F142C0AF57100D83A08 /* ViM */ = {
+			isa = PBXGroup;
+			children = (
+				54F80F182C0AF67200D83A08 /* TodoListDB.swift */,
+			);
+			path = ViM;
+			sourceTree = "<group>";
+		};
+		54F80F152C0AF57900D83A08 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54F80F162C0AF59300D83A08 /* TodoLists.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		54F80F012C0AF4EE00D83A08 /* HaruSijak */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54F80F102C0AF4EF00D83A08 /* Build configuration list for PBXNativeTarget "HaruSijak" */;
+			buildPhases = (
+				54F80EFE2C0AF4EE00D83A08 /* Sources */,
+				54F80EFF2C0AF4EE00D83A08 /* Frameworks */,
+				54F80F002C0AF4EE00D83A08 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HaruSijak;
+			productName = HaruSijak;
+			productReference = 54F80F022C0AF4EE00D83A08 /* HaruSijak.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		54F80EFA2C0AF4EE00D83A08 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					54F80F012C0AF4EE00D83A08 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = 54F80EFD2C0AF4EE00D83A08 /* Build configuration list for PBXProject "HaruSijak" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 54F80EF92C0AF4EE00D83A08;
+			productRefGroup = 54F80F032C0AF4EE00D83A08 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				54F80F012C0AF4EE00D83A08 /* HaruSijak */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		54F80F002C0AF4EE00D83A08 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54F80F0D2C0AF4EF00D83A08 /* Preview Assets.xcassets in Resources */,
+				54F80F0A2C0AF4EF00D83A08 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		54F80EFE2C0AF4EE00D83A08 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */,
+				54F80F1B2C0B5D7B00D83A08 /* PredictView.swift in Sources */,
+				54F80F172C0AF59300D83A08 /* TodoLists.swift in Sources */,
+				54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */,
+				54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */,
+				54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */,
+				54F80F192C0AF67200D83A08 /* TodoListDB.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		54F80F0E2C0AF4EF00D83A08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		54F80F0F2C0AF4EF00D83A08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		54F80F112C0AF4EF00D83A08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.swiftlec.HaruSijak;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		54F80F122C0AF4EF00D83A08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.swiftlec.HaruSijak;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		54F80EFD2C0AF4EE00D83A08 /* Build configuration list for PBXProject "HaruSijak" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54F80F0E2C0AF4EF00D83A08 /* Debug */,
+				54F80F0F2C0AF4EF00D83A08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		54F80F102C0AF4EF00D83A08 /* Build configuration list for PBXNativeTarget "HaruSijak" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54F80F112C0AF4EF00D83A08 /* Debug */,
+				54F80F122C0AF4EF00D83A08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 54F80EFA2C0AF4EE00D83A08 /* Project object */;
+}
