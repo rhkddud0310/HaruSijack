@@ -1,7 +1,7 @@
 """
 ## Projectr : 하루시작 프로젝트 private functions  
 ## Description : 
-    -  Data 정제를 위한 Fuctiin
+    -  Data 정제를 위한 Fuction
 ## Author : Forrest Dpark (분석 담당)
 ## Date : 2024.05.31 ~
 ## Detail : 
