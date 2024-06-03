@@ -12,6 +12,13 @@ class TodoListDB: ObservableObject {
     var db: OpaquePointer?
     var todoList: [TodoLists] = []
     
+    // DateFormatter 전역 변수 설정
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd" // 문자열의 날짜 형식에 맞게 설정
+        return formatter
+    }
+    
     init() {
         //DB 경로
         let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appending(path: "HaruSijak.sqlite")
@@ -25,10 +32,19 @@ class TodoListDB: ObservableObject {
         
         // Table 만들기
         // 예외 처리
-        if sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS todolist (sid INTEGER PRIMARY KEY AUTOINCREMENT, todo TEXT, startdate TEXT, enddate TEXT, status INTEGER)", nil, nil, nil) != SQLITE_OK{
+        if sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS todolist (sid INTEGER PRIMARY KEY AUTOINCREMENT, todo TEXT, startdate datetime, enddate datetime, status INTEGER)", nil, nil, nil) != SQLITE_OK{
             let errMsg = String(cString: sqlite3_errmsg(db)!)
             print("error creating table : \(errMsg)")
         }
+    }
+    
+    // SQLite3에서 문자열을 가져와 Date로 변환하는 함수
+    func dateFromSQLite(stmt: OpaquePointer, column: Int32) -> Date? {
+        if let cString = sqlite3_column_text(stmt, column) {
+            let dateString = String(cString: cString)
+            return dateFormatter.date(from: dateString)
+        }
+        return nil
     }
     
     // 조회
@@ -46,12 +62,12 @@ class TodoListDB: ObservableObject {
         while(sqlite3_step(stmt) == SQLITE_ROW){
             let id = Int(sqlite3_column_int(stmt, 0))
             let todo = String(cString: sqlite3_column_text(stmt, 1))
-            let startdate = String(cString: sqlite3_column_text(stmt, 2))
-            let enddate = String(cString: sqlite3_column_text(stmt, 3))
+            let startdate = dateFromSQLite(stmt: stmt!, column: 2)
+            let enddate = dateFromSQLite(stmt: stmt!, column: 3)
             let status = Int(sqlite3_column_int(stmt, 4))
             
             // Model에 넣기
-            todoList.append(TodoLists(id: id, todo: todo, startdate: startdate, enddate: enddate, status: status))
+            todoList.append(TodoLists(id: id, todo: todo, startdate: startdate!, enddate: enddate!, status: status))
         }
         
         return todoList

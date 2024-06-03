@@ -10,11 +10,11 @@ import Foundation
 struct TodoLists{
     var id: Int
     var todo: String
-    var startdate: String
-    var enddate: String
+    var startdate = Date()
+    var enddate = Date()
     var status: Int
     
-    init(id: Int, todo: String, startdate: String, enddate: String, status: Int) {
+    init(id: Int, todo: String, startdate: Date = Date(), enddate: Date = Date(), status: Int) {
         self.id = id
         self.todo = todo
         self.startdate = startdate
