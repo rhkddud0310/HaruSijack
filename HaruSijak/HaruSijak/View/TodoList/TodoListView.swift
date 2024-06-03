@@ -44,7 +44,18 @@ struct TodoListView: View {
             })// List
             .navigationTitle("TodoList")
             .navigationBarTitleDisplayMode(.large)
-            
+                
+            //추가 아이콘
+            .toolbar(content: {
+                ToolbarItem(placement: .topBarTrailing, content: {
+                    // 할일 추가로 이동
+                    NavigationLink(destination: AddTodoListView()) {
+                        Image(systemName: "plus")
+                            .padding(.trailing, 10)
+                        
+                    } // NavigationLink
+                }) // ToolbarItem
+            })
         })// NavigationView
     }
 }
