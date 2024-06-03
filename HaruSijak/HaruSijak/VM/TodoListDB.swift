@@ -30,7 +30,7 @@ class TodoListDB: ObservableObject {
         }
         // Table 만들기
         // 예외 처리
-        if sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS todolist (sid INTEGER PRIMARY KEY AUTOINCREMENT, todo TEXT, startdate datetime, enddate datetime, status INTEGER)", nil, nil, nil) != SQLITE_OK{
+        if sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS todolist (sid INTEGER PRIMARY KEY AUTOINCREMENT, todo TEXT, startdate TEXT, enddate TEXT, status INTEGER)", nil, nil, nil) != SQLITE_OK{
             let errMsg = String(cString: sqlite3_errmsg(db)!)
             print("error creating table : \(errMsg)")
         }
@@ -82,9 +82,16 @@ class TodoListDB: ObservableObject {
         let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
         let queryString = "INSERT INTO todolist (todo, startdate, enddate, status) VALUES (?,?,?,?)"
         
+        print(todo)
+        print(startdate)
+        print(enddate)
+        print(status)
+        
         let startdateString = dateFormatter.string(from: startdate)
         let enddateString = dateFormatter.string(from: enddate)
         
+        print(startdateString)
+        print(enddateString)
         
         sqlite3_prepare(db, queryString, -1, &stmt, nil)
         
