@@ -13,6 +13,7 @@ struct PredictView: View {
     
     
     @State var stationName: String = ""
+    var bgColor: Color = Color.gray
     @FocusState var isTextFieldFocused: Bool
     
     var body: some View {
@@ -42,16 +43,30 @@ struct PredictView: View {
                 })//Button
             })//Hstack
             
-            //스크롤뷰 [노선도 사진]
-            ScrollView(.vertical, content: {
-                ScrollView(.horizontal ,content: {
-                   Image("line73")
-                        .resizable()
-                        .frame(width: 1500, height: 1000)
-                        .zoomable() // double click시 화면 확대
-                })
-                .frame(maxWidth: .infinity)
-            })
+           ZStack(content: {
+               
+               
+               //스크롤뷰 [노선도 사진]
+               ScrollView(.vertical, showsIndicators: false , content: { //showsIndicators : 스크롤바 안보이게
+                   ScrollView(.horizontal, showsIndicators: false ,content: {
+                      Image("line73")
+                           .resizable()
+                           .frame(width: 1500, height: 1000)
+                           .zoomable() // double click시 화면 확대
+                   })
+                   .frame(maxWidth: .infinity)
+               })//ScrollView
+               
+               Button(action: {
+                   print("buttonClicked")
+               }, label: {
+                   Text("T")
+               })
+               .frame(width: 20, height: 20)
+               .background(bgColor)
+               .clipShape(Circle())
+               
+           })// Zstack
             
             
         } //Vstack
