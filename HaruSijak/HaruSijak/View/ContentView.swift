@@ -44,7 +44,6 @@ struct ContentView: View {
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(8)
-//                            .scaleEffect(isPressed /*? 0.95 : 1.0)*/
                         
                         
                     })
@@ -76,14 +75,13 @@ struct ContentView: View {
                             .scaleEffect(1.0)
                         
                     }
-                    
                 })
                 
                 
                 
                 Spacer()
             }
-        }
+        } //NavigationView
     }
 }
 
