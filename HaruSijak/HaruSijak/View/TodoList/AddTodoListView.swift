@@ -104,6 +104,7 @@ struct AddTodoListView: View {
             
         })// Vstack
         .navigationTitle("할 일 추가")
+        .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.large)
         
     } // body

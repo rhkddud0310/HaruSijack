@@ -56,6 +56,7 @@ struct TodoListView: View {
                     } // NavigationLink
                 }) // ToolbarItem
             })
+//            .navigationBarHidden(true)
         })// NavigationView
     }
 }
