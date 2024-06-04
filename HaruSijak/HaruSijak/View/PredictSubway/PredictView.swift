@@ -10,6 +10,8 @@ import Zoomable
 
 struct PredictView: View {
     
+    
+    
     @State var stationName: String = ""
     @FocusState var isTextFieldFocused: Bool
     
