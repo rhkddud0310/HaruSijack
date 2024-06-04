@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */; };
+		5471ADBB2C0EDACD00D24E62 /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = 5471ADBA2C0EDACD00D24E62 /* Zoomable */; };
 		54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */; };
 		54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F072C0AF4EE00D83A08 /* ContentView.swift */; };
 		54F80F0A2C0AF4EF00D83A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F80F092C0AF4EF00D83A08 /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5471ADBB2C0EDACD00D24E62 /* Zoomable in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,6 +165,9 @@
 			dependencies = (
 			);
 			name = HaruSijak;
+			packageProductDependencies = (
+				5471ADBA2C0EDACD00D24E62 /* Zoomable */,
+			);
 			productName = HaruSijak;
 			productReference = 54F80F022C0AF4EE00D83A08 /* HaruSijak.app */;
 			productType = "com.apple.product-type.application";
@@ -191,6 +196,9 @@
 				Base,
 			);
 			mainGroup = 54F80EF92C0AF4EE00D83A08;
+			packageReferences = (
+				5471ADB92C0EDACD00D24E62 /* XCRemoteSwiftPackageReference "Zoomable" */,
+			);
 			productRefGroup = 54F80F032C0AF4EE00D83A08 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -444,6 +452,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5471ADB92C0EDACD00D24E62 /* XCRemoteSwiftPackageReference "Zoomable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ryohey/Zoomable.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5471ADBA2C0EDACD00D24E62 /* Zoomable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5471ADB92C0EDACD00D24E62 /* XCRemoteSwiftPackageReference "Zoomable" */;
+			productName = Zoomable;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 54F80EFA2C0AF4EE00D83A08 /* Project object */;
 }
