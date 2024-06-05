@@ -18,10 +18,13 @@
         * plotSetting 함수 추가 
         * reorder_columns 함수 추가 -> 칼럼의 순서를 바꾸어줌.
         * currentPassengerCalc 함수 추가 현재 탑승객 및 량당 빈자리 추출(노인석 제외)
+        * stationDispatchBarplot 함수 추가 -> 지하철 역별 배차 지하철 수치 barplot check 
 
 """
 ## project data processing functions 
 from multiprocessing import Process
+import matplotlib.pyplot as plt, seaborn as sns
+
 class Service:
     def __init__(self) -> None:
         pass
@@ -152,6 +155,43 @@ class Service:
         )
         return result
 
+    def stationDispatchBarplot(df,row,title_columnName):
+        """
+        # Description : 역들의 지하철 배차 수(싱헹과 하행이 거의 비슷하다는 가정하에 추정수치임)
+        # Date : 2024.06.05
+        # Author : Forrest Dpark
+        # Detail:
+            * df pd.DataFrame:(역사코드와 역명, 평균 배차수 를 가지고 있는 데이터 프레임 )
+            * row (int): 주중 행 , row+1 은 주말 행임. 
+            * title_columnName (string) : 역이름 알수있는 칼럼. 
+            * Returns: -
+        """
+        # fig =plt.figure(figsize=(20,5))
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 5))
+        bar1 = sns.barplot(
+            data=df.iloc[row,8:]//2,
+            color='orange',
+            ax= ax1
+        )
+        ax1.set_title(f"{df[title_columnName].iloc[row]}역 시간대별 배차 수 분포[{'주중' if df['DAY'].iloc[row] ==True else '주말'}]")
+        ax1.set_ylabel("지하철 배차 수")
+        bar1.bar_label(bar1.containers[0])
+        
+        bar2 = sns.barplot(
+            data=df.iloc[row+1,8:]//2,
+            color='green',
+            ax= ax2,
+            
+        )
+        bar2.bar_label(bar2.containers[0])
+        
+        ax2.set_title(f"{df[title_columnName].iloc[row+1]}역 시간대별 배차 수 분포[{'주중' if df['DAY'].iloc[row+1] ==True else '주말'}]")
+        ax2.set_ylabel("지하철 배차 수")
+        maxlim=(max((df.iloc[row,8:]//2).to_numpy()))
+        print(maxlim)
+        ax2.set_ylim([0,maxlim])
+        # bar2.set_ylim =[0,maxlim]
+        plt.show()
 if __name__ == '__main__':
     print("main stdart")
     # 프로세스를 생성
