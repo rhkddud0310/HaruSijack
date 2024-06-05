@@ -7,16 +7,16 @@
 ## Detail : 
     - 사용 방법 : 
         // from Functions  import Service   # module importing 
-            service = Service()             # class instance 생성
-            service.dataInfoProcessing(df)  # Data information 정보 출력 
-            service.plotSetting()           # OS 한글화 한 Matplotlib Setting 
+            Service.dataInfoProcessing(df)  # Data information 정보 출력 
+            Service.plotSetting()           # OS 한글화 한 Matplotlib Setting 
 ## Update:  
     - 2024.06.02 by pdg : multiprocessing import 
         * Data frame column 정보 ( Null check, 중복체크 )플랏 
     - 2024.06.03 by pdg : datdaInfoProcessing 함수 생성
         * DataInfoProcessing 함수의 printoutcolnumber 플랏할 칼럼 갯수를 선택할수있게 설정함. 
-    - 2024.06.05 by pdg :  
-        *  
+    - 2024.06.05 by pdg : 기타 함수 생성 
+        * plotSetting 함수 추가 
+        * reorder_columns 함수 추가 -> 칼럼의 순서를 바꾸어줌.
 
 """
 ## project data processing functions 
@@ -67,6 +67,12 @@ class Service:
    
    
     def plotSetting(pltStyle="seaborn-v0_8"):
+        '''
+        # Fucntion Description : Plot 한글화 Setting
+        # Date : 2024.06.05
+        # Author : Forrest D Park 
+        # update : 
+        '''
         # graph style seaborn
         import matplotlib.pyplot as plt # visiulization
         import platform
@@ -81,9 +87,22 @@ class Service:
         else:
             print("Unknown System")
         print("___## OS platform 한글 세팅완료 ## ___")
-
-              
-
+    def reorder_columns(df, col_name, target_idx):
+        """
+        # Description : Reorder columns in a DataFrame by moving a specific column to a target index.
+        # Date : 2024.06.05
+        # Author : Forrest Dpark
+        # Detail:
+            * df (pandas.DataFrame): The input DataFrame.
+            * col_name (str): The name of the column to be moved.
+            * target_idx (int): The target index where the column should be placed.
+            * Returns: pandas.DataFrame: The DataFrame with the column reordered.
+        """
+        cols = list(df.columns)
+        current_idx = cols.index(col_name)
+        cols.pop(current_idx)
+        cols.insert(target_idx, col_name)
+        return df[cols]
 
 if __name__ == '__main__':
     print("main stdart")
@@ -91,8 +110,6 @@ if __name__ == '__main__':
     # p0 = Process(target=start_get, args=(0, 100000000)) ## cpu1에서 돌아간다. 
     # p1 = Process(target=start_get, args=(100000001, 200000000))  # cpu2에서 돌아간다. 
     # p2 = Process(target=start_get, args=(200000001, 300000000)) # cpu3에서 돌아간다. 
-
-    
 
 
 
