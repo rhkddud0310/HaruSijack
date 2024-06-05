@@ -17,6 +17,7 @@
     - 2024.06.05 by pdg : 기타 함수 생성 
         * plotSetting 함수 추가 
         * reorder_columns 함수 추가 -> 칼럼의 순서를 바꾸어줌.
+        * currentPassengerCalc 함수 추가 현재 탑승객 및 량당 빈자리 추출(노인석 제외)
 
 """
 ## project data processing functions 
@@ -103,6 +104,53 @@ class Service:
         cols.pop(current_idx)
         cols.insert(target_idx, col_name)
         return df[cols]
+
+
+    def currentPassengerCalc(stations,pass_in,pass_out,dispached_subway_number):
+        """
+        # Description : 각 역에서의 추정 탑승인원 수 
+        # Date : 2024.06.05
+        # Author : Forrest Dpark
+        # Detail:
+            * stations (list): 한 호선의 역코드 or 역 이름 배열 
+            * pass_in (list): 각 역당 승차 인원수 배열 
+            * pass_out (list): 각 역당 하차 인원수 배열
+            * dispached_subway_number (int): 배차대수
+            * Returns: dataframe table
+        """
+        import pandas as pd , numpy as np
+        # 승하차 정보 없을때 랜덤 승하차 인원 데이터 생성 
+        if pass_in ==[] and pass_out ==[]:
+            pass_in = np.zeros(shape=(len(stations)), dtype=int)
+            pass_out = np.zeros(shape=(len(stations)), dtype=int)
+            presentPassenger= np.zeros(shape=(len(stations)), dtype=int)
+            for i,station in enumerate(stations):
+                    pass_in[i]= np.random.randint(1,100) if i !=len(stations)-1 else 0
+                
+                    if i >0:
+                        pass_out[i]= np.random.randint(1,presentPassenger[i-1])
+                        presentPassenger[i] = presentPassenger[i-1] +pass_in[i]-pass_out[i]
+                    else:
+                        presentPassenger[i] = pass_in[i]
+                    # print(station, f"역 => 승차: {input_pasasengers_rand[i]} ,하차 :{output_pasasengers_rand[i]}")
+                    # print('현재탑승인원 : ',presentPassenger)
+        #역별 변동인원
+        
+        diff_arr = np.asarray(pass_in) - np.asarray(pass_out)
+
+        print(f"{dispached_subway_number}개 지하철이 배차되었을때 ")
+        result = pd.DataFrame(
+            {
+                '역명': stations,
+                '승차인원': pass_in,
+                '하차인원': pass_out,
+                '변동인원': diff_arr,
+                '탑승자수': presentPassenger,
+                '배차당탑승자수': presentPassenger/dispached_subway_number,
+                '량당빈좌석수' :42 -(presentPassenger/dispached_subway_number) #42 개 6*7 노약자 제외 
+            }
+        )
+        return result
 
 if __name__ == '__main__':
     print("main stdart")
