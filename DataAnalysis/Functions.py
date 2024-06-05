@@ -30,7 +30,7 @@ import matplotlib.pyplot as plt, seaborn as sns
 class Service:
     def __init__(self) -> None:
         pass
-    def dataInfoProcessing(df, replace_Nan=False, PrintOutColnumber = 10):
+    def dataInfoProcessing(df, replace_Nan=False, PrintOutColnumber = 10,nanFillValue=0):
         ''' 
         # Fucntion Description :  Data frame 의 정제해야할 부분을 체크해주는 함수 
         # Date : 2024.06.02 
@@ -54,7 +54,7 @@ class Service:
                 print(f"   => {idx}번째.[{col}]컬럼 : ",f"null {df[f'{col}'].isnull().sum()} 개,\t not null {df[f'{col}'].notnull().sum()} 개")
                 ## Null data fill
         if replace_Nan : ## nan 을 0 으로 대체 
-            df[col].fillna(value=0, inplace=True)  
+            df[col].fillna(value=nanFillValue, inplace=True)  
             
         
         print("\n3. Column  Information (중복체크)")
@@ -158,7 +158,7 @@ class Service:
         )
         return result
 
-    def stationDispatchBarplot(df,row,title_columnName):
+    def stationDispatchBarplot(df,row,title_columnName,startColNum):
         """
         # Description : 역들의 지하철 배차 수(싱헹과 하행이 거의 비슷하다는 가정하에 추정수치임)
         # Date : 2024.06.05
@@ -172,25 +172,25 @@ class Service:
         # fig =plt.figure(figsize=(20,5))
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 5))
         bar1 = sns.barplot(
-            data=df.iloc[row,8:]//2,
+            data=df.iloc[row,startColNum:],
             color='orange',
             ax= ax1
         )
-        ax1.set_title(f"{df[title_columnName].iloc[row]}역 시간대별 배차 수 분포[{'주중' if df['DAY'].iloc[row] ==True else '주말'}]")
+        ax1.set_title(f"{df[title_columnName].iloc[row]}역 시간대별 배차 수 분포[{'주중' if df['주중'].iloc[row] ==True else '주말'}]")
         ax1.set_ylabel("지하철 배차 수")
         bar1.bar_label(bar1.containers[0])
         
         bar2 = sns.barplot(
-            data=df.iloc[row+1,8:]//2,
+            data=df.iloc[row+1,startColNum:],
             color='green',
             ax= ax2,
             
         )
         bar2.bar_label(bar2.containers[0])
         
-        ax2.set_title(f"{df[title_columnName].iloc[row+1]}역 시간대별 배차 수 분포[{'주중' if df['DAY'].iloc[row+1] ==True else '주말'}]")
+        ax2.set_title(f"{df[title_columnName].iloc[row+1]}역 시간대별 배차 수 분포[{'주중' if df['주중'].iloc[row+1] ==True else '주말'}]")
         ax2.set_ylabel("지하철 배차 수")
-        maxlim=(max((df.iloc[row,8:]//2).to_numpy()))
+        maxlim=(max((df.iloc[row,startColNum:]).to_numpy()))
         print(maxlim)
         ax2.set_ylim([0,maxlim])
         # bar2.set_ylim =[0,maxlim]
