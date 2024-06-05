@@ -19,7 +19,9 @@
         * reorder_columns 함수 추가 -> 칼럼의 순서를 바꾸어줌.
         * currentPassengerCalc 함수 추가 현재 탑승객 및 량당 빈자리 추출(노인석 제외)
         * stationDispatchBarplot 함수 추가 -> 지하철 역별 배차 지하철 수치 barplot check 
-
+        * dayToIntConvert  함수 추가
+        * date_Divid_Add_YMW_cols 함수추가 
+        * holidaysToIntConvert 함수 추가 
 """
 ## project data processing functions 
 from multiprocessing import Process
@@ -40,7 +42,7 @@ class Service:
             * 2024.06.04 by pdg : 함수변경
                 -관심 칼럼이 많을때 칼럼 개수를 조정할수있게 함. 
         '''
-        print("\n1. Data colum numbers : ",len(df.columns))
+        print(f"\n1. Data row/colum numbers : {len(df.index)}/{len(df.columns)}",)
         #print(subway.columns)
         #print(subway.info())
         null_message =f"총 {df.isnull().sum().sum()}개의 null 이 있습니다!" if df.isnull().sum().sum() else "Null 없는 clean data!"
@@ -53,6 +55,7 @@ class Service:
                 ## Null data fill
         if replace_Nan : ## nan 을 0 으로 대체 
             df[col].fillna(value=0, inplace=True)  
+            
         
         print("\n3. Column  Information (중복체크)")
         print( "\tidx.columName |\t\t\t\t |Colum Info(dtype)|** ")
@@ -68,7 +71,7 @@ class Service:
 
         else: 
             print(f"\t ...etc (추가로 {len(df.dtypes.keys())-PrintOutColnumber}개의 칼럼이 있습니다 )")
-   
+        return df
    
     def plotSetting(pltStyle="seaborn-v0_8"):
         '''
@@ -91,6 +94,7 @@ class Service:
         else:
             print("Unknown System")
         print("___## OS platform 한글 세팅완료 ## ___")
+    
     def reorder_columns(df, col_name, target_idx):
         """
         # Description : Reorder columns in a DataFrame by moving a specific column to a target index.
@@ -107,7 +111,6 @@ class Service:
         cols.pop(current_idx)
         cols.insert(target_idx, col_name)
         return df[cols]
-
 
     def currentPassengerCalc(stations,pass_in,pass_out,dispached_subway_number):
         """
@@ -192,6 +195,49 @@ class Service:
         ax2.set_ylim([0,maxlim])
         # bar2.set_ylim =[0,maxlim]
         plt.show()
+
+    def dayToIntConvert(df, dayCol):
+        # 수송일자 날짜형으로 변환
+        import pandas as pd
+        ## 요일 컬럼 생성
+        df['요일'] = pd.to_datetime(df[dayCol], format='%Y-%m-%d').dt.day_name().values
+        # 요일을 영어에서 한국어로 변환
+        day_name_mapping = {
+            'Sunday': 0,
+            'Monday': 1,
+            'Tuesday': 2,
+            'Wednesday': 3,
+            'Thursday': 4,
+            'Friday': 5,
+            'Saturday': 6
+        }
+        df['요일'] = df['요일'].map(day_name_mapping)
+        return df
+
+    def date_Divid_Add_YMW_cols(df,DateColName):
+        import pandas as pd
+        from datetime import datetime, timedelta
+        years = []
+        weeks = []
+        months = []
+        for data in df[DateColName] :
+            date_obj = pd.to_datetime(data)
+            year, week, _ = date_obj.isocalendar()
+            month = date_obj.month
+            years.append(year)
+            weeks.append(week)
+            months.append(month)
+        df['년도'] = years
+        df['월'] = months
+        df['주차'] = weeks
+        return df
+
+    def holidaysToIntConvert(df,DateColName):
+        # !pip install holidays
+        import holidays
+        kr_holidays = holidays.KR()
+        df['공휴일'] = df[DateColName].apply(lambda x: 0 if x in kr_holidays else 1)
+        return df
 if __name__ == '__main__':
     print("main stdart")
     # 프로세스를 생성
