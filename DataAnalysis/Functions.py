@@ -1,12 +1,22 @@
 """
-## Projectr : 하루시작 프로젝트 private functions  
+## Projectr : 하루시작 프로젝트 Module functions  
 ## Description : 
-    -  Data 정제를 위한 Fuction
+    -  Data 정제를 위한 Fuction modul e
 ## Author : Forrest Dpark (분석 담당)
 ## Date : 2024.05.31 ~
 ## Detail : 
-## Update: 
-    -2024.06.02 pdg : multiprocessing import 
+    - 사용 방법 : 
+        // from Functions  import Service   # module importing 
+            service = Service()             # class instance 생성
+            service.dataInfoProcessing(df)  # Data information 정보 출력 
+            service.plotSetting()           # OS 한글화 한 Matplotlib Setting 
+## Update:  
+    - 2024.06.02 by pdg : multiprocessing import 
+        * Data frame column 정보 ( Null check, 중복체크 )플랏 
+    - 2024.06.03 by pdg : datdaInfoProcessing 함수 생성
+        * DataInfoProcessing 함수의 printoutcolnumber 플랏할 칼럼 갯수를 선택할수있게 설정함. 
+    - 2024.06.05 by pdg :  
+        *  
 
 """
 ## project data processing functions 
@@ -55,6 +65,23 @@ class Service:
         else: 
             print(f"\t ...etc (추가로 {len(df.dtypes.keys())-PrintOutColnumber}개의 칼럼이 있습니다 )")
    
+   
+    def plotSetting(pltStyle="seaborn-v0_8"):
+        # graph style seaborn
+        import matplotlib.pyplot as plt # visiulization
+        import platform
+        from matplotlib import font_manager, rc # rc : 폰트 변경 모듈font_manager : 폰트 관리 모듈
+        plt.style.use(pltStyle)
+        plt.rcParams['axes.unicode_minus'] = False# unicode 설정
+        if platform.system() == 'Darwin': rc('font', family='AppleGothic') # os가 macos
+        elif platform.system() == 'Windows': # os가 windows
+            path = 'c:/Windows/Fonts/malgun.ttf' 
+            font_name = font_manager.FontProperties(fname=path).get_name()
+            rc('font', family=font_name)
+        else:
+            print("Unknown System")
+        print("___## OS platform 한글 세팅완료 ## ___")
+
               
 
 
