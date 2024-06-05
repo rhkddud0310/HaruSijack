@@ -10,10 +10,8 @@ import Zoomable
 
 struct PredictView: View {
     
-    
-    
     @State var stationName: String = ""
-    var bgColor: Color = Color.gray
+    var bgColor: Color = Color.red
     @FocusState var isTextFieldFocused: Bool
     
     var body: some View {
@@ -45,7 +43,6 @@ struct PredictView: View {
             
            ZStack(content: {
                
-               
                //스크롤뷰 [노선도 사진]
                ScrollView(.vertical, showsIndicators: false , content: { //showsIndicators : 스크롤바 안보이게
                    ScrollView(.horizontal, showsIndicators: false ,content: {
@@ -57,15 +54,19 @@ struct PredictView: View {
                    .frame(maxWidth: .infinity)
                })//ScrollView
                
-               Button(action: {
-                   print("buttonClicked")
-               }, label: {
-                   Text("T")
-               })
-               .frame(width: 20, height: 20)
-               .background(bgColor)
-               .clipShape(Circle())
+                Button(action: {
+                    stationName = "장암"
+                    print("장암")
+                }, label: {
+                    Text("T")
+                        .frame(width: 20, height: 20)
+                        .background(bgColor)
+                        .clipShape(Circle())
+                })
+                .offset(x: 465, y : 430)
                
+               
+                
            })// Zstack
             
             
