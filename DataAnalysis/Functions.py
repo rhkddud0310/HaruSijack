@@ -153,7 +153,7 @@ class Service:
                 '변동인원': diff_arr,
                 '탑승자수': presentPassenger,
                 '배차당탑승자수': presentPassenger/dispached_subway_number,
-                '량당빈좌석수' :42 -(presentPassenger/dispached_subway_number) #42 개 6*7 노약자 제외 
+                '량당빈좌석수' :42 -(presentPassenger/dispached_subway_number)/8 #42 개 6*7 노약자 제외 , 7호선은 8량
             }
         )
         return result
@@ -238,6 +238,36 @@ class Service:
         kr_holidays = holidays.KR()
         df['공휴일'] = df[DateColName].apply(lambda x: 0 if x in kr_holidays else 1)
         return df
+
+    def MultiOutputRegressorFunc(training_table, target_table) :
+        
+        """
+        # Description : train, target데이터에 대한 MultiOutputRegressor model
+        # Date : 2024.06.05
+        # Author : Shin
+        # Detail:
+            * training_table (df): train data
+            * target_table (df): target data
+            * Returns: - 
+        """
+        
+        import pandas as pd
+        import numpy as np
+        from sklearn.model_selection import train_test_split
+        from sklearn.multioutput import MultiOutputRegressor
+        from sklearn.neighbors import KNeighborsRegressor
+
+        train_input, test_input, train_target, test_target = train_test_split(training_table, target_table, test_size=0.2, random_state=42)
+
+
+        knn_regressor = KNeighborsRegressor(n_neighbors=5)
+        multi_output_regressor = MultiOutputRegressor(knn_regressor)
+        multi_output_regressor.fit(train_input, train_target)
+        score = multi_output_regressor.score(test_input, test_target)
+        print(f'Model score: {score}')
+        predictions = multi_output_regressor.predict(test_input)
+        print(predictions[:5])
+
 if __name__ == '__main__':
     print("main stdart")
     # 프로세스를 생성
