@@ -244,31 +244,98 @@ class Service:
         """
         # Description : train, target데이터에 대한 MultiOutputRegressor model
         # Date : 2024.06.05
-        # Author : Shin
+        # Author : Shin Nara + pdg
         # Detail:
             * training_table (df): train data
             * target_table (df): target data
             * Returns: - 
+        # Updata:
+            2024.06.07 by pdg :머신러닝 함수 업데이트 
+                * 주석 달았음. 
         """
-        
-        import pandas as pd
-        import numpy as np
+        import pandas as pd, numpy as np
+        import matplotlib.pyplot as plt 
         from sklearn.model_selection import train_test_split
         from sklearn.multioutput import MultiOutputRegressor
         from sklearn.neighbors import KNeighborsRegressor
 
-        train_input, test_input, train_target, test_target = train_test_split(training_table, target_table, test_size=0.2, random_state=42)
-
-
+        train_input, test_input, train_target, test_target = \
+            train_test_split(training_table,
+                            target_table, 
+                            test_size=0.2,
+                            random_state=42)
+        ## KNN regression model 
         knn_regressor = KNeighborsRegressor(n_neighbors=5)
+        ## Multi Output Setting
         multi_output_regressor = MultiOutputRegressor(knn_regressor)
         multi_output_regressor.fit(train_input, train_target)
+        
         score = multi_output_regressor.score(test_input, test_target)
         print(f'Model score: {score}')
+        
         predictions = multi_output_regressor.predict(test_input)
         print(predictions[:5])
 
-if __name__ == '__main__':
+    def station_name_to_code(line,station_name):
+        import pandas as pd
+        stations = pd.read_csv('../Data/SubwayInfo.csv')
+        target_line_stations = stations[stations['호선']==line]
+        row = target_line_stations[station_name == target_line_stations['역이름']]
+        print(f"{station_name}의 역사 코드는 {row['역코드'].values[0]}입니다")
+        return row['역코드'].values[0]
+    def sdtation_inout_lmplot(mlTable, line, station_name, time_passenger):
+        import pandas as pd
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+        import numpy as np
+        code = Service.station_name_to_code(line, station_name)
+        test = mlTable[mlTable['역사코드'] == code]
+        
+        # 숫자로 된 요일을 요일 이름으로 매핑
+        day_mapping = {
+            0: '일요일',
+            1: '월요일',
+            2: '화요일',
+            3: '수요일',
+            4: '목요일',
+            5: '금요일',
+            6: '토요일',
+            7: '일요일'  # 0과 7이 모두 일요일이라고 가정
+        }
+
+        # '요일' 컬럼을 요일 이름으로 매핑
+        test['요일'] = test['요일'].map(day_mapping)
+        
+        # 요일별로 색깔을 지정하기 위해 팔레트를 설정
+        palette = sns.color_palette("husl", len(day_mapping))
+        
+        # 요일별로 플롯을 나누기 위해 FacetGrid 사용
+        g = sns.FacetGrid(test, col='요일', col_wrap=4, height=4, aspect=1, palette=palette)
+        g.map_dataframe(sns.scatterplot, '주차', time_passenger, hue='요일', palette=palette)
+        
+        # 각 요일별로 색깔을 지정한 regplot 추가
+        for ax in g.axes.flatten():
+            day = ax.get_title().split('=')[-1].strip()
+            day_data = test[test['요일'] == day]
+            sns.regplot(
+                x='주차',
+                y=time_passenger,
+                data=day_data,
+                scatter=False,
+                ax=ax,
+                color=palette[list(day_mapping.values()).index(day)]
+            )
+        
+        # 제목 설정
+        g.set_titles(col_template="{col_name}")
+        g.set_axis_labels('주차', '인원수(단위 : 명)')
+        
+        plt.subplots_adjust(top=0.9)
+        g.fig.suptitle(f'{line} {station_name}역 : {time_passenger} 주차 vs 인원수')
+
+        plt.show()
+
+if __name__ == '__main__':  
     print("main stdart")
     # 프로세스를 생성
     # p0 = Process(target=start_get, args=(0, 100000000)) ## cpu1에서 돌아간다. 
