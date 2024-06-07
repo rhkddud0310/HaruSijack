@@ -24,6 +24,7 @@
         * holidaysToIntConvert 함수 추가 
     - 2024.06.07 by pdg : validation 을 위한 데이터 시각화 함수 
         * station_name_to_code 함수 추가
+        *sdtation_inout_lmplot 함수 추가
 """
 ## project data processing functions 
 from multiprocessing import Process
@@ -283,7 +284,7 @@ class Service:
         stations = pd.read_csv('../Data/SubwayInfo.csv')
         target_line_stations = stations[stations['호선']==line]
         row = target_line_stations[station_name == target_line_stations['역이름']]
-        print(f"{station_name}의 역사 코드는 {row['역코드'].values[0]}입니다")
+        # print(f"{station_name}의 역사 코드는 {row['역코드'].values[0]}입니다")
         return row['역코드'].values[0]
     def sdtation_inout_lmplot(mlTable, line, station_name, time_passenger):
         import pandas as pd
@@ -331,10 +332,10 @@ class Service:
         # 제목 설정
         g.set_titles(col_template="{col_name}")
         g.set_axis_labels('주차', '인원수(단위 : 명)')
-        
+        title = f'{line} {station_name}역 : 요일 별 {time_passenger} 주차 vs 인원수'
         plt.subplots_adjust(top=0.9)
-        g.fig.suptitle(f'{line} {station_name}역 : {time_passenger} 주차 vs 인원수')
-
+        g.fig.suptitle(f'{line} {station_name}역 : 요일 별 {time_passenger} 주차 vs 인원수')
+        plt.savefig(f"../Visualization/Regression/{title}.png")
         plt.show()
 
 if __name__ == '__main__':  
