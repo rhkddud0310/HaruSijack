@@ -284,13 +284,30 @@ class Service:
         stations = pd.read_csv('../Data/SubwayInfo.csv')
         target_line_stations = stations[stations['호선']==line]
         row = target_line_stations[station_name == target_line_stations['역이름']]
-        # print(f"{station_name}의 역사 코드는 {row['역코드'].values[0]}입니다")
+        print(f"{station_name}의 역사 코드는 {row['역코드'].values[0]}입니다")
         return row['역코드'].values[0]
+    
     def sdtation_inout_lmplot(mlTable, line, station_name, time_passenger):
+        """
+            # Description : train, target데이터에 대한 회귀 모델 
+            # Date : 2024.06.07
+            # Author : pdg
+            # Detail:
+                * mlTable : training + target column concated table 
+                line, station_name : 호선 ,이름 
+                time_passenger ('string): 시간대 이름 target colomn 이름 
+                ex) 7호선', '중곡', '08시인원'
+                * Returns: - 
+            # Updata:
+                2024.06.07 by pdg :회귀함수 함수 업데이트  
+        """
+        
         import pandas as pd
         import matplotlib.pyplot as plt
         import seaborn as sns
-        import numpy as np
+        from sklearn.linear_model import LinearRegression
+        from sklearn.metrics import r2_score
+        # 코드에서 데이터를 불러오고, 서비스나 다른 클래스들은 인식하지 못해서 그대로 남겨두었습니다.
         code = Service.station_name_to_code(line, station_name)
         test = mlTable[mlTable['역사코드'] == code]
         
@@ -310,33 +327,102 @@ class Service:
         test['요일'] = test['요일'].map(day_mapping)
         
         # 요일별로 색깔을 지정하기 위해 팔레트를 설정
-        palette = sns.color_palette("husl", len(day_mapping))
+        unique_days = test['요일'].unique()
+        palette = sns.color_palette("hls", 8)
+
+        day_to_color = dict(zip(unique_days, palette))
+        # print(day_to_color)
+        # DataFrame을 저장할 리스트 생성
+        regression_lines = []
         
         # 요일별로 플롯을 나누기 위해 FacetGrid 사용
         g = sns.FacetGrid(test, col='요일', col_wrap=4, height=4, aspect=1, palette=palette)
         g.map_dataframe(sns.scatterplot, '주차', time_passenger, hue='요일', palette=palette)
-        
-        # 각 요일별로 색깔을 지정한 regplot 추가
+
         for ax in g.axes.flatten():
-            day = ax.get_title().split('=')[-1].strip()
-            day_data = test[test['요일'] == day]
-            sns.regplot(
-                x='주차',
-                y=time_passenger,
-                data=day_data,
-                scatter=False,
-                ax=ax,
-                color=palette[list(day_mapping.values()).index(day)]
-            )
+                day = ax.get_title().split('=')[-1].strip()
+                day_data = test[test['요일'] == day]
+                sns.regplot(
+                    x='주차',
+                    y=time_passenger,
+                    data=day_data,
+                    scatter=False,
+                    ax=ax,
+                    color=palette[list(day_mapping.values()).index(day)]
+                )
+                day_data = test[test['요일'] == day]
+                # 회귀 모델 학습
+                X = day_data[['주차']]
+                y = day_data[time_passenger]
+                reg = LinearRegression().fit(X, y)
+                
+                # 회귀 모델의 결정 계수 (R-squared) 계산
+                r2 = 1 - r2_score(y, reg.predict(X))
+                
+                # 회귀 모델의 계수와 절편
+                coef = reg.coef_[0]
+                intercept = reg.intercept_
+                
+                # 회귀식을 문자열로 저장
+                equation = f'y = {coef:.2f}x + {intercept:.2f}'
+                
+                # 회귀 모델의 수식을 DataFrame에 추가
+                regression_lines.append({'요일': day, '계수': coef, '절편': intercept, 'R2 스코어': r2})
+                # 회귀 모델의 수식 플롯
+
+                ax.text(0.5, 0.9, f'R2 Score: {r2:.2f}\n{equation}', horizontalalignment='center', verticalalignment='center', transform=ax.transAxes, fontsize=10)
+        
+        # DataFrame으로 변환
+        regression_df = pd.DataFrame(regression_lines)
         
         # 제목 설정
         g.set_titles(col_template="{col_name}")
         g.set_axis_labels('주차', '인원수(단위 : 명)')
         title = f'{line} {station_name}역 : 요일 별 {time_passenger} 주차 vs 인원수'
         plt.subplots_adjust(top=0.9)
-        g.fig.suptitle(f'{line} {station_name}역 : 요일 별 {time_passenger} 주차 vs 인원수')
-        plt.savefig(f"../Visualization/Regression/{title}.png")
+        g.fig.suptitle(title)
+        
         plt.show()
+        
+        # DataFrame 반환
+        return regression_df
+
+    def regression_predict(mlTable,line, station_name, week_index, dayName_int,target_colName= '08시인원'):
+        """
+        # Description : train, target데이터에 대한 회귀 모델  예측 
+        # Date : 2024.06.07
+        # Author : pdg
+        # Detail:
+            * mlTable : training + target column concated table 
+            line, station_name : 호선 ,이름 
+            time_passenger ('string): 시간대 이름 target colomn 이름 
+            ex) 7호선', '중곡', '08시인원'
+            * Returns: 주차 10에 월요일 8시 대한 회귀 모델의 예측값
+        # Updata:
+            2024.06.07 by pdg :회귀함수 함수 업데이트  
+             - 사용 예시 : pred_result = regression_predict(test,'7호선', '중곡',10,1,'08시인원')
+        """
+        print(line, station_name, week_index)
+        from Functions import Service
+        test_code= Service.station_name_to_code(line,station_name)
+        print(test_code)
+        
+        print(f'{line} {station_name}역 [{test_code}] {week_index}주차 요일 별 {target_colName} ')
+        test_중곡 = mlTable[mlTable['역사코드']== test_code]
+        
+        regression_df = Service.sdtation_inout_lmplot(mlTable, line, station_name, target_colName)
+        regression_equation = regression_df.loc[regression_df.index[dayName_int]]  # 마지막 행의 회귀식
+        # 회귀식에서 계수와 절편 추출
+        intercept = regression_equation['절편']
+        slope = regression_equation['계수']
+        # 주어진 주차에 대한 예측값 계산
+        prediction = intercept + slope * week_index
+        print(f"주차 {week_index}에 월요일 8시 대한 회귀 모델의 예측값:", prediction)
+        target_table = test_중곡[test_중곡['주차']==week_index][['요일',target_colName]]
+        print(" ----실제 인원 ------")
+        print(target_table.loc[target_table.index[dayName_int]])
+
+        return prediction
 
 if __name__ == '__main__':  
     print("main stdart")
