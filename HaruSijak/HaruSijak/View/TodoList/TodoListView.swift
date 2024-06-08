@@ -42,6 +42,11 @@ struct TodoListView: View {
                     })// NavigationLink
                 })//ForEach
             })// List
+            .onAppear(perform: {
+                todoLists.removeAll() //지우고
+                let todoListDB = TodoListDB() // DB instance 생성
+                todoLists = todoListDB.queryDB() //VM에 있는 쿼리 실행
+            })
             .navigationTitle("TodoList")
             .navigationBarTitleDisplayMode(.large)
                 
