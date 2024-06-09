@@ -33,6 +33,7 @@ import matplotlib.pyplot as plt, seaborn as sns
 class Service:
     def __init__(self) -> None:
         pass
+    
     def dataInfoProcessing(df, replace_Nan=False, PrintOutColnumber = 10,nanFillValue=0):
         ''' 
         # Fucntion Description :  Data frame 의 정제해야할 부분을 체크해주는 함수 
@@ -75,7 +76,7 @@ class Service:
         else: 
             print(f"\t ...etc (추가로 {len(df.dtypes.keys())-PrintOutColnumber}개의 칼럼이 있습니다 )")
         return df
-   
+    
     def plotSetting(pltStyle="seaborn-v0_8"):
         '''
         # Fucntion Description : Plot 한글화 Setting
@@ -280,6 +281,19 @@ class Service:
         print(predictions[:5])
 
     def station_name_to_code(line,station_name):
+        """
+            # Description : 역이름을 코드로 반환하는 함수
+            # Date : 2024.06.07
+            # Author : pdg
+            # Detail:
+                * line, station_name : '7호선', '중곡'
+                * Returns: 해당 지하철 역사 코드 
+            # Updata:
+                * 2024.06.07 by pdg : 역사코드 반환함수 
+                * 2024.06.09 by pdg : 중복 역사코드일경우 배열 반환?
+                    - 만약에 종로3가처럼 코드가 여러개인 역사인경우 
+                
+        """
         import pandas as pd
         stations = pd.read_csv('../Data/SubwayInfo.csv')
         target_line_stations = stations[stations['호선']==line]
@@ -400,7 +414,7 @@ class Service:
             * Returns: 주차 10에 월요일 8시 대한 회귀 모델의 예측값
         # Updata:
             2024.06.07 by pdg :회귀함수 함수 업데이트  
-             - 사용 예시 : pred_result = regression_predict(test,'7호선', '중곡',10,1,'08시인원')
+            - 사용 예시 : pred_result = regression_predict(test,'7호선', '중곡',10,1,'08시인원')
         """
         print(line, station_name, week_index)
         from Functions import Service
