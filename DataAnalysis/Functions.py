@@ -396,7 +396,7 @@ class Service:
 
 ####  머신러닝 관련 함수 
     def MultiOutputRegressorFunc(training_table, target_table) :
-        
+    
         """
         # Description : train, target데이터에 대한 MultiOutputRegressor model
         # Date : 2024.06.05
@@ -408,6 +408,8 @@ class Service:
         # Updata:
             2024.06.07 by pdg :머신러닝 함수 업데이트 
                 * 주석 달았음. 
+            2024.06.09 by pdg : 
+                * 함수화 완료
         """
         import pandas as pd, numpy as np
         import matplotlib.pyplot as plt 
@@ -421,7 +423,7 @@ class Service:
                             test_size=0.2,
                             random_state=42)
         ## KNN regression model 
-        knn_regressor = KNeighborsRegressor(n_neighbors=5)
+        knn_regressor = KNeighborsRegressor(n_neighbors=3)
         ## Multi Output Setting
         multi_output_regressor = MultiOutputRegressor(knn_regressor)
         multi_output_regressor.fit(train_input, train_target)
@@ -430,9 +432,25 @@ class Service:
         print(f'Model score: {score}')
         
         predictions = multi_output_regressor.predict(test_input)
+        print(test_target.columns)
         # print(predictions[:5])
-        for 주차,시간대별예측 in zip(test_input['주차'],predictions):
-            print(주차, 시간대별예측)
+        print("주차     요일 시간대별 예측 :",*[f"{i}시" for i in range(5,25)], sep='\t')
+        for idx,시간대별예측 in enumerate(predictions):
+            주차 = test_input.to_numpy()[idx][1]
+            요일 =test_input.to_numpy()[idx][3]
+            실제치 = test_target.to_numpy()[idx]
+            match 요일:
+                case 요일 if 요일 == 0: 요일_str = '일'; 
+                case 요일 if 요일 == 1: 요일_str = '월'; 
+                case 요일 if 요일 == 2: 요일_str = '화'; 
+                case 요일 if 요일 == 3: 요일_str = '수'; 
+                case 요일 if 요일 == 4: 요일_str = '목'; 
+                case 요일 if 요일 == 5: 요일_str = '금'; 
+                case 요일 if 요일 == 6: 요일_str = '토'; 
+                case _:print()
+            print(f"{주차}주차 {요일_str}요일 시간대별 예측 :", *list(map(int,(시간대별예측))), sep='\t')
+            print(f"{주차}주차 {요일_str}요일 시간대별 실제 :", *실제치, sep='\t')
+            print("---"*200)
         
     def station_name_to_code(line,station_name):
         """
