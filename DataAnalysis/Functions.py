@@ -30,6 +30,7 @@
         * 함수 순서 바꿈, 주석 추가
         *호선당서비스불가역이름추출 함수 추가
         
+        %%% 각 함수별로 어떤 주피터에서 작성되었는지 분류나눌것
 """
 ## project data processing functions 
 from multiprocessing import Process
@@ -217,8 +218,8 @@ class Service:
         interval = pivot_df.reset_index()
         # return interval
         # # 첫 번째 인덱스 열을 추가하여 새로운 데이터프레임 생성
-        interval['역사코드2'] = interval['역사코드']
-        interval.drop(columns=['역사코드2'],inplace=True)
+        # interval['역사코드2'] = interval['호선']
+        # interval.drop(columns=['역사코드2'],inplace=True)
         # interval.index = interval['역사코드']
         interval.fillna(0, inplace=True)
         cols = interval.columns.tolist()
@@ -226,8 +227,46 @@ class Service:
         interval = interval[cols]
 
         interval.rename(columns={'00': '24'}, inplace=True)
+        interval['호선']=line_배치['호선'].unique()[0] 
+        interval=Service.reorder_columns(col_name='호선',df=interval,target_idx=1)
         print(line_배치['호선'].unique() , "호선 에 대한 배차 테이블 표정제 결과")
         return interval
+    def table_merge_subwayInfo_dispatch(subwayInfo,line_배치):
+        print(f"{line_배치['호선'].unique() }호선 배차시간표 역사코드 개수 :{len(line_배치['역사코드'].unique())}")
+        test_merged_interval= pd.merge(subwayInfo,line_배치, on= ['역사코드','호선'])
+        print(f"{line_배치['호선'].unique()}호선테이블 병합후 서비스가능한 총 역 개수",len(test_merged_interval['역사코드'].unique()))
+        ## 주중 주말  카테고리를 0,1 로 바꾸어줌 주말일경우 1 주중일경우 0  ->onehot encoding 
+        test_mi = test_merged_interval.copy()
+        # test_mi.rename({'주중주말':'주말'}, axis=1,inplace=True)
+        test_mi_week_dummies = pd.get_dummies(test_mi['주중주말'])
+
+
+        test_mi_week_dummies.head()
+        test_ = pd.concat([test_mi,test_mi_week_dummies], axis=1)
+        # 주말 칼럼 삭제 , day -> 주중, sat -> 주말 로 변경 
+        # test_.drop('주말', axis=1, inplace=True)
+        # for idx, col in enumerate(list(test_.columns)):
+        #     print(idx, col)
+        # 인덱스 2의 값을 인덱스 4로 이동
+
+        test_ =Service.reorder_columns(test_,'SAT',4)
+        test_ =Service.reorder_columns(test_,'DAY',5)
+        ## 배차시간 칼럼 이름 변경 
+        # t1=pd.concat([test_.columns[:8].to_series(),test_.columns[8:].to_series()+'시배차'])
+        # test_.columns =t1
+        test_.rename(
+            {
+                'SAT':'주말',
+                'DAY':'주중'
+            }, axis=1, inplace=True
+        )
+        print("예시히스토그램 2개만 플랏합니다")
+        for i in range(0,len(test_[:4]),2): ## 예시로 2개
+            Service.stationDispatchBarplot(test_,i, title_columnName='역명',startColNum=9)
+        print("최종 병합된 테이블을 출력합니다")
+        return test_
+
+
 
 ### 현재탑승객수 추정 및 배차 간격 시각화 
     def currentPassengerCalc(stations,pass_in,pass_out,dispached_subway_number):
@@ -277,10 +316,10 @@ class Service:
         return result
     def stationDispatchBarplot(df,row,title_columnName,startColNum):
         """
-        # Description : 역들의 지하철 배차 수(싱헹과 하행이 거의 비슷하다는 가정하에 추정수치임)
-        # Date : 2024.06.05
-        # Author : Forrest Dpark
-        # Detail:
+        ### Description : 역들의 지하철 배차 수(싱헹과 하행이 거의 비슷하다는 가정하에 추정수치임)
+        ### Date : 2024.06.05
+        ### Author : Forrest Dpark
+        ### Detail:
             * df pd.DataFrame:(역사코드와 역명, 평균 배차수 를 가지고 있는 데이터 프레임 )
             * row (int): 주중 행 , row+1 은 주말 행임. 
             * title_columnName (string) : 역이름 알수있는 칼럼. 
@@ -308,7 +347,7 @@ class Service:
         ax2.set_title(f"{df[title_columnName].iloc[row+1]}역 시간대별 배차 수 분포[{'주중' if df['주중'].iloc[row+1] ==True else '주말'}]")
         ax2.set_ylabel("지하철 배차 수")
         maxlim=(max((df.iloc[row,startColNum:]).to_numpy()))
-        print(maxlim)
+        # print(maxlim)
         ax2.set_ylim([0,maxlim])
         # bar2.set_ylim =[0,maxlim]
         plt.show()
@@ -391,7 +430,10 @@ class Service:
         print(f'Model score: {score}')
         
         predictions = multi_output_regressor.predict(test_input)
-        print(predictions[:5])
+        # print(predictions[:5])
+        for 주차,시간대별예측 in zip(test_input['주차'],predictions):
+            print(주차, 시간대별예측)
+        
     def station_name_to_code(line,station_name):
         """
             # Description : 역이름을 코드로 반환하는 함수
@@ -565,15 +607,16 @@ class Service:
         # Update:
 
         """
+
         result =[]
         try :
             승하차_역사코드 = 승하차_역정보테이블[승하차_역정보테이블['호선']==line]['역사코드']
             배차역_역사코드 = 배차역정보_테이블[배차역정보_테이블['호선']==line]['역사코드']
             service_disable_station =list(map(int,list(set(배차역_역사코드)- set(승하차_역사코드)))) ## service 불가 지역 리스트 
-
+            print(service_disable_station)
             uniq_배차=배차역정보_테이블[['역사코드','역사명','호선']].drop_duplicates().reset_index(drop=True)
             target_line_subway= uniq_배차[uniq_배차['호선']==line]
-        
+            print(service_disable_station)
             if service_disable_station !=[]:
                 print(f"⬇--{line}호선 서비스불가 역사코드 . 및 역사명--⬇")
                 i = 0
@@ -587,6 +630,10 @@ class Service:
         except:
             pass
         finally :return result
+        ''' 함수 사용 예시!!
+        for i in range(1,8):
+            _ = Service.호선당서비스불가역이름추출(i,station, subway_dispatch) 
+        '''
 
 
 
