@@ -281,6 +281,19 @@ class Service:
         print(predictions[:5])
 
     def station_name_to_code(line,station_name):
+        """
+            # Description : 역이름을 코드로 반환하는 함수
+            # Date : 2024.06.07
+            # Author : pdg
+            # Detail:
+                * line, station_name : '7호선', '중곡'
+                * Returns: 해당 지하철 역사 코드 
+            # Updata:
+                * 2024.06.07 by pdg : 역사코드 반환함수 
+                * 2024.06.09 by pdg : 중복 역사코드일경우 배열 반환?
+                    - 만약에 종로3가처럼 코드가 여러개인 역사인경우 
+                
+        """
         import pandas as pd
         stations = pd.read_csv('../Data/SubwayInfo.csv')
         target_line_stations = stations[stations['호선']==line]
