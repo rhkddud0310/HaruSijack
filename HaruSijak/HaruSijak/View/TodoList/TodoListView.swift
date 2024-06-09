@@ -23,11 +23,6 @@ struct TodoListView: View {
     var body: some View {
 
         VStack {
-            
-//            Text("TodoList")
-//                .font(.system(.largeTitle, design: .rounded))
-//                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-            
             NavigationView(content: {
                 List(content: {
                     ForEach(todoLists, id:\.id, content: { todoList in
@@ -49,6 +44,8 @@ struct TodoListView: View {
                         })// NavigationLink
                     })//ForEach
                 })// List
+                
+                // todoLists 조회하기
                 .onAppear(perform: {
                     todoLists.removeAll() //지우고
                     let todoListDB = TodoListDB() // DB instance 생성
@@ -57,6 +54,9 @@ struct TodoListView: View {
                 .navigationTitle("TodoList")
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarBackButtonHidden(true)
+                
+                
+                
                 //추가 아이콘
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarTrailing, content: {
@@ -67,7 +67,8 @@ struct TodoListView: View {
                             
                         } // NavigationLink
                     }) // ToolbarItem
-                })
+                })//toolbar
+                
             })
         }// NavigationView
     }

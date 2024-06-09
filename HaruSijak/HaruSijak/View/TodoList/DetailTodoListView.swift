@@ -66,43 +66,86 @@ struct DetailTodoListView: View {
             
             
             // 버튼
-            Button("수정하기", action: {
-                alertOpen.toggle()
-                isTextFieldFocused = false
+            HStack {
                 
-                if todoList.todo.isEmpty{
-                    showAlert(title: "경고", message: "데이터를 입력하세요.", button: "확인")
-                } else {
+                Button("수정하기", action: {
+                    alertOpen.toggle()
+                    isTextFieldFocused = false
                     
-                    
-                    self.result = viewModel.updateDB(todo: todoList.todo, startdate: todoList.startdate, enddate: todoList.enddate, id: Int32(todoList.id))
-                        isTextFieldFocused = false
-                    
-                    if self.result {
-                        showAlert(title: "알림", message: "수정되었습니다.", button: "확인")
+                    if todoList.todo.isEmpty{
+                        showAlert(title: "경고", message: "데이터를 입력하세요.", button: "확인")
                     } else {
-                        showAlert(title: "알림", message: "수정에 실패했습니다.", button: "확인")
+                        
+                        
+                        self.result = viewModel.updateDB(todo: todoList.todo, startdate: todoList.startdate, enddate: todoList.enddate, id: Int32(todoList.id))
+                            isTextFieldFocused = false
+                        
+                        self.result
+                            ? showAlert(title: "알림", message: "수정되었습니다.", button: "확인")
+                            : (showAlert(title: "알림", message: "수정에 실패했습니다.", button: "확인"))
+                        
+                        alertOpen = true
                     }
+                }) //Button
+                .tint(.white)
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .background(Color("myColor"))
+                .cornerRadius(30)
+                .controlSize(.large)
+                .frame(width: 200, height: 50) // 버튼의 크기 조정
+                .alert(isPresented: $alertOpen, content: {
+                    Alert(
+                        title: Text(alertTitle),
+                        message: Text(alertMessage),
+                        dismissButton: .default(Text(alertButton), action: {
+                            alertOpen = false
+                        })
+                    )
+                })//alert
+                
+                
+                Button("삭제하기", action: {
+                    alertOpen.toggle()
+                    isTextFieldFocused = false
                     
-                    alertOpen = true
-                }
-            }) //Button
-            .tint(.white)
-            .buttonStyle(.bordered)
-            .buttonBorderShape(.capsule)
-            .background(Color("myColor"))
-            .cornerRadius(30)
-            .controlSize(.large)
-            .frame(width: 200, height: 50) // 버튼의 크기 조정
-            .alert(isPresented: $alertOpen, content: {
-                Alert(
-                    title: Text(alertTitle),
-                    message: Text(alertMessage),
-                    dismissButton: .default(Text(alertButton), action: {
-                        alertOpen = false
-                    })
-                )
-            })//alert
+                    if todoList.todo.isEmpty{
+                        showAlert(title: "경고", message: "데이터를 입력하세요.", button: "확인")
+                    } else {
+                        
+                        
+                        self.result = viewModel.deleteDB(id: Int32(todoList.id))
+                            isTextFieldFocused = false
+                        
+                        self.result
+                            ? showAlert(title: "알림", message: "삭제되었습니다.", button: "확인")
+                            : (showAlert(title: "알림", message: "삭제에 실패했습니다.", button: "확인"))
+                        
+                        
+                        alertOpen = true
+                    }
+                }) //Button
+                .tint(.white)
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .background(Color.pink)
+                .cornerRadius(30)
+                .controlSize(.large)
+                .frame(width: 200, height: 50) // 버튼의 크기 조정
+                .alert(isPresented: $alertOpen, content: {
+                    Alert(
+                        title: Text(alertTitle),
+                        message: Text(alertMessage),
+                        dismissButton: .default(Text(alertButton), action: {
+                            alertOpen = false
+                        })
+                    )
+                })//alert
+                
+                
+            }//HStack
+            
+            
             
         })// Vstack
         .navigationTitle("할 일 수정")
@@ -113,9 +156,9 @@ struct DetailTodoListView: View {
     
     // alert창 실행 함수
     func showAlert(title: String, message: String, button: String) {
-        alertTitle = title
+        alertTitle = "알리"
         alertMessage = message
-        alertButton = button
+        alertButton = "확인"
         alertOpen = true
         dismiss()
     }
