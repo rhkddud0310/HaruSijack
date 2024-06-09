@@ -24,7 +24,10 @@
         * holidaysToIntConvert 함수 추가 
     - 2024.06.07 by pdg : validation 을 위한 데이터 시각화 함수 
         * station_name_to_code 함수 추가
-        *sdtation_inout_lmplot 함수 추가
+        * sdtation_inout_lmplot 함수 추가
+    - 2024.06.09 by pdg :  지하철 역명 처리 및 코드 중복처리 문제로 데이터 누락되는 이슈 해결 
+        * subway_info_table 함수추가 
+        * 함수 순서 바꿈, 주석 추가
 """
 ## project data processing functions 
 from multiprocessing import Process
@@ -33,7 +36,32 @@ import matplotlib.pyplot as plt, seaborn as sns
 class Service:
     def __init__(self) -> None:
         pass
+
+##### 기본 Setting 함수
+    def plotSetting(pltStyle="seaborn-v0_8"):
     
+        '''
+        # Fucntion Description : Plot 한글화 Setting
+        # Date : 2024.06.05
+        # Author : Forrest D Park 
+        # update : 
+        '''
+        # graph style seaborn
+        import matplotlib.pyplot as plt # visiulization
+        import platform
+        from matplotlib import font_manager, rc # rc : 폰트 변경 모듈font_manager : 폰트 관리 모듈
+        plt.style.use(pltStyle)
+        plt.rcParams['axes.unicode_minus'] = False# unicode 설정
+        if platform.system() == 'Darwin': rc('font', family='AppleGothic') # os가 macos
+        elif platform.system() == 'Windows': # os가 windows
+            path = 'c:/Windows/Fonts/malgun.ttf' 
+            font_name = font_manager.FontProperties(fname=path).get_name()
+            rc('font', family=font_name)
+        else:
+            print("Unknown System")
+        print("___## OS platform 한글 세팅완료 ## ___")
+
+####  데이터 체크및 정제 관련 함수들 
     def dataInfoProcessing(df, replace_Nan=False, PrintOutColnumber = 10,nanFillValue=0):
         ''' 
         # Fucntion Description :  Data frame 의 정제해야할 부분을 체크해주는 함수 
@@ -76,29 +104,6 @@ class Service:
         else: 
             print(f"\t ...etc (추가로 {len(df.dtypes.keys())-PrintOutColnumber}개의 칼럼이 있습니다 )")
         return df
-    
-    def plotSetting(pltStyle="seaborn-v0_8"):
-        '''
-        # Fucntion Description : Plot 한글화 Setting
-        # Date : 2024.06.05
-        # Author : Forrest D Park 
-        # update : 
-        '''
-        # graph style seaborn
-        import matplotlib.pyplot as plt # visiulization
-        import platform
-        from matplotlib import font_manager, rc # rc : 폰트 변경 모듈font_manager : 폰트 관리 모듈
-        plt.style.use(pltStyle)
-        plt.rcParams['axes.unicode_minus'] = False# unicode 설정
-        if platform.system() == 'Darwin': rc('font', family='AppleGothic') # os가 macos
-        elif platform.system() == 'Windows': # os가 windows
-            path = 'c:/Windows/Fonts/malgun.ttf' 
-            font_name = font_manager.FontProperties(fname=path).get_name()
-            rc('font', family=font_name)
-        else:
-            print("Unknown System")
-        print("___## OS platform 한글 세팅완료 ## ___")
-    
     def reorder_columns(df, col_name, target_idx):
         """
         # Description : Reorder columns in a DataFrame by moving a specific column to a target index.
@@ -116,6 +121,64 @@ class Service:
         cols.insert(target_idx, col_name)
         return df[cols]
 
+#### 지하철 역사 정보 정제 후 저장
+    def  subway_info_table(subway, save=False):
+        import pandas as pd, numpy as np
+        print("첫 수송일자 :",list(subway['수송일자'])[0])
+        print("마지막 수송일자 :",list(subway['수송일자'])[-1])
+        ## 역명에서 () 빼버리기 
+        정제된역명 = [i.split("(")[0] for i in subway['역명']]
+        subway['역명']= 정제된역명
+        
+        
+        subway_test = subway.rename({'고유역번호(외부역코드)':'역사코드'},axis=1)
+        ### 역코드 obj -> int 로 변환  ** 아무것도 없는 데이터는 000 으로 변환 
+        new_stationCode = []
+        issued_index =[]
+        for i, code in enumerate(subway_test['역사코드']):
+            # print(str(i).replace(" ",""))
+            try : 
+                new_stationCode.append(int(str(code)))
+            except ValueError : 
+                print(f"{i}번째 데이터 {code}" ,"<-value errer: ")
+                new_stationCode.append(000)
+                issued_index.append(i)
+                continue
+        print(f"{issued_index}는 값에러 0 으로 대체함" if len(new_stationCode)== len(subway_test) else "대체 안됨")
+        #0,광명사거리,7,1 이 코드가 문제됨..
+        subway_test['역사코드'] = new_stationCode
+        
+        # 역사코드에 해당하는 역이름과 호선을 테이블로 만들고 싶다.
+        # 중복 제거 후 역 번호, 역 이름, 호선 정보를 추출
+        unique_stations = subway_test.drop_duplicates(subset=['역사코드', '역명', '호선'])
+        #역명 코드가 0 이면 행 drop 
+        unique_stations = unique_stations[unique_stations['역사코드'] != 0]
+        subway_info =unique_stations[['역사코드', '역명', '호선']]
+        subway_info.reset_index(inplace=True,drop=True)
+
+        ## 환승역 여부 칼럼을 추가한 StationInfo data 만들자 .
+
+        test1 = dict(subway_info['역명'].value_counts())
+        to_merge_df_exchange = pd.DataFrame(
+            {
+            '역명':list(test1.keys()),
+            '환승역수':list(test1.values())
+            }
+        )
+        merged_table = pd.merge(
+            subway_info,to_merge_df_exchange,
+            on='역명'
+        )
+
+        to_saveDataframe = merged_table[['역사코드','역명','호선','환승역수']]
+    
+        
+        
+        to_saveDataframe.to_csv(f"../Data/StationInfo.csv",index=None)
+
+        return to_saveDataframe
+
+### 현재탑승객수 추정 및 배차 간격 시각화 
     def currentPassengerCalc(stations,pass_in,pass_out,dispached_subway_number):
         """
         # Description : 각 역에서의 추정 탑승인원 수 
@@ -161,7 +224,6 @@ class Service:
             }
         )
         return result
-
     def stationDispatchBarplot(df,row,title_columnName,startColNum):
         """
         # Description : 역들의 지하철 배차 수(싱헹과 하행이 거의 비슷하다는 가정하에 추정수치임)
@@ -200,6 +262,7 @@ class Service:
         # bar2.set_ylim =[0,maxlim]
         plt.show()
 
+##### 날짜 를 정제하는 함수
     def dayToIntConvert(df, dayCol):
         # 수송일자 날짜형으로 변환
         import pandas as pd
@@ -217,7 +280,6 @@ class Service:
         }
         df['요일'] = df['요일'].map(day_name_mapping)
         return df
-
     def date_Divid_Add_YMW_cols(df,DateColName):
         import pandas as pd
         from datetime import datetime, timedelta
@@ -235,7 +297,6 @@ class Service:
         df['월'] = months
         df['주차'] = weeks
         return df
-
     def holidaysToIntConvert(df,DateColName):
         # !pip install holidays
         import holidays
@@ -243,6 +304,7 @@ class Service:
         df['공휴일'] = df[DateColName].apply(lambda x: 0 if x in kr_holidays else 1)
         return df
 
+####  머신러닝 관련 함수 
     def MultiOutputRegressorFunc(training_table, target_table) :
         
         """
@@ -279,7 +341,6 @@ class Service:
         
         predictions = multi_output_regressor.predict(test_input)
         print(predictions[:5])
-
     def station_name_to_code(line,station_name):
         """
             # Description : 역이름을 코드로 반환하는 함수
@@ -295,12 +356,12 @@ class Service:
                 
         """
         import pandas as pd
-        stations = pd.read_csv('../Data/SubwayInfo.csv')
-        target_line_stations = stations[stations['호선']==line]
+        stations = pd.read_csv('../Data/SubwayInfo.csv') ## 역정보 csv 
+        target_line_stations = stations[stations['호선']==line] ## line select
         row = target_line_stations[station_name == target_line_stations['역이름']]
         print(f"{station_name}의 역사 코드는 {row['역코드'].values[0]}입니다")
+
         return row['역코드'].values[0]
-    
     def sdtation_inout_lmplot(mlTable, line, station_name, time_passenger):
         """
             # Description : train, target데이터에 대한 회귀 모델 
@@ -400,7 +461,6 @@ class Service:
         
         # DataFrame 반환
         return regression_df
-
     def regression_predict(mlTable,line, station_name, week_index, dayName_int,target_colName= '08시인원'):
         """
         # Description : train, target데이터에 대한 회귀 모델  예측 
