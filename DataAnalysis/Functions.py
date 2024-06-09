@@ -180,6 +180,55 @@ class Service:
 
         return to_saveDataframe
 
+
+#### 지하철 배차표 호선별 테이블 정제 함수 
+    def dispatch_table_forML(line_배치):
+        """
+        # Description : 특정 호선에대한 배치표 정보를 받아서 pivotable 로시간대별 칼럼생성후 배차 수를 계산
+        # Date : 2024.06.09
+        # Author : Forrest Dpark
+        # Detail:
+            * line_배치 (df)
+            * Returns: pivotable for machine learning (df)
+        """
+        import warnings ; warnings.filterwarnings('ignore')
+        # 새로운 테이블 만들기
+        line_배치['열차시간계산']=line_배치['열차도착시간'].str.split(':').str[0]
+        # '역사명'과 '시간'이 같은 데이터 그룹화
+        grouped = line_배치.groupby(['역사코드', '열차시간계산','주중주말','방향'])
+        # 각 그룹의 크기(개수) 계산
+        count = grouped.size().rename('차량수')
+        # 결과를 DataFrame으로 변환
+        interval = count.reset_index()
+        # return interval['역사코드'].unique()
+        # 열 이름 지정
+        interval.columns = ['역사코드', '시간', '주중주말','방향','배차수']
+        interval['역사코드'] = interval['역사코드'].astype('int64')
+        # 역사코드(=),주중주말(=)을 기준으로 방향이 다른 배차수를 합친 후 새로운 로우 생성후 방향 컬럼 삭제한 새로운 데이터 셋 만들기
+        # 방향 별로 배차수 합치기
+        
+        interval = interval.groupby(['역사코드', '시간', '주중주말'])['배차수'].sum().reset_index()
+        interval['배차수']=interval['배차수']/2
+        
+        # 피벗 테이블 생성
+        pivot_df = interval.pivot_table(index=['역사코드', '주중주말'], columns='시간', values='배차수', aggfunc='mean')
+
+        # # 인덱스를 열로 리셋
+        interval = pivot_df.reset_index()
+        # return interval
+        # # 첫 번째 인덱스 열을 추가하여 새로운 데이터프레임 생성
+        interval['역사코드2'] = interval['역사코드']
+        interval.drop(columns=['역사코드2'],inplace=True)
+        # interval.index = interval['역사코드']
+        interval.fillna(0, inplace=True)
+        cols = interval.columns.tolist()
+        cols.append(cols.pop(cols.index('00')))
+        interval = interval[cols]
+
+        interval.rename(columns={'00': '24'}, inplace=True)
+        print(line_배치['호선'].unique() , "호선 에 대한 배차 테이블 표정제 결과")
+        return interval
+
 ### 현재탑승객수 추정 및 배차 간격 시각화 
     def currentPassengerCalc(stations,pass_in,pass_out,dispached_subway_number):
         """
@@ -361,9 +410,9 @@ class Service:
         stations = pd.read_csv('../Data/SubwayInfo.csv') ## 역정보 csv 
         target_line_stations = stations[stations['호선']==line] ## line select
         row = target_line_stations[station_name == target_line_stations['역이름']]
-        print(f"{station_name}의 역사 코드는 {row['역코드'].values[0]}입니다")
+        print(f"{station_name}의 역사 코드는 {row['역사코드'].values[0]}입니다")
 
-        return row['역코드'].values[0]
+        return row['역사코드'].values[0]
     def sdtation_inout_lmplot(mlTable, line, station_name, time_passenger):
         """
             # Description : train, target데이터에 대한 회귀 모델 
@@ -538,6 +587,8 @@ class Service:
         except:
             pass
         finally :return result
+
+
 
 if __name__ == '__main__':  
     print("main stdart")
