@@ -28,6 +28,8 @@
     - 2024.06.09 by pdg :  지하철 역명 처리 및 코드 중복처리 문제로 데이터 누락되는 이슈 해결 
         * subway_info_table 함수추가 
         * 함수 순서 바꿈, 주석 추가
+        *호선당서비스불가역이름추출 함수 추가
+        
 """
 ## project data processing functions 
 from multiprocessing import Process
@@ -497,6 +499,45 @@ class Service:
         print(target_table.loc[target_table.index[dayName_int]])
 
         return prediction
+
+
+
+### 데이터 신뢰성 판단 관련 함수
+    def 호선당서비스불가역이름추출(line,승하차_역정보테이블, 배차역정보_테이블):
+        """
+        # Description :  승하차 데이터에 존재하지않는 서비스불가 역의 리스트를 출력함. 
+        # Date : 2024.06.09
+        # Author : pdg
+        # Detail:
+            * line (int)
+            * 승하차_역정보테이블 (df)
+            * 배차역정보_테이블(df)
+            * Returns: 서비스불가 역의 리스트
+        # Update:
+
+        """
+        result =[]
+        try :
+            승하차_역사코드 = 승하차_역정보테이블[승하차_역정보테이블['호선']==line]['역사코드']
+            배차역_역사코드 = 배차역정보_테이블[배차역정보_테이블['호선']==line]['역사코드']
+            service_disable_station =list(map(int,list(set(배차역_역사코드)- set(승하차_역사코드)))) ## service 불가 지역 리스트 
+
+            uniq_배차=배차역정보_테이블[['역사코드','역사명','호선']].drop_duplicates().reset_index(drop=True)
+            target_line_subway= uniq_배차[uniq_배차['호선']==line]
+        
+            if service_disable_station !=[]:
+                print(f"⬇--{line}호선 서비스불가 역사코드 . 및 역사명--⬇")
+                i = 0
+                for idx, row in enumerate(target_line_subway.to_numpy()):
+                    for j in service_disable_station:
+                        if  row[0] == j :
+                            print(f" {i+1}.{int(row[0])} {row[1]} 역")
+                            result.append([int(row[0]), row[1], row[2]])
+                            i +=1
+                print("-"*20)
+        except:
+            pass
+        finally :return result
 
 if __name__ == '__main__':  
     print("main stdart")
