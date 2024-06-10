@@ -10,27 +10,30 @@
             Service.dataInfoProcessing(df)  # Data information 정보 출력 
             Service.plotSetting()           # OS 한글화 한 Matplotlib Setting 
 ## Update:  
-    - 2024.06.02 by pdg : multiprocessing import 
-        * Data frame column 정보 ( Null check, 중복체크 )플랏 
-    - 2024.06.03 by pdg : datdaInfoProcessing 함수 생성
-        * DataInfoProcessing 함수의 printoutcolnumber 플랏할 칼럼 갯수를 선택할수있게 설정함. 
-    - 2024.06.05 by pdg : 기타 함수 생성 
-        * plotSetting 함수 추가 
-        * reorder_columns 함수 추가 -> 칼럼의 순서를 바꾸어줌.
-        * currentPassengerCalc 함수 추가 현재 탑승객 및 량당 빈자리 추출(노인석 제외)
-        * stationDispatchBarplot 함수 추가 -> 지하철 역별 배차 지하철 수치 barplot check 
-        * dayToIntConvert  함수 추가
-        * date_Divid_Add_YMW_cols 함수추가 
-        * holidaysToIntConvert 함수 추가 
-    - 2024.06.07 by pdg : validation 을 위한 데이터 시각화 함수 
-        * station_name_to_code 함수 추가
-        * sdtation_inout_lmplot 함수 추가
-    - 2024.06.09 by pdg :  지하철 역명 처리 및 코드 중복처리 문제로 데이터 누락되는 이슈 해결 
-        * subway_info_table 함수추가 
-        * 함수 순서 바꿈, 주석 추가
-        *호선당서비스불가역이름추출 함수 추가
+    * 2024.06.02 by pdg : multiprocessing import 
+        - Data frame column 정보 ( Null check, 중복체크 )플랏 
+    * 2024.06.03 by pdg : datdaInfoProcessing 함수 생성
+        - DataInfoProcessing 함수의 printoutcolnumber 플랏할 칼럼 갯수를 선택할수있게 설정함. 
+    * 2024.06.05 by pdg : 기타 함수 생성 
+        - plotSetting 함수 추가 
+        - reorder_columns 함수 추가 -> 칼럼의 순서를 바꾸어줌.
+        - currentPassengerCalc 함수 추가 현재 탑승객 및 량당 빈자리 추출(노인석 제외)
+        - stationDispatchBarplot 함수 추가 -> 지하철 역별 배차 지하철 수치 barplot check 
+        - dayToIntConvert  함수 추가
+        - date_Divid_Add_YMW_cols 함수추가 
+        - holidaysToIntConvert 함수 추가 
+    * 2024.06.07 by pdg : validation 을 위한 데이터 시각화 함수 
+        - station_name_to_code 함수 추가
+        - sdtation_inout_lmplot 함수 추가
+    * 2024.06.09 by pdg :  지하철 역명 처리 및 코드 중복처리 문제로 데이터 누락되는 이슈 해결 
+        - subway_info_table 함수추가 
+        - 함수 순서 바꿈, 주석 추가
+        - 호선당서비스불가역이름추출 함수 추가
         
         %%% 각 함수별로 어떤 주피터에서 작성되었는지 분류나눌것
+        
+    * 2024.06.10 by pdg : KNN regression model 저장 
+        - 함수 저장 하도록 바꿈
 """
 ## project data processing functions 
 from multiprocessing import Process
@@ -41,6 +44,9 @@ class Service:
         pass
 
 ##### 기본 Setting 함수
+
+    
+
     def plotSetting(pltStyle="seaborn-v0_8"):
     
         '''
@@ -268,7 +274,7 @@ class Service:
 
 
 
-### 현재탑승객수 추정 및 배차 간격 시각화 
+#### 현재탑승객수 추정 및 배차 간격 시각화 
     def currentPassengerCalc(stations,pass_in,pass_out,dispached_subway_number):
         """
         # Description : 각 역에서의 추정 탑승인원 수 
@@ -352,7 +358,7 @@ class Service:
         # bar2.set_ylim =[0,maxlim]
         plt.show()
 
-##### 날짜 를 정제하는 함수
+#### 날짜 를 정제하는 함수
     def dayToIntConvert(df, dayCol):
         # 수송일자 날짜형으로 변환
         import pandas as pd
@@ -395,7 +401,7 @@ class Service:
         return df
 
 ####  머신러닝 관련 함수 
-    def MultiOutputRegressorFunc(training_table, target_table) :
+    def MultiOutputRegressorFunc_KNN(training_table, target_table,saveFileName) :
     
         """
         # Description : train, target데이터에 대한 MultiOutputRegressor model
@@ -432,7 +438,7 @@ class Service:
         print(f'Model score: {score}')
         
         predictions = multi_output_regressor.predict(test_input)
-        print(test_target.columns)
+        # print(test_target.columns)
         # print(predictions[:5])
         print("주차     요일 시간대별 예측 :",*[f"{i}시" for i in range(5,25)], sep='\t')
         for idx,시간대별예측 in enumerate(predictions):
@@ -451,6 +457,12 @@ class Service:
             print(f"{주차}주차 {요일_str}요일 시간대별 예측 :", *list(map(int,(시간대별예측))), sep='\t')
             print(f"{주차}주차 {요일_str}요일 시간대별 실제 :", *실제치, sep='\t')
             print("---"*200)
+        import joblib ## model 저장 용 함수 
+        filename = f'../Server/MLModels/{saveFileName}.h5'
+        print(f"😀😀😀😀{filename} 을 저장합니다 😀😀😀")
+        joblib.dump(multi_output_regressor, filename)
+        
+        return multi_output_regressor
         
     def station_name_to_code(line,station_name):
         """
