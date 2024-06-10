@@ -3,6 +3,7 @@ import subprocess
 import os
 from datetime import datetime
 import warnings
+import pandas as pd
 
 # 경고 무시 설정
 warnings.filterwarnings("ignore", category=UserWarning, module='cv2')
@@ -59,7 +60,7 @@ class ImageProcessing:
             # 원본 파일을 가져 와서 clicked_points에 있는 점들을 그린다.
             image = clone.copy()
             for point in clicked_points:
-                cv2.circle(image, (point[1], point[0]), 2, (23, 5, 95), thickness = -1)
+                cv2.circle(image, (point[1], point[0]), 5, (100, 5, 95), thickness = -1)
             cv2.imshow("image", image)
 
     @staticmethod
@@ -123,23 +124,14 @@ class ImageProcessing:
                 key = cv2.waitKey(0)
 
                 if key == ord('n'):
-                    # 텍스트 파일을 출력 하기 위한 stream을 open 합니다.
-                    # 중간에 프로그램이 꺼졌을 경우 작업한 것을 저장하기 위해 쓸 때 마다 파일을 연다.
-                    file_write = open('./' + now_str + '_' + folder_name + '.txt', 'a+')
-
-                    text_output = image_name
-                    text_output += "," + str(len(clicked_points))
-                    for points in clicked_points:
-                        text_output += "," + str(points[0]) + "," + str(points[1])
-                    text_output += '\n'
-                    file_write.write(text_output)
+                    # 클릭한 점들을 pandas 데이터프레임으로 저장
+                    df = pd.DataFrame(clicked_points, columns=['y', 'x'])
+                    csv_path = os.path.join(path, f'{image_name}_points.csv')
+                    df.to_csv(csv_path, index=False)
                     
                     # 클릭한 점 초기화
                     clicked_points = []
-
-                    # 파일 쓰기를 종료한다.
-                    file_write.close()
-
+    
                     break
 
                 if key == ord('b'):

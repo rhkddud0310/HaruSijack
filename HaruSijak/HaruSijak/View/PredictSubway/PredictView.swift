@@ -117,7 +117,7 @@ func getCurrentDateTime() -> (String,String) {
 
 // flask 통신을 위한 함수
 func fetchDataFromServer(stationName: String, date: String ,time: String, stationLine : String) {
-    let url = URL(string: "http://localhost:5000/analyze")!
+    let url = URL(string: "http://localhost:5000/subway")!
     var request = URLRequest(url: url)
     
     request.httpMethod = "POST"

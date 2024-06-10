@@ -393,6 +393,40 @@ class Service:
         df['월'] = months
         df['주차'] = weeks
         return df
+
+
+    def date_string_to_MonthWeekHolyDayname(date_str):
+        from datetime import datetime,timedelta
+        # 날짜 문자열을 datetime 객체로 변환
+        date_object = datetime.strptime(date_str, '%Y-%m-%d')
+        year = date_object.year
+         # 해당 날짜의 첫 번째 날이 속한 주의 첫 번째 날짜를 찾음
+        first_day_of_year = datetime(year, 1, 1)
+        first_day_of_year_weekday = first_day_of_year.weekday()  # 해당 년도의 1월 1일의 요일
+        first_week_start_date = first_day_of_year - timedelta(days=first_day_of_year_weekday)
+        
+        # 해당 날짜가 몇 번째 주인지 계산
+        week_number = ((date_object - first_week_start_date).days // 7) + 1
+        import holidays
+        kr_holidays = holidays.KR()
+        is_holi =  1 if date_object in kr_holidays else 0
+
+
+        
+        day_name = date_object.strftime('%A')
+        month_number = date_object.month
+        day_name_mapping = {
+            'Sunday': 0,
+            'Monday': 1,
+            'Tuesday': 2,
+            'Wednesday': 3,
+            'Thursday': 4,
+            'Friday': 5,
+            'Saturday': 6
+        }
+        dayname_code = day_name_mapping.get(day_name)
+        return month_number, week_number, is_holi,dayname_code
+
     def holidaysToIntConvert(df,DateColName):
         # !pip install holidays
         import holidays
@@ -476,11 +510,17 @@ class Service:
                 * 2024.06.07 by pdg : 역사코드 반환함수 
                 * 2024.06.09 by pdg : 중복 역사코드일경우 배열 반환?
                     - 만약에 종로3가처럼 코드가 여러개인 역사인경우 
+                * 2024.06.10 by pdg : swift 로 api service 할때 코드 반환안되는 문제 해결 
+                    -기존의 StationInfo.csv 에서 호선 칼럼이 숫자가아니라 ~호선 으로 데이터가 바뀌어 정제되어있음.
+                    - 결과 반영하여 수정함. 
                 
         """
         import pandas as pd
+        # print("아하 라인 테스트 type : ",type(line),line)
         stations = pd.read_csv('../Data/SubwayInfo.csv') ## 역정보 csv 
-        target_line_stations = stations[stations['호선']==line] ## line select
+        # print(stations['호선'])
+        target_line_stations = stations[stations['호선']==f"{line}호선"] ## line select
+        # print(target_line_stations)
         row = target_line_stations[station_name == target_line_stations['역이름']]
         print(f"{station_name}의 역사 코드는 {row['역사코드'].values[0]}입니다")
 

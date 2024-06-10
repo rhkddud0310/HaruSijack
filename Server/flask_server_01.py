@@ -18,6 +18,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import json ,pymysql,joblib 
+from DataAnalysis.Functions import Service
 
 app = Flask(__name__) # 난 flask 서버야!! 
 app.config['JSON_AS_ASCII'] = False 
@@ -27,8 +28,14 @@ app.config['JSON_AS_ASCII'] = False
 ## /iris면 여기로 와라!! 
 @app.route("/subway")
 def subway():
-    # /Users/forrestdpark/Desktop/PDG/Python_/Project/HaruSijack/Server/MLModels
-    # /Users/forrestdpark/Desktop/PDG/Python_/Project/HaruSijack/Server/flask_server_01.py
+    data = request.get_json() # JSON 데이터 받기
+    station_name = data.get('stationName')
+    date = data.get('date')
+    time = data.get('time')
+    stationLine = data.get('stationLine')
+    print(Service.dayToIntConvert(date))
+    rows=[date,station_name,time,stationLine]
+
     try:
         model_path = "/Users/forrestdpark/Desktop/PDG/Python_/Project/HaruSijack/Server/knn_regressor_line7_승차.h5"
         knn_regressor_승차 = joblib.load(model_path)
@@ -40,11 +47,11 @@ def subway():
                 
             ]]
         )
-        # target_column=['05시인원', '06시인원', '07시인원',
-        # '08시인원', '09시인원', '10시인원', '11시인원', '12시인원', '13시인원', '14시인원', '15시인원',
-        # '16시인원', '17시인원', '18시인원', '19시인원', '20시인원', '21시인원', '22시인원', '23시인원',
-        # '24시인원']
-        # print(pre)
+        target_column=['05시인원', '06시인원', '07시인원',
+        '08시인원', '09시인원', '10시인원', '11시인원', '12시인원', '13시인원', '14시인원', '15시인원',
+        '16시인원', '17시인원', '18시인원', '19시인원', '20시인원', '21시인원', '22시인원', '23시인원',
+        '24시인원']
+        print(pre)
         # result = json.dumps(list(pre), ensure_ascii=False).encode('utf8') # dump 는 글자 하나씩
         result = pre.tolist()
         response = {column: value for column, value in zip(target_column, result[0])}
@@ -52,6 +59,17 @@ def subway():
         return result#jsonify([{'result': result}])
     except Exception as e:
         return jsonify({'error': str(e)})
+    
+    
+@app.route('/analyze', methods=['POST'])
+def analyze_data():
+    data = request.get_json() # JSON 데이터 받기
+    station_name = data.get('stationName')
+    date = data.get('date')
+    time = data.get('time')
+    stationLine = data.get('stationLine')
+    rows=[date,station_name,time,stationLine]
+    return json.dumps(rows, ensure_ascii=False).encode('utf8')
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True) # 서버구동
     
