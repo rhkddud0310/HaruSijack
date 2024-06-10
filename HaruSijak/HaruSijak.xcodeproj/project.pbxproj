@@ -52,6 +52,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		544431982C16C2330004A7B4 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		5471ADB62C0D7A0100D24E62 /* Component */ = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +109,7 @@
 		54F80F132C0AF56900D83A08 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				544431982C16C2330004A7B4 /* New Group */,
 				54F80F222C0BE53900D83A08 /* TodoList */,
 				54F80F212C0BE52C00D83A08 /* News */,
 				54F80F202C0BE52100D83A08 /* PredictSubway */,
