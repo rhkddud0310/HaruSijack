@@ -72,8 +72,58 @@ struct CustomDatePicker: View {
             LazyVGrid(columns: columns, spacing: 15, content: {
                 ForEach(extraDate()) {value in
                     CardView(value: value)
+                        .background(
+                            Capsule()
+                                .fill(Color("Pink"))
+                                .padding(.horizontal, 8)
+                                .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
+                        )
+                        .onTapGesture {
+                            currentDate = value.date
+                        }
                 }
             }) //LazyVGrid
+            
+            // 일정 내용 보기
+            VStack(spacing:20, content: {
+                Text("일정")
+                    .font(.title2.bold())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 20)
+                
+                if let task = tasks.first(where: {task in
+                    return isSameDay(date1: task.taskDate, date2: currentDate)
+                }){
+                    
+                    ForEach(task.task) {task in
+                        VStack(alignment: .leading, spacing: 10 , content: {
+                            
+                            // Custom timing을 위해?
+                            Text(task.time
+                                .addingTimeInterval(CGFloat
+                                    .random(in: 0...5000)), style: .time)
+                            
+                            // task 제목
+                            Text(task.title)
+                                .font(.title2.bold())
+                        })//VStack
+                        .padding(.vertical, 10)
+                        .padding(.horizontal)
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
+                        .background(
+                            Color("Purple")
+                                .opacity(0.3)
+                                .cornerRadius(10)
+                        )
+                    }//ForEach
+                    
+                } else {
+                    Text("일정이 없습니다.")
+                }
+            })
+            .padding()
+            
+            
         })//VStack
         
         //월 update 처리하기
@@ -87,10 +137,44 @@ struct CustomDatePicker: View {
     func CardView(value: DateValue) -> some View {
         VStack(content: {
             if value.day != -1 {
-                Text("\(value.day)")
-                    .font(.title3.bold())
+                
+                // value.day 와 taskDate가 같으면 색 표시하기
+                if let task = tasks.first(where: { task in
+                    return isSameDay(date1: task.taskDate, date2: value.date)
+                }){
+                    
+                    let isToday = isSameDay(date1: task.taskDate, date2: currentDate)
+                    
+                    Text("\(value.day)")
+                        .font(.title3.bold())
+                        .foregroundStyle(isToday ? .white : .primary )
+                        .frame(maxWidth: .infinity)
+                    
+                    Spacer()
+                    
+                    Circle()
+                        .fill(isToday ? .white : Color("Pink"))
+                        .frame(width: 10, height: 10)
+                }
+                else {
+                    Text("\(value.day)")
+                        .font(.title3.bold())
+                        .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
+                        .frame(maxWidth: .infinity)
+
+                    Spacer()
+                }
             }
         })
+        .padding(.vertical, 9)
+        .frame(height: 60, alignment: .top)
+    }
+    
+    
+    /* 날짜 체크 */
+    func isSameDay(date1: Date, date2: Date) -> Bool {
+        let calendar = Calendar.current
+        return calendar.isDate(date1, inSameDayAs: date2)
     }
     
     
@@ -127,7 +211,6 @@ struct CustomDatePicker: View {
         
         //정확한 요일을 얻기위한 offset
         let firstWeekday = calendar.component(.weekday, from: days.first?.date ?? Date())
-        print("firstWeekday : ",firstWeekday)
         
         // 빈 공간 -1로 넣기
         for _ in 0..<firstWeekday - 1 {
@@ -147,7 +230,6 @@ extension Date {
     func getAllDates() -> [Date] {
         
         let calendar = Calendar.current
-        print("calendar : ", calendar)
         
         //시작날짜 정하기
         let startDate = calendar.date(from: Calendar.current.dateComponents([.year, .month], from: self))!

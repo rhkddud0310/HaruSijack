@@ -21,7 +21,26 @@ struct CalendarView: View {
                 CustomDatePicker(currentDate: $currentDate)
                 
             })//VStack
+            .padding(.vertical)
         }//ScrollView
+        .safeAreaInset(edge: .bottom, content: {
+            HStack(content: {
+                Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "plus")
+                        .foregroundStyle(.white)
+                        .fontWeight(.bold)
+                        .frame(width: 100)
+                        .padding(.vertical)
+                        .background(Color(.blue), in: Circle())
+                })
+            })
+            .padding(.horizontal)
+            .background(.ultraThinMaterial)
+            .padding(.top, 10)
+            
+        })
     }
 }
 
