@@ -42,7 +42,7 @@ struct ContentView: View {
                                     Text("뉴스")
                                 }
                                 .tag(1)
-                            TodoListView()
+                            CalendarView()
                                 .tabItem {
                                     Image(systemName: "calendar")
                                     Text("할일")

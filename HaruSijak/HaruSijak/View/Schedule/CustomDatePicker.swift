@@ -11,6 +11,10 @@ struct CustomDatePicker: View {
     
     @Binding var currentDate: Date
     @State var currentMonth: Int = 0 // 화살표버튼 클릭 시 월 update
+    let dbModel = CalendarDB()
+    @State var title: String = ""
+    @State var taskDate: Date = Date()
+    @State var tasksForSelectedDate: [Task] = []
     
     var body: some View {
         
@@ -91,7 +95,7 @@ struct CustomDatePicker: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 20)
                 
-                if let task = tasks.first(where: {task in
+                if let task = dbModel.queryDB().first(where: {task in
                     return isSameDay(date1: task.taskDate, date2: currentDate)
                 }){
                     

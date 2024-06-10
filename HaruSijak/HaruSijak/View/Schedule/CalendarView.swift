@@ -10,7 +10,17 @@ import SwiftUI
 struct CalendarView: View {
     
     @State var currentDate: Date = Date()
-    @State var isActionSheet = false
+    @State var isAlert = false            // actionSheet 실행
+    @State var isSubAlert = false            // subAlert 실행
+    @State var isResultTrue = false
+    @State var isResultFalse = false
+    @State var task: String = ""                // 입력받을 일정 변수
+    @FocusState var isTextFieldFocused: Bool    // 키보드 focus
+    @State var date: Date = Date()              // 선택된 날짜 변수
+    @State var time: Date = Date()              // 선택된 시간 변수
+    @Environment(\.dismiss) var dismiss
+    let dbModel = CalendarDB()
+    @State var tasksForSelectedDate: [Task] = []
     
     var body: some View {
         
@@ -27,7 +37,7 @@ struct CalendarView: View {
         .safeAreaInset(edge: .bottom, content: {
             HStack(content: {
                 Button(action: {
-                    
+                    isAlert = true
                 }, label: {
                     Image(systemName: "plus")
                         .foregroundStyle(.white)
@@ -36,14 +46,93 @@ struct CalendarView: View {
                         .padding(.vertical)
                         .background(Color(.blue), in: Circle())
                 })
+                
+                .sheet(isPresented: $isAlert, content: {
+                    VStack(content: {
+                        
+                        //일정 textfield
+                        TextField("일정 제목", text: $task)
+                            .font(.title3.bold())
+                            .frame(width: 200)
+                            .padding()
+                            .cornerRadius(8)
+                            .focused($isTextFieldFocused)
+                        
+                        //요일 설정 picker
+                        DatePicker(
+                            "요일 설정 : ",
+                            selection: $date,
+                            displayedComponents: [.date]
+                        )
+                        .frame(width: 200)
+                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
+                        .tint(Color("Purple"))
+                        
+                        //시간 설정 picker
+                        DatePicker(
+                            "시간 설정 : ",
+                            selection: $time,
+                            displayedComponents: [.hourAndMinute]
+                        )
+                        .frame(maxWidth: 200)
+                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
+                        .tint(Color("Purple"))
+                        
+                        //추가 버튼
+                        Button("추가하기", action: {
+                            if task != "" {
+                                let newTask = Task(id: UUID().uuidString, title: task, time: time)
+                                dbModel.insertDB(task: newTask, taskDate: date)
+                                dismiss()
+                            } else {
+                                isSubAlert = true
+                            }
+                            
+                            //추가 후 초기화처리
+                            task = ""
+                            date = Date()
+                            time = Date()
+                        }) // Button
+                        .tint(.white)
+                        .buttonStyle(.bordered)
+                        .buttonBorderShape(.capsule)
+                        .background(Color("Purple"))
+                        .cornerRadius(30)
+                        .controlSize(.large)
+                        .frame(width: 200, height: 50) // 버튼의 크기 조정
+                        .padding(.top, 40)
+                        
+                        // 일정 == empty일 때, alert처리
+                        .alert(isPresented: $isSubAlert) {
+                            Alert(
+                                title: Text("경고"),
+                                message: Text("일정을 작성해주세요."),
+                                dismissButton: .default(Text("확인"), action: {
+                                    isSubAlert = false
+                                })
+                            )
+                        }// alert
+                    })
+                    .presentationDetents([.medium])
+                    .presentationDragIndicator(.visible)
+                }) //sheet
             })
             .padding(.horizontal)
             .background(.ultraThinMaterial)
             .padding(.top, 10)
             
         })
-    }
+    }//body
 }
+
+   
+
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter
+    }
 
 #Preview {
     CalendarView()
