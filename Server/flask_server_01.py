@@ -27,20 +27,31 @@ app.config['JSON_AS_ASCII'] = False
 ## /iris면 여기로 와라!! 
 @app.route("/subway")
 def subway():
-    knn_regressor_승차 = joblib.load("MLModels/knn_regressor_line7_승차.h5")
-    pre = knn_regressor_승차.predict(
-        [[
-            1, 1, 1, 2, 2729, True, False, 37.54040751726388,
-        127.06920291650827, 2.5, 7.5, 12.0, 19.0, 15.5, 11.0, 10.0, 10.0,
-        10.0, 10.0, 10.0, 10.0, 10.5, 16.5, 14.5, 10.5, 9.5, 8.5, 7.0, 0.5
-            
-        ]]
-    )
-    target_column=['05시인원', '06시인원', '07시인원',
-    '08시인원', '09시인원', '10시인원', '11시인원', '12시인원', '13시인원', '14시인원', '15시인원',
-    '16시인원', '17시인원', '18시인원', '19시인원', '20시인원', '21시인원', '22시인원', '23시인원',
-    '24시인원']
-    print(pre)
-    result = json.dumps(pre, ensure_ascii=False).encode('utf8') # dump 는 글자 하나씩
+    # /Users/forrestdpark/Desktop/PDG/Python_/Project/HaruSijack/Server/MLModels
+    # /Users/forrestdpark/Desktop/PDG/Python_/Project/HaruSijack/Server/flask_server_01.py
+    try:
+        model_path = "/Users/forrestdpark/Desktop/PDG/Python_/Project/HaruSijack/Server/knn_regressor_line7_승차.h5"
+        knn_regressor_승차 = joblib.load(model_path)
+        pre = knn_regressor_승차.predict(
+            [[
+                1, 1, 1, 2, 2729, True, False, 37.54040751726388,
+            127.06920291650827, 2.5, 7.5, 12.0, 19.0, 15.5, 11.0, 10.0, 10.0,
+            10.0, 10.0, 10.0, 10.0, 10.5, 16.5, 14.5, 10.5, 9.5, 8.5, 7.0, 0.5
+                
+            ]]
+        )
+        # target_column=['05시인원', '06시인원', '07시인원',
+        # '08시인원', '09시인원', '10시인원', '11시인원', '12시인원', '13시인원', '14시인원', '15시인원',
+        # '16시인원', '17시인원', '18시인원', '19시인원', '20시인원', '21시인원', '22시인원', '23시인원',
+        # '24시인원']
+        # print(pre)
+        # result = json.dumps(list(pre), ensure_ascii=False).encode('utf8') # dump 는 글자 하나씩
+        result = pre.tolist()
+        response = {column: value for column, value in zip(target_column, result[0])}
+        return jsonify(response)
+        return result#jsonify([{'result': result}])
+    except Exception as e:
+        return jsonify({'error': str(e)})
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000, debug=True) # 서버구동
     
-    return result#jsonify([{'result': result}])
