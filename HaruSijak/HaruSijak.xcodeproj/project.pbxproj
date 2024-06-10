@@ -21,6 +21,7 @@
 		54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */; };
 		54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */; };
 		FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6732C16BA24005DA54E /* Test_pdg.swift */; };
+		FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoListView.swift; sourceTree = "<group>"; };
 		54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoListView.swift; sourceTree = "<group>"; };
 		FE5CC6732C16BA24005DA54E /* Test_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_pdg.swift; sourceTree = "<group>"; };
+		FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test2_pdg.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				FE5CC6732C16BA24005DA54E /* Test_pdg.swift */,
+				FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 				54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */,
 				54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */,
 				5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */,
+				FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */,
 				54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */,
 				54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */,
 				FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */,

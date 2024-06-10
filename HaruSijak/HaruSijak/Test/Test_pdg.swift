@@ -1,9 +1,4 @@
-//
-//  Test_pdg.swift
-//  HaruSijak
-//
-//  Created by 박동근 on 6/10/24.
-//
+
 
 import SwiftUI
 
