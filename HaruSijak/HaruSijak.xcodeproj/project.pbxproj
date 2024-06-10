@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		541EF9782C16A22000C9BEEF /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541EF9772C16A22000C9BEEF /* CalendarView.swift */; };
-		541EF97A2C16A2D000C9BEEF /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541EF9792C16A2D000C9BEEF /* CustomDatePicker.swift */; };
-		541EF97D2C16A5D400C9BEEF /* GowunDodum-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 541EF97C2C16A5D400C9BEEF /* GowunDodum-Regular.ttf */; };
-		541EF97F2C16B04100C9BEEF /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541EF97E2C16B04100C9BEEF /* DateValue.swift */; };
+		543337882C16C71E000809D9 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543337872C16C71E000809D9 /* CalendarView.swift */; };
+		5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543337892C16C751000809D9 /* CustomDatePicker.swift */; };
+		5433378C2C16C781000809D9 /* DateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378B2C16C781000809D9 /* DateModel.swift */; };
+		5433378E2C16C8CB000809D9 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378D2C16C8CB000809D9 /* Task.swift */; };
 		5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */; };
 		5471ADBB2C0EDACD00D24E62 /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = 5471ADBA2C0EDACD00D24E62 /* Zoomable */; };
 		54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */; };
@@ -24,13 +24,16 @@
 		54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1E2C0B649500D83A08 /* TodoListView.swift */; };
 		54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */; };
 		54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */; };
+		FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE360DC42C16D79D007BA9AE /* JSONModel.swift */; };
+		FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6732C16BA24005DA54E /* Test_pdg.swift */; };
+		FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		541EF9772C16A22000C9BEEF /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
-		541EF9792C16A2D000C9BEEF /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
-		541EF97C2C16A5D400C9BEEF /* GowunDodum-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GowunDodum-Regular.ttf"; sourceTree = "<group>"; };
-		541EF97E2C16B04100C9BEEF /* DateValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValue.swift; sourceTree = "<group>"; };
+		543337872C16C71E000809D9 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		543337892C16C751000809D9 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
+		5433378B2C16C781000809D9 /* DateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateModel.swift; sourceTree = "<group>"; };
+		5433378D2C16C8CB000809D9 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = C_DatePicker.swift; sourceTree = "<group>"; };
 		54F80F022C0AF4EE00D83A08 /* HaruSijak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HaruSijak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaruSijakApp.swift; sourceTree = "<group>"; };
@@ -44,6 +47,9 @@
 		54F80F1E2C0B649500D83A08 /* TodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListView.swift; sourceTree = "<group>"; };
 		54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoListView.swift; sourceTree = "<group>"; };
 		54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoListView.swift; sourceTree = "<group>"; };
+		FE360DC42C16D79D007BA9AE /* JSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONModel.swift; sourceTree = "<group>"; };
+		FE5CC6732C16BA24005DA54E /* Test_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_pdg.swift; sourceTree = "<group>"; };
+		FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test2_pdg.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,21 +64,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		541EF9762C16A1FC00C9BEEF /* Calendar */ = {
+		543337862C16C659000809D9 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				541EF9772C16A22000C9BEEF /* CalendarView.swift */,
-				541EF9792C16A2D000C9BEEF /* CustomDatePicker.swift */,
+				543337872C16C71E000809D9 /* CalendarView.swift */,
+				543337892C16C751000809D9 /* CustomDatePicker.swift */,
 			);
-			path = Calendar;
-			sourceTree = "<group>";
-		};
-		541EF97B2C16A5C100C9BEEF /* fonts */ = {
-			isa = PBXGroup;
-			children = (
-				541EF97C2C16A5D400C9BEEF /* GowunDodum-Regular.ttf */,
-			);
-			path = fonts;
+			path = Schedule;
 			sourceTree = "<group>";
 		};
 		5471ADB62C0D7A0100D24E62 /* Component */ = {
@@ -102,7 +100,7 @@
 		54F80F042C0AF4EE00D83A08 /* HaruSijak */ = {
 			isa = PBXGroup;
 			children = (
-				541EF97B2C16A5C100C9BEEF /* fonts */,
+				FE5CC6722C16BA11005DA54E /* Test */,
 				5471ADB62C0D7A0100D24E62 /* Component */,
 				54F80F152C0AF57900D83A08 /* Model */,
 				54F80F142C0AF57100D83A08 /* VM */,
@@ -125,7 +123,7 @@
 		54F80F132C0AF56900D83A08 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				541EF9762C16A1FC00C9BEEF /* Calendar */,
+				543337862C16C659000809D9 /* Schedule */,
 				54F80F222C0BE53900D83A08 /* TodoList */,
 				54F80F212C0BE52C00D83A08 /* News */,
 				54F80F202C0BE52100D83A08 /* PredictSubway */,
@@ -146,7 +144,9 @@
 			isa = PBXGroup;
 			children = (
 				54F80F162C0AF59300D83A08 /* TodoLists.swift */,
-				541EF97E2C16B04100C9BEEF /* DateValue.swift */,
+				5433378B2C16C781000809D9 /* DateModel.swift */,
+				5433378D2C16C8CB000809D9 /* Task.swift */,
+				FE360DC42C16D79D007BA9AE /* JSONModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -175,6 +175,15 @@
 				54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */,
 			);
 			path = TodoList;
+			sourceTree = "<group>";
+		};
+		FE5CC6722C16BA11005DA54E /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				FE5CC6732C16BA24005DA54E /* Test_pdg.swift */,
+				FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */,
+			);
+			path = Test;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,7 +252,6 @@
 			files = (
 				54F80F0D2C0AF4EF00D83A08 /* Preview Assets.xcassets in Resources */,
 				54F80F0A2C0AF4EF00D83A08 /* Assets.xcassets in Resources */,
-				541EF97D2C16A5D400C9BEEF /* GowunDodum-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,15 +265,19 @@
 				54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */,
 				54F80F1B2C0B5D7B00D83A08 /* PredictView.swift in Sources */,
 				54F80F172C0AF59300D83A08 /* TodoLists.swift in Sources */,
+				FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */,
 				54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */,
 				54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */,
-				541EF97F2C16B04100C9BEEF /* DateValue.swift in Sources */,
+				5433378C2C16C781000809D9 /* DateModel.swift in Sources */,
 				5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */,
-				541EF9782C16A22000C9BEEF /* CalendarView.swift in Sources */,
+				543337882C16C71E000809D9 /* CalendarView.swift in Sources */,
+				5433378E2C16C8CB000809D9 /* Task.swift in Sources */,
+				FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */,
 				54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */,
-				541EF97A2C16A2D000C9BEEF /* CustomDatePicker.swift in Sources */,
 				54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */,
+				FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */,
 				54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */,
+				5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */,
 				54F80F192C0AF67200D83A08 /* TodoListDB.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
