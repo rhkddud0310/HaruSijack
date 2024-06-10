@@ -15,47 +15,29 @@ import Zoomable
 
 struct PredictView: View {
     
+    @State private var dragAmount = CGSize.zero
     @State var stationName: String = ""
     @State var stationLine: String = "7"
     var bgColor: Color = Color.red
     @FocusState var isTextFieldFocused: Bool
-    
+    @State private var offsetX: CGFloat = 0
+    @State private var offsetY: CGFloat = 0
     
     var body: some View {
         
         
         VStack {
             
-            Spacer()
-            
-            // 검색창 TextField
-            HStack(content: {
-                TextField("지하철 7호선 역명, 초성 검색", text : $stationName)
-                    .padding()
-                    .frame(width: 280)
-                    .textFieldStyle(.roundedBorder)
-                    .multilineTextAlignment(.leading)
-                    .keyboardType(.default)
-                    .focused($isTextFieldFocused)
-                
-                // 검색버튼
-                Button(action: {
-                    //action
-                }, label: {
-                    Image(systemName: "magnifyingglass")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                })//Button
-            })//Hstack
-            
+        
+
            ZStack(content: {
                
                //스크롤뷰 [노선도 사진]
-               ScrollView(.vertical, showsIndicators: false , content: { //showsIndicators : 스크롤바 안보이게
-                   ScrollView(.horizontal, showsIndicators: false ,content: {
+               ScrollView([.horizontal, .vertical], showsIndicators: false , content: { //showsIndicators : 스크롤바 안보이게
+//                   ScrollView(.horizontal, showsIndicators: false ,content: {
                       Image("Line7")
                            .resizable()
-                           .frame(width: 1500, height: 1700)
+                           .frame(width: 1000, height: 1700)
                            .zoomable() // double click시 화면 확대
                            .overlay(
                                     Button(action: {
@@ -91,12 +73,24 @@ struct PredictView: View {
                                               )
                    })
                    .frame(maxWidth: .infinity)
-               })//ScrollView
+                   .gesture(
+                       DragGesture()
+                           .onChanged { value in
+                               self.dragAmount = value.translation
+                           }
+                           .onEnded { _ in
+                               self.dragAmount = .zero
+                           }
+                   )
+                   .offset(x: dragAmount.width, y: dragAmount.height)
+//               })//ScrollView
+
            })// Zstack
         } //Vstack
     } //body
 }
 
+                            
 #Preview {
     PredictView()
 }
@@ -152,3 +146,20 @@ func fetchDataFromServer(stationName: String, date: String ,time: String, statio
     // URLSession Task 시작
     task.resume()
 }
+
+//button function으로 만들기 (진행중) -> wrapped 붙이고 처리해야할 변수들이 너무 많아서 보류..
+//func stationButton(stationName: Binding<String>) -> some View {
+//    Button(action: {
+//        stationName.wrappedValue = "장암"
+//        let (dateString, timeString) = getCurrentDateTime()
+//        print(dateString, timeString, stationName.wrappedValue, stationLine.wrappedValue)
+//        fetchDataFromServer(stationName: stationName.wrappedValue, date: dateString, time: timeString, stationLine: stationLine)
+//    }, label: {
+//        Text("T")
+//            .frame(width: 20, height: 20)
+//            .background(bgColor)
+//            .clipShape(Circle())
+//    })
+//    .position(x: 155, y: 345) // 버튼 위치 조정
+//}
+
