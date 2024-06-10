@@ -11,6 +11,7 @@
 		5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543337892C16C751000809D9 /* CustomDatePicker.swift */; };
 		5433378C2C16C781000809D9 /* DateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378B2C16C781000809D9 /* DateModel.swift */; };
 		5433378E2C16C8CB000809D9 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378D2C16C8CB000809D9 /* Task.swift */; };
+		543337902C16FE09000809D9 /* CalendarDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378F2C16FE09000809D9 /* CalendarDB.swift */; };
 		5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */; };
 		5471ADBB2C0EDACD00D24E62 /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = 5471ADBA2C0EDACD00D24E62 /* Zoomable */; };
 		54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */; };
@@ -34,6 +35,7 @@
 		543337892C16C751000809D9 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
 		5433378B2C16C781000809D9 /* DateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateModel.swift; sourceTree = "<group>"; };
 		5433378D2C16C8CB000809D9 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		5433378F2C16FE09000809D9 /* CalendarDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDB.swift; sourceTree = "<group>"; };
 		5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = C_DatePicker.swift; sourceTree = "<group>"; };
 		54F80F022C0AF4EE00D83A08 /* HaruSijak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HaruSijak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaruSijakApp.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				54F80F182C0AF67200D83A08 /* TodoListDB.swift */,
+				5433378F2C16FE09000809D9 /* CalendarDB.swift */,
 			);
 			path = VM;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 				54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */,
 				54F80F1B2C0B5D7B00D83A08 /* PredictView.swift in Sources */,
 				54F80F172C0AF59300D83A08 /* TodoLists.swift in Sources */,
+				543337902C16FE09000809D9 /* CalendarDB.swift in Sources */,
 				FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */,
 				54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */,
 				54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */,
