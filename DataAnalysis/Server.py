@@ -40,7 +40,7 @@ def subway():
     ## 월 정보 
  
     station_code= Service.station_name_to_code(int(stationLine),station_name.replace(" ",""))
-    print('필요정보:',*['월', '주차', '공휴일', '요일', '역사코드', '주중', '주말',' 배차 '],sep='\t')
+    print('필요정보:',*['월', '주차', '공휴일', '요일', '역사코드', '주중', '주말','위도','경도',' 배차 '],sep='\t')
     
     ## 배차 정보 조회 
     import pandas as pd 
