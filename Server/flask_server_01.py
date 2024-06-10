@@ -20,7 +20,6 @@ app = Flask(__name__) # 난 flask 서버야!!
 ## /iris면 여기로 와라!! 
 @app.route("/subway")
 def subway():
-
     return "subway Station information"
 
 # @app.route("/iris2")

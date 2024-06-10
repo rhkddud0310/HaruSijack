@@ -21,19 +21,23 @@ class TodoListDB: ObservableObject {
     
     init() {
         //DB 경로
-        let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appending(path: "HaruSijak.sqlite")
+        let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true ).appending(path: "HaruSijak.sqlite")
         
         // DB 열기
         // 예외 처리
         if sqlite3_open(fileURL.path(percentEncoded: true), &db) != SQLITE_OK{
             print("error opening database")
+            return
         }
         // Table 만들기
         // 예외 처리
-        if sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS todolist (sid INTEGER PRIMARY KEY AUTOINCREMENT, todo TEXT, startdate TEXT, enddate TEXT, status INTEGER)", nil, nil, nil) != SQLITE_OK{
+        if sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS todolist (id INTEGER PRIMARY KEY AUTOINCREMENT, todo TEXT, startdate TEXT, enddate TEXT, status INTEGER)", nil, nil, nil) != SQLITE_OK{
             let errMsg = String(cString: sqlite3_errmsg(db)!)
             print("error creating table : \(errMsg)")
+            return
         }
+        
+        print("Database and table created successfully")
     }
     
     // SQLite3에서 문자열을 가져와 Date로 변환하는 함수
@@ -48,6 +52,7 @@ class TodoListDB: ObservableObject {
     
     // 조회
     func queryDB() -> [TodoLists]{
+        
         var stmt: OpaquePointer?
         let queryString = "SELECT * FROM todolist"
         
@@ -75,23 +80,15 @@ class TodoListDB: ObservableObject {
     
     
     
-    
     // 할일 추가
     func insertDB(todo: String, startdate: Date, enddate: Date, status: Int) -> Bool{
         var stmt: OpaquePointer?
         let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
         let queryString = "INSERT INTO todolist (todo, startdate, enddate, status) VALUES (?,?,?,?)"
         
-        print(todo)
-        print(startdate)
-        print(enddate)
-        print(status)
         
         let startdateString = dateFormatter.string(from: startdate)
         let enddateString = dateFormatter.string(from: enddate)
-        
-        print(startdateString)
-        print(enddateString)
         
         sqlite3_prepare(db, queryString, -1, &stmt, nil)
         
@@ -112,16 +109,19 @@ class TodoListDB: ObservableObject {
     
     
     // 수정
-    func updateDB(todo: String, startdate: String, enddate: String, id: Int32) -> Bool{
+    func updateDB(todo: String, startdate: Date, enddate: Date, id: Int32) -> Bool{
         var stmt: OpaquePointer?
         let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
-        let queryString = "UPDATE todolist SET todo=?, startdate=?, enddate=? WHERE sid=?"
+        let queryString = "UPDATE todolist SET todo=?, startdate=?, enddate=? WHERE id=?"
+        
+        let startdateString = dateFormatter.string(from: startdate)
+        let enddateString = dateFormatter.string(from: enddate)
         
         sqlite3_prepare(db, queryString, -1, &stmt, nil)
         
         sqlite3_bind_text(stmt, 1, todo, -1, SQLITE_TRANSIENT)
-        sqlite3_bind_text(stmt, 2, startdate, -1, SQLITE_TRANSIENT)
-        sqlite3_bind_text(stmt, 3, enddate, -1, SQLITE_TRANSIENT)
+        sqlite3_bind_text(stmt, 2, startdateString, -1, SQLITE_TRANSIENT)
+        sqlite3_bind_text(stmt, 3, enddateString, -1, SQLITE_TRANSIENT)
         sqlite3_bind_int(stmt, 4, id)
         
         if sqlite3_step(stmt) == SQLITE_DONE{
@@ -139,7 +139,7 @@ class TodoListDB: ObservableObject {
     func deleteDB(id: Int32) -> Bool{
         var stmt: OpaquePointer?
         _ = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
-        let queryString = "DELETE FROM todolist WHERE sid = ?"
+        let queryString = "DELETE FROM todolist WHERE id = ?"
         
         sqlite3_prepare(db, queryString, -1, &stmt, nil)
         
@@ -155,10 +155,10 @@ class TodoListDB: ObservableObject {
     
     
     // status update
-    func updateDB(status: Int32, id: Int32) -> Bool{
+    func updateStatus(status: Int32, id: Int32) -> Bool{
         var stmt: OpaquePointer?
-        let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
-        let queryString = "UPDATE todolist SET status=? WHERE sid=?"
+        _ = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
+        let queryString = "UPDATE todolist SET status=? WHERE id=?"
         
         sqlite3_prepare(db, queryString, -1, &stmt, nil)
         
