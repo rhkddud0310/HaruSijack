@@ -9,6 +9,7 @@
     - 2024. 06. 11 snr : - insert된 내용을 조회하는 부분의 문제가 있음.
                          - 일정 있는 날짜에 원 표시 : dbModel.queryDB()에서 불러오지 않아서였음
                          - ForEach문에서 id 중복조회된다는 메세지 tasksForSelectedDate.indices를 사용하여 해결
+                         - print(), 불필요한 기능 삭제처리
  */
 
 import SwiftUI
@@ -128,11 +129,9 @@ struct CustomDatePicker: View {
         }) //제일 상위 VStack
         //월 update 처리하기
         .onChange(of: currentMonth) {
-            print("실행실행 : onChange")
             updateCurrentMonth()
         }
         .onAppear {
-            print("실행실행 : onAppear")
             fetchTasksForSelectedDate()
         }
         
@@ -176,7 +175,6 @@ struct CustomDatePicker: View {
         .onTapGesture (perform: {
             currentDate = value.date
             fetchTasksForSelectedDate()
-            print("onTapGesture")
         })
     }
     
@@ -191,58 +189,12 @@ struct CustomDatePicker: View {
         tasksForSelectedDate.removeAll()
         
         let taskMetaData = dbModel.queryDB().filter{ isSameDay(date1: $0.taskDate, date2: currentDate) }
-        print("currentDate : ",currentDate)
         
         if let taskList = taskMetaData.first {
             tasksForSelectedDate = taskList.task
-            print("tasksForSelectedDate.count : ", tasksForSelectedDate.count)
         }
-        print("tasksForSelectedDate.count : ", tasksForSelectedDate.count)
         
     }
-    
-//    func fetchTasksForSelectedDate() {
-////        print("Count : ",count)
-////        print("tasksForSelectedDate.count : ", tasksForSelectedDate.count)
-//        tasksForSelectedDate.removeAll()
-//        
-//        let allTaskMetaData = dbModel.queryDB()
-//        
-//        print("allTaskMetaData.count : ", allTaskMetaData.count)
-//        print("allTaskMetaData.task : ", allTaskMetaData[0].task[0].title)
-//        
-////        for taskMetaData in allTaskMetaData {
-////            print("taskDate : ",taskMetaData.taskDate)
-////            print("currentDate : ", currentDate)
-////            print("task : ",taskMetaData.task)
-////            print("count : ",count)
-////            
-////            if isSameDay(date1: taskMetaData.taskDate, date2: currentDate) && count == 0 {
-////                tasksForSelectedDate = taskMetaData.task
-////                print("tasksForSelectedDate.count : ",tasksForSelectedDate.count)
-////                count += 1
-////                break
-////            }
-////        }
-//        
-//        if let taskMetaData = allTaskMetaData.first(where: { isSameDay(date1: $0.taskDate, date2: currentDate) }) {
-//               tasksForSelectedDate = taskMetaData.task
-////               print("tasksForSelectedDate.count : ", tasksForSelectedDate.count)
-//           }
-//        
-////        if let taskMetaData = dbModel.queryDB().first(where: { taskMetaData in
-////
-////            print("taskDate == Currentdate", taskMetaData.taskDate == currentDate)
-////            return isSameDay(date1: taskMetaData.taskDate, date2: currentDate)
-////           
-////        }) {
-////            tasksForSelectedDate = taskMetaData.task
-////            print("dddd : ",tasksForSelectedDate.count)
-////        }
-//        
-//        
-//        print("CustomDatePickerView3 : ", tasksForSelectedDate.count)
-//    }
     
     /* MARK: 날짜 체크 */
     func isSameDay(date1: Date, date2: Date) -> Bool {
