@@ -77,14 +77,24 @@ class CalendarDB: ObservableObject {
             let title = String(cString: sqlite3_column_text(stmt, 1))
             let time = dateFromSQLite(stmt: stmt!, column: 2)
             let taskDate = dateFromSQLite(stmt: stmt!, column: 3)
+        
+//            print("taskDate : \(dateFormatter.string(from: taskDate!))") //날짜만 잘리고
+//            print("model time : \(timeFormatter.string(from: time!))") // 시간만 잘린다.!!
             
             // Model에 넣기
             let task = Task(id: id, title: title, time: time!)
+            
             if let index = taskList.firstIndex(where: { $0.taskDate == taskDate }) {
                 taskList[index].task.append(task)
             } else {
                 taskList.append(TaskMetaData(id: UUID().uuidString, task: [task], taskDate: taskDate!))
             }
+            print("taskList.count() : ", taskList.count)
+            print("taskList : ",taskList)
+            print("taskList task title : ",taskList[0].task[0].title)
+            print("taskList task id : ",taskList[0].task[0].id)
+            print("taskList task time : ",taskList[0].task[0].time)
+            print("taskList taskDate : ",taskList[0].taskDate)
         }
         
         return taskList

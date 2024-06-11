@@ -95,17 +95,21 @@ struct CustomDatePicker: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 20)
                 
-                if let task = dbModel.queryDB().first(where: {task in
+                if let taskList = dbModel.queryDB().first(where: {task in
                     return isSameDay(date1: task.taskDate, date2: currentDate)
                 }){
+//                    print("taskList task title : ",taskList[0].task[0].title)
+//                    print("taskList task id : ",taskList[0].task[0].id)
+//                    print("taskList task time : ",taskList[0].task[0].time)
+//                    print("taskList taskDate : ",taskList[0].taskDate)
                     
                     ForEach(task.task) {task in
                         VStack(alignment: .leading, spacing: 10 , content: {
                             
                             // Custom timing을 위해?
-                            Text(task.time
-                                .addingTimeInterval(CGFloat
-                                    .random(in: 0...5000)), style: .time)
+//                            Text(task.time
+//                                .addingTimeInterval(CGFloat
+//                                    .random(in: 0...5000)), style: .time)
                             
                             // task 제목
                             Text(task.title)
