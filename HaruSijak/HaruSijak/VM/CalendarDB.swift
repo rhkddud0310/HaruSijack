@@ -6,7 +6,7 @@
 //
 /*
     Description
-        - 2024.06.11 : queryDB() : 값 조회가 잘되는지 print 확인 후 주석처리.
+        - 2024.06.11 : queryDB() : 값조회가 잘되는지 print 확인 후 주석처리.
  */
 
 import Foundation
