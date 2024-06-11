@@ -4,6 +4,10 @@
 //
 //  Created by 신나라 on 6/10/24.
 //
+/*
+ Description
+ - 2024. 06. 11 snr : insert된 내용을 조회하는 부분의 문제가 있음.
+ */
 
 import SwiftUI
 
@@ -84,59 +88,46 @@ struct CustomDatePicker: View {
                         )
                         .onTapGesture {
                             currentDate = value.date
+                            fetchTasksForSelectedDate()
                         }
                 }
             }) //LazyVGrid
             
-            // 일정 내용 보기
-            VStack(spacing:20, content: {
+            VStack(spacing: 20) {
                 Text("일정")
                     .font(.title2.bold())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 20)
                 
-                if let taskList = dbModel.queryDB().first(where: {task in
-                    return isSameDay(date1: task.taskDate, date2: currentDate)
-                }){
-//                    print("taskList task title : ",taskList[0].task[0].title)
-//                    print("taskList task id : ",taskList[0].task[0].id)
-//                    print("taskList task time : ",taskList[0].task[0].time)
-//                    print("taskList taskDate : ",taskList[0].taskDate)
-                    
-                    ForEach(task.task) {task in
-                        VStack(alignment: .leading, spacing: 10 , content: {
-                            
-                            // Custom timing을 위해?
-//                            Text(task.time
-//                                .addingTimeInterval(CGFloat
-//                                    .random(in: 0...5000)), style: .time)
-                            
-                            // task 제목
+                if !tasksForSelectedDate.isEmpty {
+                    ForEach(tasksForSelectedDate) { task in
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text(task.time, style: .time)
                             Text(task.title)
                                 .font(.title2.bold())
-                        })//VStack
+                        }
                         .padding(.vertical, 10)
                         .padding(.horizontal)
-                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .background(
                             Color("color1")
                                 .opacity(0.3)
                                 .cornerRadius(10)
                         )
-                    }//ForEach
-                    
+                    }
                 } else {
                     Text("일정이 없습니다.")
                 }
-            })
+            }
             .padding()
             
-            
-        })//VStack
-        
+        }) //제일 상위 VStack
         //월 update 처리하기
         .onChange(of: currentMonth) {
-            currentDate = getCurrentMonth()
+            updateCurrentMonth()
+        }
+        .onAppear {
+            fetchTasksForSelectedDate()
         }
         
     }// body
@@ -151,17 +142,15 @@ struct CustomDatePicker: View {
                     return isSameDay(date1: task.taskDate, date2: value.date)
                 }){
                     
-                    let isToday = isSameDay(date1: task.taskDate, date2: currentDate)
-                    
                     Text("\(value.day)")
                         .font(.title3.bold())
-                        .foregroundStyle(isToday ? .white : .primary )
+                        .foregroundStyle(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : .primary )
                         .frame(maxWidth: .infinity)
                     
                     Spacer()
                     
                     Circle()
-                        .fill(isToday ? .white : Color("color2"))
+                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("color2"))
                         .frame(width: 10, height: 10)
                 }
                 else {
@@ -176,15 +165,41 @@ struct CustomDatePicker: View {
         })
         .padding(.vertical, 9)
         .frame(height: 60, alignment: .top)
+        .onTapGesture (count: 1, perform: {
+            
+            currentDate = value.date
+            fetchTasksForSelectedDate()
+            print("onTapGesture")
+        })
     }
     
+    /* month 변경 시 다시 조회되도록 */
+    func updateCurrentMonth() {
+        currentDate = getCurrentMonth()
+        fetchTasksForSelectedDate()
+    }
+    
+    /* 스케줄러 조회 함수 */
+    func fetchTasksForSelectedDate() {
+        
+        tasksForSelectedDate.removeAll()
+        tasksForSelectedDate = dbModel.queryDB()
+            .filter{ isSameDay(date1: $0.taskDate, date2: currentDate)}
+            .flatMap{ $0.task}
+        
+        print("CustomDatePickerView : ", tasksForSelectedDate.count)
+        
+        if let firstTask = tasksForSelectedDate.first {
+            print("제목 : ",firstTask.title)
+            print("시간 : ",firstTask.time)
+        }
+    }
     
     /* 날짜 체크 */
     func isSameDay(date1: Date, date2: Date) -> Bool {
         let calendar = Calendar.current
         return calendar.isDate(date1, inSameDayAs: date2)
     }
-    
     
     /* 년도와 월 정보 가져오기 */
     func extraDate() -> [String] {
@@ -203,7 +218,6 @@ struct CustomDatePicker: View {
         
         return currentMonth
     }
-    
     
     /* 날짜 요소 뽑기 함수 */
     func extraDate() -> [DateValue] {

@@ -4,6 +4,10 @@
 //
 //  Created by 신나라 on 6/10/24.
 //
+/*
+    Description
+        - 2024.06.11 : queryDB() : 값 조회가 잘되는지 print 확인 후 주석처리.
+ */
 
 import Foundation
 import SQLite3
@@ -89,12 +93,12 @@ class CalendarDB: ObservableObject {
             } else {
                 taskList.append(TaskMetaData(id: UUID().uuidString, task: [task], taskDate: taskDate!))
             }
-            print("taskList.count() : ", taskList.count)
-            print("taskList : ",taskList)
-            print("taskList task title : ",taskList[0].task[0].title)
-            print("taskList task id : ",taskList[0].task[0].id)
-            print("taskList task time : ",taskList[0].task[0].time)
-            print("taskList taskDate : ",taskList[0].taskDate)
+//            print("taskList.count() : ", taskList.count)
+//            print("taskList : ",taskList)
+//            print("taskList task title : ",taskList[0].task[0].title)
+//            print("taskList task id : ",taskList[0].task[0].id)
+//            print("taskList task time : ",taskList[0].task[0].time)
+//            print("taskList taskDate : ",taskList[0].taskDate)
         }
         
         return taskList
