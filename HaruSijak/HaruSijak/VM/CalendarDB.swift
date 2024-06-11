@@ -6,7 +6,9 @@
 //
 /*
     Description
-        - 2024.06.11 : queryDB() : 값조회가 잘되는지 print 확인 후 주석처리.
+        - 2024.06.11 : queryDB() : 값조회가 잘되는지 print 확인 후 삭제.
+                                - taskList를 초기화해야지 View에서 하나씩만 출력됨,
+                    
  */
 
 import Foundation
@@ -66,6 +68,7 @@ class CalendarDB: ObservableObject {
     
     // 조회
     func queryDB() -> [TaskMetaData] {
+        taskList = []
         var stmt: OpaquePointer?
         let queryString = "SELECT * FROM task"
         
@@ -81,9 +84,6 @@ class CalendarDB: ObservableObject {
             let title = String(cString: sqlite3_column_text(stmt, 1))
             let time = dateFromSQLite(stmt: stmt!, column: 2)
             let taskDate = dateFromSQLite(stmt: stmt!, column: 3)
-        
-//            print("taskDate : \(dateFormatter.string(from: taskDate!))") //날짜만 잘리고
-//            print("model time : \(timeFormatter.string(from: time!))") // 시간만 잘린다.!!
             
             // Model에 넣기
             let task = Task(id: id, title: title, time: time!)
@@ -93,12 +93,8 @@ class CalendarDB: ObservableObject {
             } else {
                 taskList.append(TaskMetaData(id: UUID().uuidString, task: [task], taskDate: taskDate!))
             }
-//            print("taskList.count() : ", taskList.count)
-//            print("taskList : ",taskList)
-//            print("taskList task title : ",taskList[0].task[0].title)
-//            print("taskList task id : ",taskList[0].task[0].id)
-//            print("taskList task time : ",taskList[0].task[0].time)
-//            print("taskList taskDate : ",taskList[0].taskDate)
+            
+            print("CalendarDB count : ",taskList.count)
         }
         
         return taskList
