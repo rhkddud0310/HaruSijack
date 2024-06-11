@@ -18,7 +18,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import json ,pymysql,joblib 
-from DataAnalysis.Functions import Service
+from Project.HaruSijack.DataAnalysis.Module.Functions import Service
 
 app = Flask(__name__) # 난 flask 서버야!! 
 app.config['JSON_AS_ASCII'] = False 

@@ -28,6 +28,7 @@
 		FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE360DC42C16D79D007BA9AE /* JSONModel.swift */; };
 		FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6732C16BA24005DA54E /* Test_pdg.swift */; };
 		FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */; };
+		FE8BCA582C18290B0093DA37 /* Cal_test_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8BCA572C18290B0093DA37 /* Cal_test_pdg.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		FE360DC42C16D79D007BA9AE /* JSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONModel.swift; sourceTree = "<group>"; };
 		FE5CC6732C16BA24005DA54E /* Test_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_pdg.swift; sourceTree = "<group>"; };
 		FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test2_pdg.swift; sourceTree = "<group>"; };
+		FE8BCA572C18290B0093DA37 /* Cal_test_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cal_test_pdg.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 			children = (
 				543337872C16C71E000809D9 /* CalendarView.swift */,
 				543337892C16C751000809D9 /* CustomDatePicker.swift */,
+				FE8BCA572C18290B0093DA37 /* Cal_test_pdg.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 				54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */,
 				54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */,
 				FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */,
+				FE8BCA582C18290B0093DA37 /* Cal_test_pdg.swift in Sources */,
 				54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */,
 				5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */,
 				54F80F192C0AF67200D83A08 /* TodoListDB.swift in Sources */,

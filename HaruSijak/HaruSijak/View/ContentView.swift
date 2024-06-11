@@ -48,6 +48,12 @@ struct ContentView: View {
                                     Text("할일")
                                 }
                                 .tag(2)
+                            Cal_test_pdg()
+                                .tabItem {
+                                    Image(systemName: "calendar")
+                                    Text("test")
+                                }
+                                .tag(2)
                         })//G
                         .toolbarBackground(.visible, for: .tabBar)
 
