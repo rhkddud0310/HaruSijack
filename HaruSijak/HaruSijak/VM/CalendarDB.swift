@@ -6,8 +6,8 @@
 //
 /*
     Description
-        - 2024.06.11 : queryDB() : 값조회가 잘되는지 print 확인 후 삭제.
-                                - taskList를 초기화해야지 View에서 하나씩만 출력됨,
+        - 2024.06.11 : queryDB() 값조회가 잘되는지 print 확인 후 삭제.
+                       queryDB() View단에서 하나씩만 조회되도록 taskList리스트 초기화 처리
                     
  */
 
@@ -93,8 +93,6 @@ class CalendarDB: ObservableObject {
             } else {
                 taskList.append(TaskMetaData(id: UUID().uuidString, task: [task], taskDate: taskDate!))
             }
-            
-            print("CalendarDB count : ",taskList.count)
         }
         
         return taskList

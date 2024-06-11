@@ -33,7 +33,7 @@ struct CalendarView: View {
             VStack(spacing: 20, content: {
                 
                 //Custom Picker View
-                CustomDatePicker(currentDate: $currentDate)
+                CustomDatePicker(currentDate: $currentDate, dateValue: $currentDate)
                 
             })//VStack
             .padding(.vertical)
