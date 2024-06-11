@@ -9,6 +9,7 @@
         * 2024.06.10 by pdg : 기존 페이지에서 tabbar view 추가 
             - 프로그램 코드 기본 주석, 포맷 작성
             - tabbar 생성 
+        * 2024.06.11 by snr : Add tabbar icon for settingPage
  */
 
 //
@@ -48,6 +49,11 @@ struct ContentView: View {
                                     Text("할일")
                                 }
                                 .tag(2)
+                            SettingView()
+                                .tabItem {
+                                    Image(systemName: "gearshape")
+                                    Text("설정")
+                                }
                         })//G
                         .toolbarBackground(.visible, for: .tabBar)
 
