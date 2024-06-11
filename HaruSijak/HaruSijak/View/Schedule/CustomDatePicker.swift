@@ -78,7 +78,7 @@ struct CustomDatePicker: View {
                     CardView(value: value)
                         .background(
                             Capsule()
-                                .fill(Color("Pink"))
+                                .fill(Color("color2"))
                                 .padding(.horizontal, 8)
                                 .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
                         )
@@ -95,17 +95,21 @@ struct CustomDatePicker: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 20)
                 
-                if let task = dbModel.queryDB().first(where: {task in
+                if let taskList = dbModel.queryDB().first(where: {task in
                     return isSameDay(date1: task.taskDate, date2: currentDate)
                 }){
+//                    print("taskList task title : ",taskList[0].task[0].title)
+//                    print("taskList task id : ",taskList[0].task[0].id)
+//                    print("taskList task time : ",taskList[0].task[0].time)
+//                    print("taskList taskDate : ",taskList[0].taskDate)
                     
                     ForEach(task.task) {task in
                         VStack(alignment: .leading, spacing: 10 , content: {
                             
                             // Custom timing을 위해?
-                            Text(task.time
-                                .addingTimeInterval(CGFloat
-                                    .random(in: 0...5000)), style: .time)
+//                            Text(task.time
+//                                .addingTimeInterval(CGFloat
+//                                    .random(in: 0...5000)), style: .time)
                             
                             // task 제목
                             Text(task.title)
@@ -115,7 +119,7 @@ struct CustomDatePicker: View {
                         .padding(.horizontal)
                         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
                         .background(
-                            Color("Purple")
+                            Color("color1")
                                 .opacity(0.3)
                                 .cornerRadius(10)
                         )
@@ -157,7 +161,7 @@ struct CustomDatePicker: View {
                     Spacer()
                     
                     Circle()
-                        .fill(isToday ? .white : Color("Pink"))
+                        .fill(isToday ? .white : Color("color2"))
                         .frame(width: 10, height: 10)
                 }
                 else {
