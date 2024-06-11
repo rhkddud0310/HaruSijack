@@ -66,7 +66,7 @@ struct CalendarView: View {
                         )
                         .frame(width: 200)
                         .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
-                        .tint(Color("Purple"))
+                        .tint(Color("color1"))
                         
                         //시간 설정 picker
                         DatePicker(
@@ -76,7 +76,7 @@ struct CalendarView: View {
                         )
                         .frame(maxWidth: 200)
                         .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
-                        .tint(Color("Purple"))
+                        .tint(Color("color1"))
                         
                         //추가 버튼
                         Button("추가하기", action: {
@@ -96,7 +96,7 @@ struct CalendarView: View {
                         .tint(.white)
                         .buttonStyle(.bordered)
                         .buttonBorderShape(.capsule)
-                        .background(Color("Purple"))
+                        .background(Color("color1"))
                         .cornerRadius(30)
                         .controlSize(.large)
                         .frame(width: 200, height: 50) // 버튼의 크기 조정

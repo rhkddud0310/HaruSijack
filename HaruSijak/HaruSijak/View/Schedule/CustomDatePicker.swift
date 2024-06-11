@@ -78,7 +78,7 @@ struct CustomDatePicker: View {
                     CardView(value: value)
                         .background(
                             Capsule()
-                                .fill(Color("Pink"))
+                                .fill(Color("color2"))
                                 .padding(.horizontal, 8)
                                 .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
                         )
@@ -115,7 +115,7 @@ struct CustomDatePicker: View {
                         .padding(.horizontal)
                         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
                         .background(
-                            Color("Purple")
+                            Color("color1")
                                 .opacity(0.3)
                                 .cornerRadius(10)
                         )
@@ -157,7 +157,7 @@ struct CustomDatePicker: View {
                     Spacer()
                     
                     Circle()
-                        .fill(isToday ? .white : Color("Pink"))
+                        .fill(isToday ? .white : Color("color2"))
                         .frame(width: 10, height: 10)
                 }
                 else {
