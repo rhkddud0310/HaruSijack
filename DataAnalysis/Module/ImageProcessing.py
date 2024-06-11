@@ -1,9 +1,23 @@
-import sys
-import subprocess
-import os
+"""
+## Projectr : 하루시작 프로젝트 Module functions (지하철 노선도 역 위치 positon 추출) 
+## Description : 
+    *  앱개발시 노선도 내에 역버튼 생성할때이미지 내에서의 위치를 알아아한다. 
+    * 역의 개수가 상당히 많아 수작업으로 추출하기 어려움 
+    * cv, subporcess 등 라이브러릴 활용하여  만듬. 
+    * 블로그 참고 : https://gaussian37.github.io/vision-opencv-coordinate_extraction/
+## Author : Forrest Dpark
+## Date : 2024.06.10 ~
+## Detail : 
+    * 사용 방법 : 터미널에서 본 파이썬 파일을 실행, 명령어 끝에 --path 이미지파일 을 붙여 실행하면 이미지가뜸
+     이후에 이미지에서 마우스 클릭하면 색이 칠해지며 포지션 정보가 터미널에 뜸. 
+     클릭을 다끝낸뒤에 n 을 누르면 파일이 꺼지면서 노선도 이미지가 저장되어있는 폴더안에 point.csv 파일이 자동저장됨 .
+        
+## Update:
+    * 2024.06.10 by pdg : blog code, gpt 활용하여 앱 만듬. 
+    
+"""
+import sys,subprocess,os,warnings,pandas as pd
 from datetime import datetime
-import warnings
-import pandas as pd
 
 # 경고 무시 설정
 warnings.filterwarnings("ignore", category=UserWarning, module='cv2')
@@ -76,7 +90,6 @@ class ImageProcessing:
     @staticmethod
     def main():
         global clone, clicked_points
-        
         print("\n")
         print("1. 입력한 파라미터인 이미지 경로(--path)에서 이미지들을 차례대로 읽어옵니다.")
         print("2. 키보드에서 'n'을 누르면(next 약자) 다음 이미지로 넘어갑니다. 이 때, 작업한 점의 좌표가 저장 됩니다.")
@@ -90,7 +103,6 @@ class ImageProcessing:
         path, sampling = ImageProcessing.GetArgument()
         # path의 이미지명을 받는다.
         image_names = os.listdir(path)
-
         # path를 구분하는 delimiter를 구한다.
         if len(path.split('\\')) > 1:
             dir_del = '\\'
@@ -126,7 +138,7 @@ class ImageProcessing:
                 if key == ord('n'):
                     # 클릭한 점들을 pandas 데이터프레임으로 저장
                     df = pd.DataFrame(clicked_points, columns=['y', 'x'])
-                    csv_path = os.path.join(path, f'{image_name}_points.csv')
+                    csv_path = os.path.join(path, f'{image_name.splite(".")[0]}_points.csv')
                     df.to_csv(csv_path, index=False)
                     
                     # 클릭한 점 초기화
