@@ -6,7 +6,14 @@
 //
 /*
  Description
- - 2024. 06. 11 snr : insert된 내용을 조회하는 부분의 문제가 있음.
+    - 2024. 06. 11 snr : - insert된 내용을 조회하는 부분의 문제가 있음.
+                         - 일정 있는 날짜에 원 표시 : dbModel.queryDB()에서 불러오지 않아서였음
+                         - ForEach문에서 id 중복조회된다는 메세지 tasksForSelectedDate.indices를 사용하여 해결
+                         - print(), 불필요한 기능 삭제처리
+                         - 일정리스트 클릭 시 상세내용 조회 및 수정되도록
+    
+    - 2024. 06. 12 snr : - navigationView, List 제거
+                         
  */
 
 import SwiftUI
@@ -19,6 +26,11 @@ struct CustomDatePicker: View {
     @State var title: String = ""
     @State var taskDate: Date = Date()
     @State var tasksForSelectedDate: [Task] = []
+    @FocusState var isTextFieldFocused: Bool    // 키보드 focus
+    @State var isPresented = false //상세보기 sheet 조회 변수
+    @Binding var dateValue : Date
+    @State var selectedTask: Task? = nil // ForEach로 생성된 리스트의 task 값을 담을 변수
+    
     
     var body: some View {
         
@@ -45,6 +57,7 @@ struct CustomDatePicker: View {
                 Button(action: {
                     withAnimation{
                         currentMonth -= 1
+                        updateCurrentMonth()
                     }
                 }, label: {
                     Image(systemName: "chevron.left")
@@ -55,6 +68,7 @@ struct CustomDatePicker: View {
                 Button(action: {
                     withAnimation{
                         currentMonth += 1
+                        updateCurrentMonth()
                     }
                 }, label: {
                     Image(systemName: "chevron.right")
@@ -80,16 +94,13 @@ struct CustomDatePicker: View {
             LazyVGrid(columns: columns, spacing: 15, content: {
                 ForEach(extraDate()) {value in
                     CardView(value: value)
+                        .id(value.id)
                         .background(
                             Capsule()
                                 .fill(Color("color2"))
                                 .padding(.horizontal, 8)
                                 .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
                         )
-                        .onTapGesture {
-                            currentDate = value.date
-                            fetchTasksForSelectedDate()
-                        }
                 }
             }) //LazyVGrid
             
@@ -101,20 +112,28 @@ struct CustomDatePicker: View {
                 
                 if !tasksForSelectedDate.isEmpty {
                     ForEach(tasksForSelectedDate) { task in
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text(task.time, style: .time)
-                            Text(task.title)
-                                .font(.title2.bold())
-                        }
-                        .padding(.vertical, 10)
-                        .padding(.horizontal)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(
-                            Color("color1")
-                                .opacity(0.3)
-                                .cornerRadius(10)
-                        )
-                    }
+//                        NavigationLink(destination: CalendarDetailView(task: task, currentDate: dateValue)) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text(task.time, style: .time)
+                                Text(task.title)
+                                    .font(.title2.bold())
+                            }
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundStyle(.black)
+                            .background(
+                                Color("color1")
+                                    .opacity(0.3)
+                                    .cornerRadius(10)
+                            )
+                            .onTapGesture {
+                                selectedTask = task
+                                isPresented = true
+                            }
+//                        } //NavigationLink
+                    }// ForEach
+                    
                 } else {
                     Text("일정이 없습니다.")
                 }
@@ -127,21 +146,29 @@ struct CustomDatePicker: View {
             updateCurrentMonth()
         }
         .onAppear {
+            print("onAppear 실행")
             fetchTasksForSelectedDate()
         }
+        .sheet(item: $selectedTask, content: { task in
+            CalendarDetailView(task: task, currentDate: dateValue)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+        })
         
     }// body
     
+    
+    /* MARK: CardView() */
     @ViewBuilder
     func CardView(value: DateValue) -> some View {
         VStack(content: {
             if value.day != -1 {
                 
                 // value.day 와 taskDate가 같으면 색 표시하기
-                if let task = tasks.first(where: { task in
+                if let task = dbModel.queryDB().first(where: { task in
                     return isSameDay(date1: task.taskDate, date2: value.date)
                 }){
-                    
+                    //달력에 날짜 표시
                     Text("\(value.day)")
                         .font(.title3.bold())
                         .foregroundStyle(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : .primary )
@@ -165,43 +192,38 @@ struct CustomDatePicker: View {
         })
         .padding(.vertical, 9)
         .frame(height: 60, alignment: .top)
-        .onTapGesture (count: 1, perform: {
-            
+        .onTapGesture (perform: {
             currentDate = value.date
+            self.dateValue = value.date
             fetchTasksForSelectedDate()
-            print("onTapGesture")
         })
     }
     
-    /* month 변경 시 다시 조회되도록 */
+    /* MARK: month 변경 시 다시 조회되도록 */
     func updateCurrentMonth() {
         currentDate = getCurrentMonth()
         fetchTasksForSelectedDate()
     }
     
-    /* 스케줄러 조회 함수 */
+    /* MARK: 스케줄러 조회 함수 */
     func fetchTasksForSelectedDate() {
-        
         tasksForSelectedDate.removeAll()
-        tasksForSelectedDate = dbModel.queryDB()
-            .filter{ isSameDay(date1: $0.taskDate, date2: currentDate)}
-            .flatMap{ $0.task}
         
-        print("CustomDatePickerView : ", tasksForSelectedDate.count)
+        let taskMetaData = dbModel.queryDB().filter{ isSameDay(date1: $0.taskDate, date2: currentDate) }
         
-        if let firstTask = tasksForSelectedDate.first {
-            print("제목 : ",firstTask.title)
-            print("시간 : ",firstTask.time)
+        if let taskList = taskMetaData.first {
+            tasksForSelectedDate = taskList.task
         }
+        
     }
     
-    /* 날짜 체크 */
+    /* MARK: 날짜 체크 */
     func isSameDay(date1: Date, date2: Date) -> Bool {
         let calendar = Calendar.current
         return calendar.isDate(date1, inSameDayAs: date2)
     }
     
-    /* 년도와 월 정보 가져오기 */
+    /* MARK: 년도와 월 정보 가져오기 */
     func extraDate() -> [String] {
         
         let formatter = DateFormatter()
@@ -211,7 +233,7 @@ struct CustomDatePicker: View {
         return date.components(separatedBy: " ")
     }
     
-    /* 현재 Month 가져오기 */
+    /* MARK: 현재 Month 가져오기 */
     func getCurrentMonth() -> Date {
         let calendar = Calendar.current
         guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else { return Date() }
@@ -219,7 +241,7 @@ struct CustomDatePicker: View {
         return currentMonth
     }
     
-    /* 날짜 요소 뽑기 함수 */
+    /* MARK: 날짜 요소 뽑기 함수 */
     func extraDate() -> [DateValue] {
         let calendar = Calendar.current
         let currentMonth = getCurrentMonth()

@@ -1,20 +1,26 @@
 """
-## Projectr : 하루시작 프로젝트 Flask Server 02 (출력 )
-## Description : 
-    - Flask 에서 앱으로 출력 하는 기능을 테스트 한다. 
-## Author : Forrest DongGeun Park 
-## Date : 2024.05.31 ~
-## Detail : 
-    - http://localhost:5000/subway?
-## Update: 
-    * 2024.06.02 pdg : Flask server
-    * 2024.06.07 pdg : model 저장
-    * 2024.06.10 pdg  : API 로  app 에 메세지 출력
-        -  서버에서 앱에 뿌려 주는 json 의 형식은 해당역의 시간대별 output 예측값ㄷ이다. 
-        -  앱에서 받은 정보를 통해 knn 예측하여 api json 으로 뿌려주는것 만들었음. 
-    * 2024.06.11 pdg : 효율적인 서버 운용및 유지보수를 위한 폴더 재배치
-        - 
-
+---
+## 📌 Project : 하루시작 프로젝트 SERVER 📌🔸🟦✅🆕🉐
+## 📌 Description : 
+    🔸 Flask 에서 앱으로 출력 하는 기능을 테스트 한다. 
+## 📌 Author : Forrest DongGeun Park 
+## 📌 Date : 2024.05.31 ~
+## 📌 Detail : 
+    🔸 http://localhost:5000/subway?
+## 📌 Updates: 
+    🟦 2024.06.02 pdg : Flask server
+    🟦 2024.06.07 pdg : model 저장
+    🟦 2024.06.10 pdg  : API 로  app 에 메세지 출력
+        ✅  서버에서 앱에 뿌려 주는 json 의 형식은 해당역의 시간대별 output 예측값ㄷ이다. 
+        ✅  앱에서 받은 정보를 통해 knn 예측하여 api json 으로 뿌려주는것 만들었음. 
+    🟦 2024.06.11 pdg : 효율적인 서버 운용및 유지보수를 위한 폴더 재배치
+        ✅ Server 동작을 위한 import setting 변경 
+    🟦 2024.06.12 pdg : 서비스 문제 해결(오늘 해야할것 . )
+        🆕 환승역에서는 검색이 안되는 이유 찾기
+        🆕 하차모델 적용 하기
+        🆕 인풋을 데이터 포맷에 맞게 반환해주는 함수 만들기 <- 하찰모델 만들어 적용
+         
+---
 """
 
 
@@ -49,7 +55,7 @@ def subway():
     date = data.get('date')
     time = data.get('time')
     stationLine = data.get('stationLine')
-    station_code = Service.station_name_to_code(stationLine,station_name)
+    
     
     ## 월 정보 
     station_code= Service.station_name_to_code(int(stationLine),station_name.replace(" ",""))
@@ -66,8 +72,6 @@ def subway():
     import pandas as pd 
     배차_data_path = os.path.join(parent_dir, "Data", "지하철배차시간데이터", f"{stationLine}호선배차.csv")
     table_배차 = pd.read_csv(배차_data_path)
-
-    
     
     target_row = table_배차[table_배차['역사코드']==station_code]
     selected_index = 'SAT' if is주말 else 'DAY'

@@ -1,54 +1,65 @@
 """
-## Projectr : 하루시작 프로젝트 Module functions  
-## Description : 
-    -  Data 정제를 위한 Fuction modul e
-## Author : Forrest Dpark (분석 담당)
-## Date : 2024.05.31 ~
-## Detail : 
-    - 사용 방법 : 
-        // from Functions  import Service   # module importing 
-            Service.dataInfoProcessing(df)  # Data information 정보 출력 
-            Service.plotSetting()           # OS 한글화 한 Matplotlib Setting 
-## Update:  
-    * 2024.06.02 by pdg : multiprocessing import 
-        - Data frame column 정보 ( Null check, 중복체크 )플랏 
-    * 2024.06.03 by pdg : datdaInfoProcessing 함수 생성
-        - DataInfoProcessing 함수의 printoutcolnumber 플랏할 칼럼 갯수를 선택할수있게 설정함. 
-    * 2024.06.05 by pdg : 기타 함수 생성 
-        - plotSetting 함수 추가 
-        - reorder_columns 함수 추가 -> 칼럼의 순서를 바꾸어줌.
-        - currentPassengerCalc 함수 추가 현재 탑승객 및 량당 빈자리 추출(노인석 제외)
-        - stationDispatchBarplot 함수 추가 -> 지하철 역별 배차 지하철 수치 barplot check 
-        - dayToIntConvert  함수 추가
-        - date_Divid_Add_YMW_cols 함수추가 
-        - holidaysToIntConvert 함수 추가 
-    * 2024.06.07 by pdg : validation 을 위한 데이터 시각화 함수 
-        - station_name_to_code 함수 추가
-        - sdtation_inout_lmplot 함수 추가
-    * 2024.06.09 by pdg :  지하철 역명 처리 및 코드 중복처리 문제로 데이터 누락되는 이슈 해결 
-        - subway_info_table 함수추가 
-        - 함수 순서 바꿈, 주석 추가
-        - 호선당서비스불가역이름추출 함수 추가
+---
+## 📌 Project : 하루시작 프로젝트 Module functions  📌🔸🟦✅🆕🉐
+## 📌 Description : 
+    🔸  Data 정제를 위한 Fuction module
+    🔸 백앤드 서비스를 위한 데이터 변환 및 머신러닝 서비스 function 
+## 📌 Author : Forrest Dpark (분석 담당)
+## 📌 Date : 2024.05.31 ~
+## 📌 Detail : 
+    🔸 모듈 사용 방법 : 
+        1. [ directory 가 다를때 Server 에서 사용법 ]--
+            #> from Functions  import Service   # module importing 
+            #> Service.dataInfoProcessing(df)  # Data information 정보 출력 
+            #> Service.plotSetting()           # OS 한글화 한 Matplotlib 
+        2.[ directory 가 다를때 Server.py 에서 사용법 ]--
+            #> import sys,os 
+            #> parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            #> sys.path.append(parent_dir)
+            #> from Module.Functions import Service
+        3. [ directory 갇 다를 때 Jupyter 에서 사용 법 ]
+            #> import sys,os 
+            #> parent_dir = os.path.dirname(os.getcwd())
+            #> sys.path.append(parent_dir)
+            #> from Module.Functions import Service
+## 📌 Update:  
+    🟦 2024.06.02 by pdg : multiprocessing import 
+        ✅ Data frame column 정보 ( Null check, 중복체크 )플랏 
+    🟦 2024.06.03 by pdg : datdaInfoProcessing 함수 생성
+        ✅ DataInfoProcessing 함수의 printoutcolnumber 플랏할 칼럼 갯수를 선택할수있게 설정함. 
+    🟦 2024.06.05 by pdg : 기타 함수 생성 
+        ✅ plotSetting 함수 추가 
+        ✅ reorder_columns 함수 추가 -> 칼럼의 순서를 바꾸어줌.
+        ✅ currentPassengerCalc 함수 추가 현재 탑승객 및 량당 빈자리 추출(노인석 제외)
+        ✅ stationDispatchBarplot 함수 추가 -> 지하철 역별 배차 지하철 수치 barplot check 
+        ✅ dayToIntConvert  함수 추가
+        ✅ date_Divid_Add_YMW_cols 함수추가 
+        ✅ holidaysToIntConvert 함수 추가 
+    🟦 2024.06.07 by pdg : validation 을 위한 데이터 시각화 함수 
+        ✅ station_name_to_code 함수 추가
+        ✅ sdtation_inout_lmplot 함수 추가
+    🟦 2024.06.09 by pdg :  지하철 역명 처리 및 코드 중복처리 문제로 데이터 누락되는 이슈 해결 
+        ✅ subway_info_table 함수추가 
+        ✅ 함수 순서 바꿈, 주석 추가
+        ✅ 호선당서비스불가역이름추출 함수 추가
         
         %%% 각 함수별로 어떤 주피터에서 작성되었는지 분류나눌것
         
-    * 2024.06.10 by pdg : KNN regression model 저장 
-        - 함수 저장 하도록 바꿈
+    🟦 2024.06.10 by pdg : KNN regression model 저장 
+        ✅ 함수 저장 하도록 바꿈
+    🟦 2024.06.12 by pdg : 함수 정리 및 주석 정리 
+
+---
 """
 ## project data processing functions 
 from multiprocessing import Process
 import matplotlib.pyplot as plt, seaborn as sns
-
 class Service:
     def __init__(self) -> None:
         pass
-
 ##### 기본 Setting 함수
 
-    
-
     def plotSetting(pltStyle="seaborn-v0_8"):
-    
         '''
         # Fucntion Description : Plot 한글화 Setting
         # Date : 2024.06.05
@@ -71,17 +82,17 @@ class Service:
         print("___## OS platform 한글 세팅완료 ## ___")
 
 ####  데이터 체크및 정제 관련 함수들 
-    def dataInfoProcessing(df, replace_Nan=False, PrintOutColnumber = 10,nanFillValue=0):
+    def dataInfoProcessing(df, replace_Nan=False, PrintOutColnumber = 6,nanFillValue=0):
         ''' 
-        # Fucntion Description :  Data frame 의 정제해야할 부분을 체크해주는 함수 
-        # Date : 2024.06.02 
-        # Author : Forrest D Park 
-        # update : 
-            * 2024.06.02 by pdg: 일별 데이터 정제 
-                - 데이터에 null 이 있음을 발견, data 정제 함수 update 
-                - 함수에서 replace_Nan 아규 멘트 받아서 true 일경우 nan 을 0 으로 대체 하게 만듬. 
-            * 2024.06.04 by pdg : 함수변경
-                -관심 칼럼이 많을때 칼럼 개수를 조정할수있게 함. 
+        📌 Fucntion Description :  Data frame 의 정제해야할 부분을 체크해주는 함수 
+        📌 Date : 2024.06.02 
+        📌 Author : Forrest D Park 
+        📌 update : 
+            🟦 2024.06.02 by pdg: 일별 데이터 정제 
+                ✅ 데이터에 null 이 있음을 발견, data 정제 함수 update 
+                ✅ 함수에서 replace_Nan 아규 멘트 받아서 true 일경우 nan 을 0 으로 대체 하게 만듬. 
+            🟦 2024.06.04 by pdg : 함수변경
+                ✅ 관심 칼럼이 많을때 칼럼 개수를 조정할수있게 함. 
         '''
         print(f"\n1. Data row/colum numbers : {len(df.index)}/{len(df.columns)}",)
         #print(subway.columns)
@@ -523,17 +534,27 @@ class Service:
         # 현재 파일(Functions.py)의 절대 경로를 기준으로 프로젝트 폴더 경로를 찾는다.
         module_dir = os.path.dirname(os.path.abspath(__file__))
         project_dir = os.path.dirname(module_dir)
-        data_path = os.path.join(project_dir, 'Data', 'SubwayInfo.csv')
+        data_path = os.path.join(project_dir, 'Data', 'StationInfo.csv')
         
         # print("아하 라인 테스트 type : ",type(line),line)
         stations = pd.read_csv(data_path) ## 역정보 csv 
         # print(stations['호선'])
-        target_line_stations = stations[stations['호선']==f"{line}호선"] ## line select
-        # print(target_line_stations)
+        target_line_stations = stations[stations['호선']==line] ## line select
+        #print(target_line_stations)
         row = target_line_stations[station_name == target_line_stations['역이름']]
-        print(f"{station_name}의 역사 코드는 {row['역사코드'].values[0]}입니다")
-
-        return row['역사코드'].values[0]
+        # print(f"{station_name}의 역사 코드는 {row['역사코드'].values[0]}입니다")
+        print("row의 내용: ",row.to_numpy())
+        if len(row.to_numpy().tolist()) > 1:
+            print('환승역입니다')
+            print(f"{station_name}의 역사 코드는 {row['역사코드']}입니다")
+            return row['역사코드'].tolist()
+        if len(row.to_numpy().tolist())==0:
+            print('찾을수 없는 역입니다')
+        if len(row.to_numpy().tolist())==1:
+            print(f"단일역입니다.{row['역사코드'].tolist()}")
+            return row['역사코드'].values[0]
+        
+        print('어디서또 호출되니?')
     def sdtation_inout_lmplot(mlTable, line, station_name, time_passenger):
         """
             # Description : train, target데이터에 대한 회귀 모델 

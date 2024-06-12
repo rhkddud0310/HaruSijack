@@ -1,20 +1,20 @@
 """
-## Projectr : 하루시작 프로젝트 Module functions (지하철 노선도 역 위치 positon 추출) 
-## Description : 
-    *  앱개발시 노선도 내에 역버튼 생성할때이미지 내에서의 위치를 알아아한다. 
-    * 역의 개수가 상당히 많아 수작업으로 추출하기 어려움 
-    * cv, subporcess 등 라이브러릴 활용하여  만듬. 
-    * 블로그 참고 : https://gaussian37.github.io/vision-opencv-coordinate_extraction/
-## Author : Forrest Dpark
-## Date : 2024.06.10 ~
-## Detail : 
-    * 사용 방법 : 터미널에서 본 파이썬 파일을 실행, 명령어 끝에 --path 이미지파일 을 붙여 실행하면 이미지가뜸
+## 📌 Project : 하루시작 프로젝트 Module functions  📌🔸🟦✅🆕🉐
+## 📌 Description : 
+    🔸  앱개발시 노선도 내에 역버튼 생성할때이미지 내에서의 위치를 알아아한다. 
+    🔸 역의 개수가 상당히 많아 수작업으로 추출하기 어려움 
+    🔸 cv, subporcess 등 라이브러릴 활용하여  만듬. 
+    🔸 블로그 참고 : https://gaussian37.github.io/vision-opencv-coordinate_extraction/
+## 📌 Author : Forrest Dpark
+## 📌 Date : 2024.06.10 ~
+## 📌 Detail : 
+    🔸 사용 방법 : 터미널에서 본 파이썬 파일을 실행, 명령어 끝에 --path 이미지파일 을 붙여 실행하면 이미지가뜸
     이후에 이미지에서 마우스 클릭하면 색이 칠해지며 포지션 정보가 터미널에 뜸. 
     클릭을 다끝낸뒤에 n 을 누르면 파일이 꺼지면서 노선도 이미지가 저장되어있는 폴더안에 point.csv 파일이 자동저장됨 .
         
-## Update:
-    * 2024.06.10 by pdg : blog code, gpt 활용하여 앱 만듬. 
-    
+## 📌 Updates:
+    🟦 2024.06.10 by pdg : blog code, gpt 활용하여 앱 만듬.
+    🆕 2024.06.12 by pdg : 지하철 노선도가 큰 경우 줌해서 점을 클릭할수있도록 하는 기능 추가  
 """
 import sys,subprocess,os,warnings,pandas as pd
 from datetime import datetime

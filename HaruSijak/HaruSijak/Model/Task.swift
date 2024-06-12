@@ -16,7 +16,8 @@ struct Task: Identifiable {
 
 // 총 할일 데이터
 struct TaskMetaData: Identifiable {
-    var id = UUID().uuidString
+//    var id = UUID().uuidString
+    var id : String
     var task: [Task]
     var taskDate: Date
 }
