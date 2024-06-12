@@ -55,7 +55,7 @@ def subway():
     date = data.get('date')
     time = data.get('time')
     stationLine = data.get('stationLine')
-    station_code = Service.station_name_to_code(stationLine,station_name)
+    
     
     ## 월 정보 
     station_code= Service.station_name_to_code(int(stationLine),station_name.replace(" ",""))
@@ -72,8 +72,6 @@ def subway():
     import pandas as pd 
     배차_data_path = os.path.join(parent_dir, "Data", "지하철배차시간데이터", f"{stationLine}호선배차.csv")
     table_배차 = pd.read_csv(배차_data_path)
-
-    
     
     target_row = table_배차[table_배차['역사코드']==station_code]
     selected_index = 'SAT' if is주말 else 'DAY'

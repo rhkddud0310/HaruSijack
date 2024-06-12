@@ -534,17 +534,27 @@ class Service:
         # 현재 파일(Functions.py)의 절대 경로를 기준으로 프로젝트 폴더 경로를 찾는다.
         module_dir = os.path.dirname(os.path.abspath(__file__))
         project_dir = os.path.dirname(module_dir)
-        data_path = os.path.join(project_dir, 'Data', 'SubwayInfo.csv')
+        data_path = os.path.join(project_dir, 'Data', 'StationInfo.csv')
         
         # print("아하 라인 테스트 type : ",type(line),line)
         stations = pd.read_csv(data_path) ## 역정보 csv 
         # print(stations['호선'])
-        target_line_stations = stations[stations['호선']==f"{line}호선"] ## line select
-        # print(target_line_stations)
+        target_line_stations = stations[stations['호선']==line] ## line select
+        #print(target_line_stations)
         row = target_line_stations[station_name == target_line_stations['역이름']]
-        print(f"{station_name}의 역사 코드는 {row['역사코드'].values[0]}입니다")
-
-        return row['역사코드'].values[0]
+        # print(f"{station_name}의 역사 코드는 {row['역사코드'].values[0]}입니다")
+        print("row의 내용: ",row.to_numpy())
+        if len(row.to_numpy().tolist()) > 1:
+            print('환승역입니다')
+            print(f"{station_name}의 역사 코드는 {row['역사코드']}입니다")
+            return row['역사코드'].tolist()
+        if len(row.to_numpy().tolist())==0:
+            print('찾을수 없는 역입니다')
+        if len(row.to_numpy().tolist())==1:
+            print(f"단일역입니다.{row['역사코드'].tolist()}")
+            return row['역사코드'].values[0]
+        
+        print('어디서또 호출되니?')
     def sdtation_inout_lmplot(mlTable, line, station_name, time_passenger):
         """
             # Description : train, target데이터에 대한 회귀 모델 
