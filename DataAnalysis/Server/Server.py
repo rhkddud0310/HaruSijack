@@ -46,7 +46,7 @@ app.config['JSON_AS_ASCII'] = False
 
 
 # CORS(app)  # 모든 출처에서 접근할 수 있도록 설정
-## /iris면 여기로 와라!! ls
+## 해당일의 승차인원 정보
 @app.route("/subway", methods=['POST'])
 def subway():
     
@@ -126,6 +126,78 @@ def analyze_data():
     stationLine = data.get('stationLine')
     rows=[date,station_name,time,stationLine]
     return json.dumps(rows, ensure_ascii=False).encode('utf8')
+
+# 해당일의 하차인원 정보
+@app.route("/subwayAlighting", methods=['POST'])
+def subwayAlighting():
+    
+    data = request.get_json() # JSON 데이터 받기
+    station_name = data.get('stationName')
+    date = data.get('date')
+    time = data.get('time')
+    stationLine = data.get('stationLine')
+    
+    
+    ## 월 정보 
+    station_code= Service.station_name_to_code(int(stationLine),station_name.replace(" ",""))
+    print('필요정보:',*['월', '주차', '공휴일', '요일', '역사코드', '주중', '주말','위도','경도',' 배차 '],sep='\t')
+    
+    
+    
+    # 월, 주, 휴일여부, 요일코드 추출 
+    month_number, week_number, is_holi, dayname_code = Service.date_string_to_MonthWeekHolyDayname(date)
+    # 주말 여부 ( bool )
+    is주말= True if dayname_code== 6 or dayname_code == 5 else False 
+    
+    ## 해당일자의 배차 정보 조회 
+    import pandas as pd 
+    배차_data_path = os.path.join(parent_dir, "Data", "지하철배차시간데이터", f"{stationLine}호선배차.csv")
+    table_배차 = pd.read_csv(배차_data_path)
+    
+    target_row = table_배차[table_배차['역사코드']==station_code]
+    selected_index = 'SAT' if is주말 else 'DAY'
+    target_row = target_row[target_row['주중주말'] == selected_index]
+    시간별배차정보 = list(target_row.iloc[:,3:].to_numpy())[0]
+    
+    ## 위도 경도 정보 뽑기 
+    위도경도_data_path = os.path.join(parent_dir, "Data", 'seoul_subway_latlon_zenzen.csv')
+    latlng=pd.read_csv(위도경도_data_path)
+    a= latlng[latlng['역사코드']==station_code].to_numpy()[0][-2:]#['latitude','longitude']
+    위도, 경도 = a[0],a[1]
+    rows=[month_number, week_number,is_holi,dayname_code,station_code,not is주말,is주말,위도,경도,*시간별배차정보]
+    
+    print('입력정보:',*rows,sep='\t')
+
+    try:
+        #지하철 승하차 모델 path 
+        model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_line7_하차.h5")
+
+        knn_regressor_하차 = joblib.load(model_path)
+        
+        exam = [[
+                1, 1, 1, 2, 2729, True, False, 37.54040751726388,
+            127.06920291650827, 2.5, 7.5, 12.0, 19.0, 15.5, 11.0, 10.0, 10.0,
+            10.0, 10.0, 10.0, 10.0, 10.5, 16.5, 14.5, 10.5, 9.5, 8.5, 7.0, 0.5
+            ]]
+        print(f"row len: {len(rows)} ,example len : {len(exam[0])}")
+
+        pre = knn_regressor_하차.predict([rows])
+        
+        target_column=['05시인원', '06시인원', '07시인원',
+        '08시인원', '09시인원', '10시인원', '11시인원', '12시인원', '13시인원', '14시인원', '15시인원',
+        '16시인원', '17시인원', '18시인원', '19시인원', '20시인원', '21시인원', '22시인원', '23시인원',
+        '24시인원']
+        # result = json.dumps(list(pre), ensure_ascii=False).encode('utf8') # dump 는 글자 하나씩
+        print(pre)
+        result = pre.tolist()
+        print("예측결과: ",result)
+        response = {column: value for column, value in zip(target_column, result[0])}
+        return jsonify(response)
+        return result#jsonify([{'result': result}])
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True) # 서버구동
     

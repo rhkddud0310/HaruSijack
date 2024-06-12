@@ -10,6 +10,7 @@
                             queryDB() View단에서 하나씩만 조회되도록 taskList리스트 초기화 처리
         - 2024.06.12 snr : updateDB() => return값 없앰, errMsg 추가
                             update 시 id가 달라 update에 문제가 있어서 print()로 찍어보는 주석 처리함.
+                            deleteDB() 삭제 쿼리 생성
                     
  */
 
@@ -164,6 +165,31 @@ class CalendarDB: ObservableObject {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("update 실패: \(errmsg)")
             return false
+        }
+        
+    }
+    
+    
+    // 일정 삭제
+    func deleteDB(id: String) {
+        var stmt: OpaquePointer?
+        let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
+        let queryString = "DELETE FROM task WHERE id=?"
+        
+        sqlite3_prepare(db, queryString, -1, &stmt, nil)
+        
+        print("=======deleteDB=======")
+        print("id : ", id)
+        print("=======deleteDB=======")
+        
+        sqlite3_bind_text(stmt, 1, id, -1, SQLITE_TRANSIENT)
+        
+        if sqlite3_step(stmt) == SQLITE_DONE {
+            print("delete 성공")
+            
+        } else {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("delete 실패: \(errmsg)")
         }
         
     }

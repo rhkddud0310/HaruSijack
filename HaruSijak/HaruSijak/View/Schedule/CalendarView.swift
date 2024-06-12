@@ -50,7 +50,6 @@ struct CalendarView: View {
                         .padding(.vertical)
                         .background(Color(.blue), in: Circle())
                 })
-                
                 .sheet(isPresented: $isAlert, content: {
                     VStack(content: {
                         
