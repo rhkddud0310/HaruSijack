@@ -1,16 +1,17 @@
 """
-## Projectr : 하루시작 프로젝트 Flask Server 02 (출력 )
-## Description : 
-    - Flask 에서 앱으로 출력 하는 기능을 테스트 한다. 
-## Author : Forrest DongGeun Park 
-## Date : 2024.05.31 ~
-## Detail : 
-    - http://localhost:5000/subway?
-## Update: 
-    * 2024.06.02 pdg : Flask server
-    * 2024.06.07 pdg : model 저장
-    * 2024.06.10 pdg  : API 로  app 에 메세지 출력
-        -  서버에서 앱에 뿌려 주는 json 의 형식은 해당역의 시간대별 output 예측값ㄷ이다. 
+## 📌 Project : 하루시작 프로젝트 Flask Server 02 (출력)  📌🔸🟦✅🆕🉐
+
+## 📌 Description : 
+    🔸 Flask 에서 앱으로 출력 하는 기능을 테스트 한다. 
+## 📌 Author : 🌿 Forrest DongGeun Park 😀
+## 📌 Date : 2024.05.31 ~
+## 📌 Detail : 
+    🔸 http://localhost:5000/subway?
+## 📌 Updates: 
+    🟦 2024.06.02 pdg : Flask server
+    🟦 2024.06.07 pdg : model 저장
+    🟦 2024.06.10 pdg  : API 로  app 에 메세지 출력
+        ✅  서버에서 앱에 뿌려 주는 json 의 형식은 해당역의 시간대별 output 예측값ㄷ이다. 
 
 """
 
