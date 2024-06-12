@@ -29,6 +29,7 @@ struct CustomDatePicker: View {
     @FocusState var isTextFieldFocused: Bool    // 키보드 focus
     @State var isPresented = false //상세보기 sheet 조회 변수
     @Binding var dateValue : Date
+    @State var selectedTask: Task? = nil // ForEach로 생성된 리스트의 task 값을 담을 변수
     
     
     var body: some View {
@@ -111,7 +112,7 @@ struct CustomDatePicker: View {
                 
                 if !tasksForSelectedDate.isEmpty {
                     ForEach(tasksForSelectedDate) { task in
-                        NavigationLink(destination: CalendarDetailView(task: task, currentDate: dateValue)) {
+//                        NavigationLink(destination: CalendarDetailView(task: task, currentDate: dateValue)) {
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(task.time, style: .time)
                                 Text(task.title)
@@ -126,8 +127,12 @@ struct CustomDatePicker: View {
                                     .opacity(0.3)
                                     .cornerRadius(10)
                             )
-                        }
-                    }
+                            .onTapGesture {
+                                selectedTask = task
+                                isPresented = true
+                            }
+//                        } //NavigationLink
+                    }// ForEach
                     
                 } else {
                     Text("일정이 없습니다.")
@@ -141,8 +146,14 @@ struct CustomDatePicker: View {
             updateCurrentMonth()
         }
         .onAppear {
+            print("onAppear 실행")
             fetchTasksForSelectedDate()
         }
+        .sheet(item: $selectedTask, content: { task in
+            CalendarDetailView(task: task, currentDate: dateValue)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+        })
         
     }// body
     
