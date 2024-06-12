@@ -6,8 +6,10 @@
 //
 /*
     Description
-        - 2024.06.11 : queryDB() 값조회가 잘되는지 print 확인 후 삭제.
-                       queryDB() View단에서 하나씩만 조회되도록 taskList리스트 초기화 처리
+        - 2024.06.11 snr : queryDB() 값조회가 잘되는지 print 확인 후 삭제.
+                            queryDB() View단에서 하나씩만 조회되도록 taskList리스트 초기화 처리
+        - 2024.06.12 snr : updateDB() => return값 없앰, errMsg 추가
+                            update 시 id가 달라 update에 문제가 있어서 print()로 찍어보는 주석 처리함.
                     
  */
 
@@ -85,8 +87,12 @@ class CalendarDB: ObservableObject {
             let time = dateFromSQLite(stmt: stmt!, column: 2)
             let taskDate = dateFromSQLite(stmt: stmt!, column: 3)
             
+//            print("select id", id)
+            
             // Model에 넣기
             let task = Task(id: id, title: title, time: time!)
+            
+//            print("task in id : ", task.id)
             
             if let index = taskList.firstIndex(where: { $0.taskDate == taskDate }) {
                 taskList[index].task.append(task)
@@ -117,6 +123,7 @@ class CalendarDB: ObservableObject {
         sqlite3_bind_text(stmt, 2, task.title, -1, SQLITE_TRANSIENT)
         sqlite3_bind_text(stmt, 3, timeString, -1, SQLITE_TRANSIENT)
         sqlite3_bind_text(stmt, 4, taskDateString, -1, SQLITE_TRANSIENT)
+        print("insertID : ", task.id)
         
         if sqlite3_step(stmt) == SQLITE_DONE {
             print("insert 성공!!!")
@@ -128,25 +135,36 @@ class CalendarDB: ObservableObject {
     }
     
     // 할일 수정
-    func updateDB(task: Task, taskDate: Date) -> Bool {
+    func updateDB(title: String, time: Date, taskDate: Date, id: String) -> Bool{
         var stmt: OpaquePointer?
         let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
         let queryString = "UPDATE task SET title=?, time=?, taskDate=? WHERE id=?"
         
-        let timeString = dateFormatter.string(from: task.time)
+        let timeString = timeFormatter.string(from: time)
         let taskDateString = dateFormatter.string(from: taskDate)
         
         sqlite3_prepare(db, queryString, -1, &stmt, nil)
         
-        sqlite3_bind_text(stmt, 1, task.title, -1, SQLITE_TRANSIENT)
+//        print("=======updateDB=======")
+//        print("title : ", title)
+//        print("timeString : ", timeString)
+//        print("taskDateString : ", taskDateString)
+//        print("id : ", id)
+//        print("=======updateDB=======")
+        
+        sqlite3_bind_text(stmt, 1, title, -1, SQLITE_TRANSIENT)
         sqlite3_bind_text(stmt, 2, timeString, -1, SQLITE_TRANSIENT)
         sqlite3_bind_text(stmt, 3, taskDateString, -1, SQLITE_TRANSIENT)
-        sqlite3_bind_text(stmt, 4, task.id, -1, SQLITE_TRANSIENT)
+        sqlite3_bind_text(stmt, 4, id, -1, SQLITE_TRANSIENT)
         
         if sqlite3_step(stmt) == SQLITE_DONE {
+            print("update 성공")
             return true
+        } else {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("update 실패: \(errmsg)")
+            return false
         }
         
-        return false
     }
 }
