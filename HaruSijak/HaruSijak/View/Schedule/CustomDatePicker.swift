@@ -13,6 +13,9 @@
                          - 일정리스트 클릭 시 상세내용 조회 및 수정되도록
     
     - 2024. 06. 12 snr : - navigationView, List 제거
+                         - 날짜 클릭 시 Capsule() -> Circle() 모양으로 변경
+                            => 비교 후에 삭제 예정
+                         - 달력 사이즈 조정
                          
  */
 
@@ -96,23 +99,28 @@ struct CustomDatePicker: View {
                     CardView(value: value)
                         .id(value.id)
                         .background(
-                            Capsule()
+//                            Capsule()
+//                                .fill(Color("color2"))
+//                                .padding(.horizontal, 8)
+//                                .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
+                            
+                            Circle()
                                 .fill(Color("color2"))
-                                .padding(.horizontal, 8)
+                                .padding(.horizontal, 2)
                                 .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
+                                .padding(.bottom, 20)
                         )
                 }
             }) //LazyVGrid
             
-            VStack(spacing: 20) {
+            VStack(spacing: 10) {
                 Text("일정")
                     .font(.title2.bold())
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 20)
+//                    .padding(.vertical, 20)
                 
                 if !tasksForSelectedDate.isEmpty {
                     ForEach(tasksForSelectedDate) { task in
-//                        NavigationLink(destination: CalendarDetailView(task: task, currentDate: dateValue)) {
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(task.time, style: .time)
                                 Text(task.title)
@@ -131,7 +139,6 @@ struct CustomDatePicker: View {
                                 selectedTask = task
                                 isPresented = true
                             }
-//                        } //NavigationLink
                     }// ForEach
                     
                 } else {
@@ -163,7 +170,6 @@ struct CustomDatePicker: View {
     func CardView(value: DateValue) -> some View {
         VStack(content: {
             if value.day != -1 {
-                
                 // value.day 와 taskDate가 같으면 색 표시하기
                 if let task = dbModel.queryDB().first(where: { task in
                     return isSameDay(date1: task.taskDate, date2: value.date)
@@ -179,6 +185,7 @@ struct CustomDatePicker: View {
                     Circle()
                         .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("color2"))
                         .frame(width: 10, height: 10)
+                        .padding(.bottom, 10)
                 }
                 else {
                     Text("\(value.day)")
@@ -190,8 +197,8 @@ struct CustomDatePicker: View {
                 }
             }
         })
-        .padding(.vertical, 9)
-        .frame(height: 60, alignment: .top)
+//        .padding(.vertical, 9)
+        .frame(height: 50, alignment: .top)
         .onTapGesture (perform: {
             currentDate = value.date
             self.dateValue = value.date

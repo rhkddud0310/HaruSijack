@@ -24,9 +24,9 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 Spacer()
-                Text("하루시작")
-                    .font(.system(.largeTitle, design: .rounded))
-                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+//                Text("하루시작")
+//                    .font(.system(.largeTitle, design: .rounded))
+//                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 Spacer()
                 // TabBarview
                 TabView(selection: $selection,content:  {
