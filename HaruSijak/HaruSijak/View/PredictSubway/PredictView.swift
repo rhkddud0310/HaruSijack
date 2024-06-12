@@ -211,7 +211,7 @@ func fetchDataFromServerAlighting(stationName: String, date: String, time: Strin
     }
     task.resume()
 }
-// 현재탑승인원 받기(출발역 부터 탑승인원 - 현재인원)
+// 현재탑승인원 받기(출발역 부터 탑승인원 - 현재인원
 
 
 // 현재시간에 "시인원"을 더한 값을 key값으로 서버에서 받아온 JSON값에서 검색해서 값을 가져오는 함수
