@@ -13,9 +13,10 @@
             #> Service.dataInfoProcessing(df)  # Data information 정보 출력 
             #> Service.plotSetting()           # OS 한글화 한 Matplotlib 
         2.[ directory 가 다를때 Server.py 에서 사용법 ]--
-            parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            sys.path.append(parent_dir)
-            from Module.Functions import Service
+            #> import sys,os 
+            #> parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            #> sys.path.append(parent_dir)
+            #> from Module.Functions import Service
         3. [ directory 갇 다를 때 Jupyter 에서 사용 법 ]
             #> import sys,os 
             #> parent_dir = os.path.dirname(os.getcwd())
