@@ -8,7 +8,7 @@
     Description
         - 2024.06.11 snr : - 일정 추가 후 alert 닫히도록 isAlert = false 처리
                            - 필요없는 변수 제거
- 
+        - 2024.06.12 snr : idValue 매개변수 추가
  */
 
 import SwiftUI
