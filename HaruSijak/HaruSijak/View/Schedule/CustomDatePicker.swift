@@ -11,6 +11,9 @@
                          - ForEach문에서 id 중복조회된다는 메세지 tasksForSelectedDate.indices를 사용하여 해결
                          - print(), 불필요한 기능 삭제처리
                          - 일정리스트 클릭 시 상세내용 조회 및 수정되도록
+    
+    - 2024. 06. 12 snr : - navigationView, List 제거
+                         
  */
 
 import SwiftUI
@@ -26,6 +29,7 @@ struct CustomDatePicker: View {
     @FocusState var isTextFieldFocused: Bool    // 키보드 focus
     @State var isPresented = false //상세보기 sheet 조회 변수
     @Binding var dateValue : Date
+    
     
     var body: some View {
         
@@ -106,27 +110,24 @@ struct CustomDatePicker: View {
                     .padding(.vertical, 20)
                 
                 if !tasksForSelectedDate.isEmpty {
-                    NavigationView(content: {
-                        List {
-                            ForEach(tasksForSelectedDate) { task in
-                                NavigationLink(destination: CalendarDetailView(task: task, currentDate: dateValue)) {
-                                    VStack(alignment: .leading, spacing: 10) {
-                                        Text(task.time, style: .time)
-                                        Text(task.title)
-                                            .font(.title2.bold())
-                                    }
-                                    .padding(.vertical, 10)
-                                    .padding(.horizontal)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .background(
-                                        Color("color1")
-                                            .opacity(0.3)
-                                            .cornerRadius(10)
-                                    )
-                                }
+                    ForEach(tasksForSelectedDate) { task in
+                        NavigationLink(destination: CalendarDetailView(task: task, currentDate: dateValue)) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text(task.time, style: .time)
+                                Text(task.title)
+                                    .font(.title2.bold())
                             }
-                        }//List
-                    })
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundStyle(.black)
+                            .background(
+                                Color("color1")
+                                    .opacity(0.3)
+                                    .cornerRadius(10)
+                            )
+                        }
+                    }
                     
                 } else {
                     Text("일정이 없습니다.")
