@@ -142,14 +142,18 @@ class Service:
         return df[cols]
 
 #### 지하철 역사 정보 정제 후 저장
-    def  subway_info_table(subway, save=False):
+    def  subway_info_table(subway, save=False,saveFileName=""):
         import pandas as pd, numpy as np
+        print(""" 
+             <<<지하철 역정보 테이블 함수 실행>>>
+            """)
         print("첫 수송일자 :",list(subway['수송일자'])[0])
         print("마지막 수송일자 :",list(subway['수송일자'])[-1])
         ## 역명에서 () 빼버리기 
-        정제된역명 = [i.split("(")[0] for i in subway['역명']]
-        subway['역명']= 정제된역명
+        정제된역명 = [i.split("(")[0] for i in subway['역이름']]
+        subway['역이름']= 정제된역명
         
+        if subway.reorder_columns 
         
         subway_test = subway.rename({'고유역번호(외부역코드)':'역사코드'},axis=1)
         ### 역코드 obj -> int 로 변환  ** 아무것도 없는 데이터는 000 으로 변환 
@@ -170,10 +174,10 @@ class Service:
         
         # 역사코드에 해당하는 역이름과 호선을 테이블로 만들고 싶다.
         # 중복 제거 후 역 번호, 역 이름, 호선 정보를 추출
-        unique_stations = subway_test.drop_duplicates(subset=['역사코드', '역명', '호선'])
+        unique_stations = subway_test.drop_duplicates(subset=['역사코드', '역이름', '호선'])
         #역명 코드가 0 이면 행 drop 
         unique_stations = unique_stations[unique_stations['역사코드'] != 0]
-        subway_info =unique_stations[['역사코드', '역명', '호선']]
+        subway_info =unique_stations[['역사코드', '역이름', '호선']]
         subway_info.reset_index(inplace=True,drop=True)
 
         ## 환승역 여부 칼럼을 추가한 StationInfo data 만들자 .
@@ -189,12 +193,13 @@ class Service:
             subway_info,to_merge_df_exchange,
             on='역명'
         )
-
-        to_saveDataframe = merged_table[['역사코드','역명','호선','환승역수']]
-    
-        
-        
-        to_saveDataframe.to_csv(f"../Data/StationInfo.csv",index=None)
+        to_saveDataframe = merged_table[['역사코드','역이름','호선','환승역수']]
+        if save: 
+        # to_saveDataframe.to_csv(f"../Data/StationInfo.csv",index=None)
+            print(f'{saveFileName}으로 저장합니다.')
+            to_saveDataframe.to_csv(f"../Data/{saveFileName}.csv",index=None)
+        else:
+            print('저장 하지 않습니다.')
 
         return to_saveDataframe
 
