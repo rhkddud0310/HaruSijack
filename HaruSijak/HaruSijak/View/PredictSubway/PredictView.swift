@@ -13,13 +13,13 @@ struct PredictView: View {
     
     //----  server  ----
     @State private var showAlertForStation = false
-    // 서버통신 값 받아오는 변수(승차)
+    // 승차인원 JSON 받아오는 변수(승차)
     @State var serverResponseBoardingPerson: String = ""
-    // 서버통신 값 받아오는 변수(하차)
+    // 승차인원 JSON 받아오는 변수(하차)
     @State var serverResponseAlightingPerson: String = ""
-    // 현재시간 열차의 인원값 변수(승차
+    // 현재시간 열차의 승차인원 변수
     @State var boardingPersonValue: Double = 0.0
-    // 현재시간 열차의 인원값 변수(하차)
+    // 현재시간 열차의 하차인원 변수
     @State var AlightingPersonValue: Double = 0.0
     
     
@@ -95,7 +95,7 @@ struct PredictView: View {
                                 .actionSheet(isPresented: $showAlertForStation) {
                                     ActionSheet(
                                         title: Text(stationName),
-                                        message: Text("현재 시간의 탑승인원: \(Int(boardingPersonValue))"),
+                                        message: Text("현재 시간의 탑승인원: \(Int(boardingPersonValue))\n현재 시간의 하차인원:\(Int(AlightingPersonValue))"),
                                         buttons: [
                                             .default(Text("OK"))
                                         ]
@@ -123,9 +123,16 @@ struct PredictView: View {
     func handleStationClick(stationName: String) {
         self.stationName = stationName
         let (dateString, timeString) = getCurrentDateTime()
-        fetchDataFromServer(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
+        //승차인원
+        fetchDataFromServerBoarding(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
             self.serverResponseBoardingPerson = responseString
             self.boardingPersonValue = getValueForCurrentTime(jsonString: responseString, currentTime: timeString)
+            showAlertForStation = true
+        }
+        //하차인원
+        fetchDataFromServerAlighting(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
+            self.serverResponseAlightingPerson = responseString
+            self.AlightingPersonValue = getValueForCurrentTime(jsonString: responseString, currentTime: timeString)
             showAlertForStation = true
         }
     }
@@ -152,8 +159,8 @@ func getCurrentDateTime() -> (String, String) {
     return (dateString, timeString)
 }
 
-// Flask 통신을 위한 함수
-func fetchDataFromServer(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
+// Flask 통신을 위한 함수(승차인원)
+func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
     let url = URL(string: "http://localhost:5000/subway")!
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
@@ -176,6 +183,36 @@ func fetchDataFromServer(stationName: String, date: String, time: String, statio
     }
     task.resume()
 }
+
+// Flask 통신을 위한 함수(하차인원)
+func fetchDataFromServerAlighting(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
+    print(stationName,date,time,stationLine)
+    let url = URL(string: "http://localhost:5000/subwayAlighting")!
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    let parameters: [String: Any] = [
+        "stationName": stationName,
+        "date": date,
+        "time": time,
+        "stationLine": stationLine
+    ]
+    request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        guard let data = data, error == nil else {
+            print("Error:", error ?? "Unknown error")
+            
+            return
+        }
+        if let responseString = String(data: data, encoding: .utf8) {
+            completion(responseString)
+            print(responseString)
+        }
+    }
+    task.resume()
+}
+// 현재탑승인원 받기(출발역 부터 탑승인원 - 현재인원
+
 
 // 현재시간에 "시인원"을 더한 값을 key값으로 서버에서 받아온 JSON값에서 검색해서 값을 가져오는 함수
 func getValueForCurrentTime(jsonString: String, currentTime: String) -> Double {
