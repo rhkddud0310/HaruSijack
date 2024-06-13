@@ -48,6 +48,11 @@
     🟦 2024.06.10 by pdg : KNN regression model 저장 
         ✅ 함수 저장 하도록 바꿈
     🟦 2024.06.12 by pdg : 함수 정리 및 주석 정리 
+    🟦 2024.06.13 by pdg : 
+        ✅ color text 함수 추가
+        ✅ subwayInfo 함수 수정 
+        
+    
 
 ---
 """
@@ -58,7 +63,36 @@ class Service:
     def __init__(self) -> None:
         pass
 ##### 기본 Setting 함수
-
+    def colored_text(text, color='default'):
+        '''
+        #### 예시 사용법
+        print(colored_text('저장 하지 않습니다.', 'red'))
+        print(colored_text('저장 합니다.', 'green'))
+        default,red,green,yellow,blue, magenta, cyan, white, rest
+        '''
+        colors = {
+            'default': '\033[99m',
+            'red': '\033[91m',
+            'green': '\033[92m',
+            'yellow': '\033[93m',
+            'blue': '\033[94m',
+            'magenta': '\033[95m', #보라색
+            'cyan': '\033[96m',
+            'white': '\033[97m',
+            'bright_black': '\033[90m',  # 밝은 검정색 (회색)
+            'bright_red': '\033[91m',  # 밝은 빨간색
+            'bright_green': '\033[92m',  # 밝은 초록색
+            'bright_yellow': '\033[93m',  # 밝은 노란색
+            'bright_blue': '\033[94m',  # 밝은 파란색
+            'bright_magenta': '\033[95m',  # 밝은 보라색
+            'bright_cyan': '\033[96m',  # 밝은 청록색
+            'bright_white': '\033[97m',  # 밝은 흰색
+            'reset': '\033[0m'
+        }
+        
+        color_code = colors.get(color, colors['default'])
+        return f'{color_code}{text}{colors["reset"]}'
+        
     def plotSetting(pltStyle="seaborn-v0_8"):
         '''
         # Fucntion Description : Plot 한글화 Setting
@@ -126,9 +160,9 @@ class Service:
         return df
     def reorder_columns(df, col_name, target_idx):
         """
-        # Description : Reorder columns in a DataFrame by moving a specific column to a target index.
-        # Date : 2024.06.05
-        # Author : Forrest Dpark
+        📌 Description : Reorder columns in a DataFrame by moving a specific column to a target index.
+        📌 Date : 2024.06.05
+        📌 Author : Forrest Dpark
         # Detail:
             * df (pandas.DataFrame): The input DataFrame.
             * col_name (str): The name of the column to be moved.
@@ -144,16 +178,26 @@ class Service:
 #### 지하철 역사 정보 정제 후 저장
     def  subway_info_table(subway, save=False,saveFileName=""):
         import pandas as pd, numpy as np
-        print(""" 
-             <<<지하철 역정보 테이블 함수 실행>>>
-            """)
-        print("첫 수송일자 :",list(subway['수송일자'])[0])
-        print("마지막 수송일자 :",list(subway['수송일자'])[-1])
+        """
+        📌 Description :  승하차 인원 데이터에서 각 역에대한 정보 ( 역사코드 호선 등)를 추출한 테이블을 반환
+        📌 Date : 2024.06.13
+        📌 Author : Forrest Dpark
+        📌 Detail:
+            🔸 Returns: 
+        📌 Updates : 
+            2024.06.13 by pdg : 프린트에 색깔입힘. 
+            
+        """
+        print(Service.colored_text(
+        """\n 🔸🔸🔸지하철 역정보 테이블 함수 실행🔸🔸🔸 """,'magenta'))
+           
+        print("  |- 첫 수송일자 :",list(subway['수송일자'])[0])
+        print("  |- 마지막 수송일자 :",list(subway['수송일자'])[-1])
         ## 역명에서 () 빼버리기 
         정제된역명 = [i.split("(")[0] for i in subway['역이름']]
         subway['역이름']= 정제된역명
         
-        if subway.reorder_columns 
+        # if subway.reorder_columns 
         
         subway_test = subway.rename({'고유역번호(외부역코드)':'역사코드'},axis=1)
         ### 역코드 obj -> int 로 변환  ** 아무것도 없는 데이터는 000 으로 변환 
@@ -182,24 +226,25 @@ class Service:
 
         ## 환승역 여부 칼럼을 추가한 StationInfo data 만들자 .
 
-        test1 = dict(subway_info['역명'].value_counts())
+        test1 = dict(subway_info['역이름'].value_counts())
         to_merge_df_exchange = pd.DataFrame(
             {
-            '역명':list(test1.keys()),
+            '역이름':list(test1.keys()),
             '환승역수':list(test1.values())
             }
         )
         merged_table = pd.merge(
             subway_info,to_merge_df_exchange,
-            on='역명'
+            on='역이름'
         )
         to_saveDataframe = merged_table[['역사코드','역이름','호선','환승역수']]
         if save: 
         # to_saveDataframe.to_csv(f"../Data/StationInfo.csv",index=None)
-            print(f'{saveFileName}으로 저장합니다.')
+
+            print(f'\033[92m >>{saveFileName}으로 저장합니다.\033[0m') 
             to_saveDataframe.to_csv(f"../Data/{saveFileName}.csv",index=None)
         else:
-            print('저장 하지 않습니다.')
+            print('\033[91m >>저장 하지 않습니다.\033[0m')
 
         return to_saveDataframe
 
@@ -207,10 +252,10 @@ class Service:
 #### 지하철 배차표 호선별 테이블 정제 함수 
     def dispatch_table_forML(line_배치):
         """
-        # Description : 특정 호선에대한 배치표 정보를 받아서 pivotable 로시간대별 칼럼생성후 배차 수를 계산
-        # Date : 2024.06.09
-        # Author : Forrest Dpark
-        # Detail:
+        #### 📌 Description : 특정 호선에대한 배치표 정보를 받아서 pivotable 로시간대별 칼럼생성후 배차 수를 계산
+        #### 📌 Date : 2024.06.09
+        #### 📌 Author : Forrest Dpark
+        #### 📌 Detail:
             * line_배치 (df)
             * Returns: pivotable for machine learning (df)
         """
@@ -284,7 +329,7 @@ class Service:
         )
         print("예시히스토그램 2개만 플랏합니다")
         for i in range(0,len(test_[:4]),2): ## 예시로 2개
-            Service.stationDispatchBarplot(test_,i, title_columnName='역명',startColNum=9)
+            Service.stationDispatchBarplot(test_,i, title_columnName='역이름',startColNum=9)
         print("최종 병합된 테이블을 출력합니다")
         return test_
 
@@ -293,10 +338,10 @@ class Service:
 #### 현재탑승객수 추정 및 배차 간격 시각화 
     def currentPassengerCalc(stations,pass_in,pass_out,dispached_subway_number):
         """
-        # Description : 각 역에서의 추정 탑승인원 수 
-        # Date : 2024.06.05
-        # Author : Forrest Dpark
-        # Detail:
+        # 📌 Description : 각 역에서의 추정 탑승인원 수 
+        # 📌 Date : 2024.06.05
+        # 📌 Author : Forrest Dpark
+        # 📌 Detail:
             * stations (list): 한 호선의 역코드 or 역 이름 배열 
             * pass_in (list): 각 역당 승차 인원수 배열 
             * pass_out (list): 각 역당 하차 인원수 배열
@@ -326,7 +371,7 @@ class Service:
         print(f"{dispached_subway_number}개 지하철이 배차되었을때 ")
         result = pd.DataFrame(
             {
-                '역명': stations,
+                '역이름': stations,
                 '승차인원': pass_in,
                 '하차인원': pass_out,
                 '변동인원': diff_arr,
@@ -338,11 +383,11 @@ class Service:
         return result
     def stationDispatchBarplot(df,row,title_columnName,startColNum):
         """
-        ### Description : 역들의 지하철 배차 수(싱헹과 하행이 거의 비슷하다는 가정하에 추정수치임)
-        ### Date : 2024.06.05
-        ### Author : Forrest Dpark
-        ### Detail:
-            * df pd.DataFrame:(역사코드와 역명, 평균 배차수 를 가지고 있는 데이터 프레임 )
+        ### 📌 Description : 역들의 지하철 배차 수(싱헹과 하행이 거의 비슷하다는 가정하에 추정수치임)
+        ### 📌 Date : 2024.06.05
+        ### 📌 Author : Forrest Dpark
+        ### 📌 Detail:
+            * df pd.DataFrame:(역사코드와 역이름, 평균 배차수 를 가지고 있는 데이터 프레임 )
             * row (int): 주중 행 , row+1 은 주말 행임. 
             * title_columnName (string) : 역이름 알수있는 칼럼. 
             * Returns: -
@@ -701,15 +746,15 @@ class Service:
 ### 데이터 신뢰성 판단 관련 함수
     def 호선당서비스불가역이름추출(line,승하차_역정보테이블, 배차역정보_테이블):
         """
-        # Description :  승하차 데이터에 존재하지않는 서비스불가 역의 리스트를 출력함. 
-        # Date : 2024.06.09
-        # Author : pdg
-        # Detail:
-            * line (int)
-            * 승하차_역정보테이블 (df)
-            * 배차역정보_테이블(df)
-            * Returns: 서비스불가 역의 리스트
-        # Update:
+        # 📌 Description :  승하차 데이터에 존재하지않는 서비스불가 역의 리스트를 출력함. 
+        # 📌 Date : 2024.06.09
+        # 📌 Author : pdg
+        # 📌 Detail:
+            🔸 line (int)
+            🔸 승하차_역정보테이블 (df)
+            🔸 배차역정보_테이블(df)
+            🔸 Returns: 서비스불가 역의 리스트
+        # 📌 Update:
 
         """
 
@@ -723,7 +768,7 @@ class Service:
             target_line_subway= uniq_배차[uniq_배차['호선']==line]
             print(service_disable_station)
             if service_disable_station !=[]:
-                print(f"⬇--{line}호선 서비스불가 역사코드 . 및 역사명--⬇")
+                print(Service.colored_text(f"⬇--{line}호선 서비스불가 역사코드 . 및 역사명--⬇", 'red'))
                 i = 0
                 for idx, row in enumerate(target_line_subway.to_numpy()):
                     for j in service_disable_station:
