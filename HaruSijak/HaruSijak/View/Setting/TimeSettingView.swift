@@ -24,12 +24,13 @@ struct TimeSettingView: View {
                 
                 //title
                 Text(titleName)
-                    .font(.title.bold())
+                    .font(.custom("Ownglyph_noocar-Rg", size: 30).bold())
                 
                 // time picker
                 Picker("", selection: $selectedTime, content: {
                     ForEach(0..<timeList.count, id:\.self, content: { index in
                         Text("\(timeList[index])시").tag(index)
+                            .font(.custom("Ownglyph_noocar-Rg", size: 30))
                     })
                 })
                 .pickerStyle(.wheel)
@@ -52,6 +53,7 @@ struct TimeSettingView: View {
                     }
                 }) // Button
                 .tint(.white)
+                .font(.custom("Ownglyph_noocar-Rg", size: 25))
                 .buttonStyle(.bordered)
                 .buttonBorderShape(.capsule)
                 .background(Color("color1"))
