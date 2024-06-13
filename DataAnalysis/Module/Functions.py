@@ -250,7 +250,7 @@ class Service:
 
 
 #### 지하철 배차표 호선별 테이블 정제 함수 
-    def dispatch_table_forML(line_배치):
+    def dispatch_table_forML(line_배치, save=False, saveFileName=""):
         """
         #### 📌 Description : 특정 호선에대한 배치표 정보를 받아서 pivotable 로시간대별 칼럼생성후 배차 수를 계산
         #### 📌 Date : 2024.06.09
@@ -296,8 +296,17 @@ class Service:
         interval.rename(columns={'00': '24'}, inplace=True)
         interval['호선']=line_배치['호선'].unique()[0] 
         interval=Service.reorder_columns(col_name='호선',df=interval,target_idx=1)
-        print(line_배치['호선'].unique() , "호선 에 대한 배차 테이블 표정제 결과")
+        print(Service.colored_text(f" 🔸{line_배치['호선'].unique() }호선 에 대한 배차 테이블 표정제 결과",'green'))
+        
+        if save: 
+            print(Service.colored_text('배차정보를 저장합니다.','red'))
+            interval.to_csv(f'../Data/지하철배차시간데이터/{saveFileName}_{line_배치['호선'].unique()[0]}호선배차.csv',index =None)
+        else:
+            print(Service.colored_text('배차정보를 저장하지 않습니다','red'))
         return interval
+    
+    
+    
     def table_merge_subwayInfo_dispatch(subwayInfo,line_배치):
         print(f"{line_배치['호선'].unique() }호선 배차시간표 역사코드 개수 :{len(line_배치['역사코드'].unique())}")
         test_merged_interval= pd.merge(subwayInfo,line_배치, on= ['역사코드','호선'])
