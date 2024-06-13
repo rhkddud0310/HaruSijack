@@ -1,3 +1,8 @@
+/*
+    Description
+        - 2024.06.11 j.park : 혼잡도 작업 실시
+        - 2024.06.13 snr : 출근시간대 설정 sheet 연결
+ */
 import SwiftUI
 import Zoomable
 
@@ -21,6 +26,10 @@ struct PredictView: View {
     @State var boardingPersonValue: Double = 0.0
     // 현재시간 열차의 하차인원 변수
     @State var AlightingPersonValue: Double = 0.0
+    
+    
+    let dbModel = TimeSettingDB() //시간설정 db instance
+    @State var isShowSheet: Bool = false
     
     
     //문제 역 -> 노원, 태릉입구, 군자,건대입구, 고속터미널,대림
@@ -95,7 +104,7 @@ struct PredictView: View {
                                 .actionSheet(isPresented: $showAlertForStation) {
                                     ActionSheet(
                                         title: Text(stationName),
-                                        message: Text("현재 시간의 탑승인원: \(Int(boardingPersonValue))\n현재 시간의 하차인원:\(Int(AlightingPersonValue))"),
+                                        message: Text("현재 시간의 예상 승차인원은 \(Int(boardingPersonValue))명 입니다. \n현재 시간의 예상 하차인원은 \(Int(AlightingPersonValue))명 입니다"),
                                         buttons: [
                                             .default(Text("OK"))
                                         ]
@@ -117,7 +126,18 @@ struct PredictView: View {
                 .offset(x: dragAmount.width, y: dragAmount.height)
             }
         }
+        .onAppear(perform: {
+            if dbModel.queryDB().isEmpty {
+                isShowSheet = true
+            }
+        })
+        .sheet(isPresented: $isShowSheet, content: {
+            TimeSettingView(titleName: "출근 시간대 설정")
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+        })//sheet
     }
+    
     
     // 역 클릭 처리 함수
     func handleStationClick(stationName: String) {
