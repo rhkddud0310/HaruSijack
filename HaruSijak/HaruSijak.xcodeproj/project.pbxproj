@@ -17,6 +17,9 @@
 		5464965A2C197FCB00B1FF48 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496592C197FCB00B1FF48 /* Time.swift */; };
 		5464965C2C19813400B1FF48 /* TimeSettingDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5464965B2C19813400B1FF48 /* TimeSettingDB.swift */; };
 		5464965E2C1A810400B1FF48 /* TimeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5464965D2C1A810400B1FF48 /* TimeSettingView.swift */; };
+		546496662C1A8BD600B1FF48 /* KCC-Hanbit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 546496652C1A8BD600B1FF48 /* KCC-Hanbit.ttf */; };
+		546496682C1A8C6100B1FF48 /* 온글잎 누카.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 546496672C1A8C6100B1FF48 /* 온글잎 누카.ttf */; };
+		5464966A2C1A98D900B1FF48 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496692C1A98D900B1FF48 /* Notification.swift */; };
 		5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */; };
 		5471ADBB2C0EDACD00D24E62 /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = 5471ADBA2C0EDACD00D24E62 /* Zoomable */; };
 		54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */; };
@@ -46,6 +49,11 @@
 		546496592C197FCB00B1FF48 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		5464965B2C19813400B1FF48 /* TimeSettingDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSettingDB.swift; sourceTree = "<group>"; };
 		5464965D2C1A810400B1FF48 /* TimeSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSettingView.swift; sourceTree = "<group>"; };
+		546496622C1A88C700B1FF48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		546496652C1A8BD600B1FF48 /* KCC-Hanbit.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KCC-Hanbit.ttf"; sourceTree = "<group>"; };
+		546496672C1A8C6100B1FF48 /* 온글잎 누카.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "온글잎 누카.ttf"; sourceTree = "<group>"; };
+		546496692C1A98D900B1FF48 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		5464966B2C1AC32600B1FF48 /* HaruSijak.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HaruSijak.entitlements; sourceTree = "<group>"; };
 		5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = C_DatePicker.swift; sourceTree = "<group>"; };
 		54F80F022C0AF4EE00D83A08 /* HaruSijak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HaruSijak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaruSijakApp.swift; sourceTree = "<group>"; };
@@ -95,6 +103,15 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
+		5464965F2C1A87A000B1FF48 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				546496672C1A8C6100B1FF48 /* 온글잎 누카.ttf */,
+				546496652C1A8BD600B1FF48 /* KCC-Hanbit.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		5471ADB62C0D7A0100D24E62 /* Component */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +139,9 @@
 		54F80F042C0AF4EE00D83A08 /* HaruSijak */ = {
 			isa = PBXGroup;
 			children = (
+				5464966B2C1AC32600B1FF48 /* HaruSijak.entitlements */,
+				546496622C1A88C700B1FF48 /* Info.plist */,
+				5464965F2C1A87A000B1FF48 /* Font */,
 				FE5CC6722C16BA11005DA54E /* Test */,
 				5471ADB62C0D7A0100D24E62 /* Component */,
 				54F80F152C0AF57900D83A08 /* Model */,
@@ -173,6 +193,7 @@
 				5433378D2C16C8CB000809D9 /* Task.swift */,
 				FE360DC42C16D79D007BA9AE /* JSONModel.swift */,
 				546496592C197FCB00B1FF48 /* Time.swift */,
+				546496692C1A98D900B1FF48 /* Notification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -276,6 +297,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				546496682C1A8C6100B1FF48 /* 온글잎 누카.ttf in Resources */,
+				546496662C1A8BD600B1FF48 /* KCC-Hanbit.ttf in Resources */,
 				54F80F0D2C0AF4EF00D83A08 /* Preview Assets.xcassets in Resources */,
 				54F80F0A2C0AF4EF00D83A08 /* Assets.xcassets in Resources */,
 			);
@@ -308,6 +331,7 @@
 				5464965E2C1A810400B1FF48 /* TimeSettingView.swift in Sources */,
 				54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */,
 				FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */,
+				5464966A2C1A98D900B1FF48 /* Notification.swift in Sources */,
 				54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */,
 				5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */,
 				54F80F192C0AF67200D83A08 /* TodoListDB.swift in Sources */,
@@ -444,6 +468,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULE_DEBUGGING = YES;
 				CLANG_MODULES_DISABLE_PRIVATE_WARNING = NO;
+				CODE_SIGN_ENTITLEMENTS = HaruSijak/HaruSijak.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
@@ -453,11 +478,11 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				GENERATE_PKGINFO_FILE = NO;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = NO;
+				INFOPLIST_FILE = HaruSijak/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -479,6 +504,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULE_DEBUGGING = YES;
 				CLANG_MODULES_DISABLE_PRIVATE_WARNING = NO;
+				CODE_SIGN_ENTITLEMENTS = HaruSijak/HaruSijak.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
@@ -488,11 +514,11 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				GENERATE_PKGINFO_FILE = NO;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = NO;
+				INFOPLIST_FILE = HaruSijak/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
