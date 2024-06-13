@@ -14,6 +14,8 @@
         * 2024.06.11 by snr : Add tabbar icon for settingPage
         * 2024.06.12 by snr : 시간대 변경 sheet 생성
         * 2024.06.13 by snr : 시간설정 추가 및 수정기능 완료
+                              시간 선택 picker를 TimeSettingView로 view로 생성함 -> 다른페이지에서도 사용하기 위해
+ 
  */
 
 
@@ -73,84 +75,11 @@ struct SettingView: View {
             
             // 시간설정 sheet
             .sheet(isPresented: $isShowSheet, content: {
-                VStack(content: {
-                    
-                    //title
-                    Text("시간 변경")
-                        .font(.title.bold())
-                    
-                    // time picker
-                    Picker("", selection: $selectedTime, content: {
-                        ForEach(0..<timeList.count, id:\.self, content: { index in
-                            Text("\(timeList[index])시").tag(index)
-                        })
-                    })
-                    .pickerStyle(.wheel)
-                    
-                    //button
-                    Button("변경하기", action: {
-                        infoList = dbModel.queryDB()
-                        
-                        print("infoList.count : ",infoList.count)
-                        
-                        // 시간 설정 정보가 없을 때 => insert
-                        if infoList.isEmpty {
-                            print("infoList is empty, setting isAdd to true")
-                            alertType = .add
-                            
-                        } else {
-                            // update 처리
-                            print("infoList is not empty, setting isUpdate to true")
-                            alertType = .update
-                        }
-                    }) // Button
-                    .tint(.white)
-                    .buttonStyle(.bordered)
-                    .buttonBorderShape(.capsule)
-                    .background(Color("color1"))
-                    .cornerRadius(30)
-                    .controlSize(.large)
-                    .frame(width: 200, height: 50) // 버튼의 크기 조정
-                    .padding(.top, 40)
-                    .alert(item: $alertType) { alertType in
-                        switch alertType {
-                        case .add:
-                            return Alert(
-                                title: Text("알림"),
-                                message: Text("\(timeList[selectedTime])시로 설정하시겠습니까?"),
-                                primaryButton: .destructive(Text("확인"), action: {
-                                    print("Adding time setting")
-                                    dbModel.insertDB(time: timeList[selectedTime])
-                                    isShowSheet = false
-                                }),
-                                secondaryButton: .cancel(Text("취소"))
-                            )
-                        case .update:
-                            return Alert(
-                                title: Text("알림"),
-                                message: Text("\(timeList[selectedTime])시로 변경하시겠습니까?"),
-                                primaryButton: .destructive(Text("확인"), action: {
-                                    dbModel.updateDB(time: timeList[selectedTime], id: infoList[0].id)
-                                    isShowSheet = false
-                                }),
-                                secondaryButton: .cancel(Text("취소"))
-                            )
-                        }
-                    }
-                })//VStack
+                TimeSettingView(titleName: "시간변경")
             })//sheet
             .presentationDragIndicator(.visible)
         }) //NavigationView
         
-    }
-}
-
-enum SettingAlertType: Identifiable {
-    case add
-    case update
-    
-    var id: Int{
-        hashValue
     }
 }
 
