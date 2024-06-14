@@ -51,20 +51,21 @@
     🟦 2024.06.13 by pdg : 
         ✅ color text 함수 추가
         ✅ subwayInfo 함수 수정 
+    * 2024.06.14 by pdg :
+        머신러닝 통합 파일에서 사용하는 StationInfo 파일 dict 화 함수 추가 
+        - 각함수에프린트를 넣어서 무엇을 실행하는 함수인지 print 한후 실행될수있도록 함. 
         
     
 
 ---
 """
 ## project data processing functions 
-# print(Service.colored_text(,'yellow'))
-from multiprocessing import Process
-import matplotlib.pyplot as plt, seaborn as sns
+# Service.Explaination(title,explain)
 class Service:
     def __init__(self) -> None:
         pass
-##### 기본 Setting 함수
-    def colored_text(text, color='default'):
+    ##### 기본 Setting 함수
+    def colored_text(text, color='default', bold=False):
         '''
         #### 예시 사용법
         print(colored_text('저장 하지 않습니다.', 'red'))
@@ -90,9 +91,15 @@ class Service:
             'bright_white': '\033[97m',  # 밝은 흰색
             'reset': '\033[0m'
         }
-        
         color_code = colors.get(color, colors['default'])
-        return f'{color_code}{text}{colors["reset"]}'        
+        bold_code = '\033[1m' if bold else ''
+        reset_code = colors['reset']
+        
+        return f"{bold_code}{color_code}{text}{reset_code}"
+    def Explaination(title,explain):
+        title =str(title).capitalize
+        print(Service.colored_text(f" <<< {title}. >>>",'yellow',bold=True))
+        print(Service.colored_text(f"  📌 {explain}",'yellow'))
     def plotSetting(pltStyle="seaborn-v0_8"):
         '''
         # Fucntion Description : Plot 한글화 Setting
@@ -100,6 +107,7 @@ class Service:
         # Author : Forrest D Park 
         # update : 
         '''
+        Service.Explaination("plotSetting"," matplotlibn plot 한글화 Setting")
         # graph style seaborn
         import matplotlib.pyplot as plt # visiulization
         import platform
@@ -114,10 +122,10 @@ class Service:
         else:
             print("Unknown System")
         print(Service.colored_text("___## OS platform 한글 세팅완료 ## ___",'magenta'))
-##### Index findeing
     def indexFind(colnamelist, search_target_word):
-        import numpy as np
+        print(Service.colored_text("📌해당 단어가 존재하는 칼럼의 이름이있는 칼럼의 indx를 출력합니다.",'yellow'))
         # 해당 단어가 존재하는 칼럼의 이름이있는 칼럼의 indx를 출력합니다. 
+        import numpy as np
         indices = np.where([search_target_word in col for col in colnamelist])[0]
         return indices
 ####  데이터 체크및 정제 관련 함수들 
@@ -133,8 +141,8 @@ class Service:
             🟦 2024.06.04 by pdg : 함수변경
                 ✅ 관심 칼럼이 많을때 칼럼 개수를 조정할수있게 함. 
         '''
-        print("--"*110)
-        print(Service.colored_text(f" <<< dataInfoProcessing. >>>",'yellow'))
+        Service.Explaination("dataInfoProcessing","Data frame 의 정제해야할 부분을 체크해주는 함수 입니다")
+        
         print(Service.colored_text(f"  1️⃣ Data row/colum numbers : {len(df.index)}/{len(df.columns)}",'red'))
         #print(subway.columns)
         #print(subway.info())
@@ -176,6 +184,7 @@ class Service:
             * target_idx (int): The target index where the column should be placed.
             * Returns: pandas.DataFrame: The DataFrame with the column reordered.
         """
+        Service.Explaination('reorder_columns','칼럼을 이동함')
         print(Service.colored_text(f'{col_name}을 {target_idx}로 이동함','yellow'))
         cols = list(df.columns)
         current_idx = cols.index(col_name)
@@ -195,17 +204,14 @@ class Service:
             🔸 Returns: 
         📌 Updates : 
             2024.06.13 by pdg : 프린트에 색깔입힘. 
-            
         """
-        print(Service.colored_text(
-        """\n 🔸🔸🔸지하철 역정보 테이블 함수 실행🔸🔸🔸 """,'magenta'))
-           
+        Service.Explaination('subway_info_table','승하차 인원 데이터에서 각 역에대한 정보 ( 역사코드 호선 등)를 추출한 테이블을 반환')
+        # print(Service.colored_text("""\n 🔸🔸🔸지하철 역정보 테이블 함수 실행🔸🔸🔸 """,'magenta'))
         print("  |- 첫 수송일자 :",list(subway['수송일자'])[0])
         print("  |- 마지막 수송일자 :",list(subway['수송일자'])[-1])
         ## 역명에서 () 빼버리기 
         정제된역명 = [i.split("(")[0] for i in subway['역이름']]
         subway['역이름']= 정제된역명
-        
         # if subway.reorder_columns 
         
         subway_test = subway.rename({'고유역번호(외부역코드)':'역사코드'},axis=1)
@@ -267,6 +273,7 @@ class Service:
             * line_배치 (df)
             * Returns: pivotable for machine learning (df)
         """
+        Service.Explaination('dispatch_table_forML','특정 호선에대한 배치표 정보를 받아서 pivotable 로시간대별 칼럼생성후 배차 수를 계산')
         import warnings ; warnings.filterwarnings('ignore')
         # 새로운 테이블 만들기
         line_배치['열차시간계산']=line_배치['열차도착시간'].str.split(':').str[0]
@@ -313,7 +320,18 @@ class Service:
             print(Service.colored_text('배차정보를 저장하지 않습니다','red'))
         return interval
     def table_merge_subwayInfo_dispatch(subwayInfo,line_배치,histPlot = False):
+        """
+        #### 📌 Description : 역사정보와 배차테이블을 Merge 합니다.
+        #### 📌 Date : 2024.06.09
+        #### 📌 Author : Forrest Dpark
+        #### 📌 Detail:
+            * line_배치 (df)
+            * save (Bool) : 저장할것이면 True
+            * saveFileName (str) : 저장파일 이름 주소 
+            * Returns: pivotable for machine learning (df)
+        """
         import pandas as pd 
+        Service.Explaination('table_merge_subwayInfo_dispatch',"역사정보와 배차테이블을 Merge 합니다.")
         print(Service.colored_text('--- 배차시간표 + 역사정보 ---','yellow'))
         print(Service.colored_text(f"{line_배치['호선'].unique() }호선 배차시간표 역사코드 개수 :{len(line_배치['역사코드'].unique())}",'yellow'))
         test_merged_interval= pd.merge(subwayInfo,line_배치, on= ['역사코드','호선'])
@@ -361,6 +379,7 @@ class Service:
                 * 사용시 이상한부분 문의 => 010-7722-15920
                 * Returns: colum 이름들을 정제하고 Nan을 제거한 정제 데이터 table
         """
+        Service.Explaination('data_preprocessing_toAnalysis','데이터 통합 정제 함수!!!')
         import pandas as pd, numpy as np
         # 필수 항목 check 
         # coloum check 
@@ -440,7 +459,7 @@ class Service:
         #정제후 데이터 출력
         return subway
 
-#### 현재탑승객수 추정 및 배차 간격 시각화 
+#### 현재탑승객수 추정 알고리즘
     def currentPassengerCalc(stations,pass_in,pass_out,dispached_subway_number):
         """
         # 📌 Description : 각 역에서의 추정 탑승인원 수 
@@ -453,6 +472,7 @@ class Service:
             * dispached_subway_number (int): 배차대수
             * Returns: dataframe table
         """
+        Service.Explaination('currentPassengerCalc',' 각 역에서의 추정 탑승인원 수 계산 ')
         import pandas as pd , numpy as np
         # 승하차 정보 없을때 랜덤 승하차 인원 데이터 생성 
         if pass_in ==[] and pass_out ==[]:
@@ -497,6 +517,8 @@ class Service:
             * title_columnName (string) : 역이름 알수있는 칼럼. 
             * Returns: -
         """
+        Service.Explaination('stationDispatchBarplot',' 역들의 지하철 배차 수(싱헹과 하행이 거의 비슷하다는 가정하에 추정수치임)')
+        import matplotlib.pyplot as plt, seaborn as sns
         # fig =plt.figure(figsize=(20,5))
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 5))
         bar1 = sns.barplot(
@@ -525,11 +547,21 @@ class Service:
         plt.show()
 
 #### 날짜 를 정제하는 함수
-    def dayToIntConvert(df, dayCol):
+    def dayToIntConvert(df, dateColName):
+        """
+        ### 📌 Description : STring type 의 날짜 (ex 2024-11-23)를 요일로 바꾸고 0~6에 해당하는 숫자로 칼럼을 생성해 반환
+        ### 📌 Date : 2024.06.05
+        ### 📌 Author : Forrest Dpark
+        ### 📌 Detail:
+            * df pd.DataFrame: 날짜칼럼을 포함하는 데이터 프레임 
+            * dateColName : 날짜칼럼 이름
+            * Returns: '요일' 칼럼이 생성되어 포함된 데이터프레임
+        """
+        Service.Explaination('dayToIntConvert','STring type 의 날짜 (ex 2024-11-23)를 요일로 바꾸고 0~6에 해당하는 숫자로 칼럼을 생성해 반환')
         # 수송일자 날짜형으로 변환
         import pandas as pd
         ## 요일 컬럼 생성
-        df['요일'] = pd.to_datetime(df[dayCol], format='%Y-%m-%d').dt.day_name().values
+        df['요일'] = pd.to_datetime(df[dateColName], format='%Y-%m-%d').dt.day_name().values
         # 요일을 영어에서 한국어로 변환
         day_name_mapping = {
             'Sunday': 0,
@@ -543,8 +575,19 @@ class Service:
         df['요일'] = df['요일'].map(day_name_mapping)
         return df
     def date_Divid_Add_YMW_cols(df,DateColName):
+        """
+        ### 📌 Description : 날짜칼럼이 들어간 데이터프레임을 받아서 년도, 월, 주차 칼럼을 생성한뒤 반환하는 함수
+        ### 📌 Date : 2024.06.05
+        ### 📌 Author : Forrest Dpark
+        ### 📌 Detail:
+            * df pd.DataFrame: 날짜칼럼을 포함하는 데이터 프레임 
+            * dateColName : 날짜칼럼 이름
+            * Returns: '년도,월, 주차' 칼럼이 생성되어 포함된 데이터프레임
+        """
+        Service.Explaination('date_Divid_Add_YMW_cols','날짜칼럼이 들어간 데이터프레임을 받아서 년도, 월, 주차 칼럼을 생성한뒤 반환하는 함수')
         import pandas as pd
         from datetime import datetime, timedelta
+        # Service.Explaination(title,explain)
         years = []
         weeks = []
         months = []
@@ -560,6 +603,15 @@ class Service:
         df['주차'] = weeks
         return df
     def date_string_to_MonthWeekHolyDayname(date_str):
+        """
+        ### 📌 Description : 머신러닝 을 위해 앱에서 가져온 날짜 string 하나를 월,주차,휴일,요일 데이터로 반환
+        ### 📌 Date : 2024.06.10
+        ### 📌 Author : Forrest Dpark
+        ### 📌 Detail:
+            * date_str: 날짜 string ex) 1988-10-27
+            * Returns: month_number, week_number, is_holi,dayname_code
+        """
+        Service.Explaination('date_string_to_MonthWeekHolyDayname','머신러닝 을 위해 앱에서 가져온 날짜 string 하나를 월,주차,휴일,요일 데이터로 반환')
         from datetime import datetime,timedelta
         # 날짜 문자열을 datetime 객체로 변환
         date_object = datetime.strptime(date_str, '%Y-%m-%d')
@@ -574,9 +626,6 @@ class Service:
         import holidays
         kr_holidays = holidays.KR()
         is_holi =  1 if date_object in kr_holidays else 0
-
-
-        
         day_name = date_object.strftime('%A')
         month_number = date_object.month
         day_name_mapping = {
@@ -591,6 +640,7 @@ class Service:
         dayname_code = day_name_mapping.get(day_name)
         return month_number, week_number, is_holi,dayname_code
     def holidaysToIntConvert(df,DateColName):
+        Service.Explaination('holidaysToIntConvert','공휴일 칼럼 생성 ')
         # !pip install holidays
         import holidays
         kr_holidays = holidays.KR()
