@@ -33,6 +33,9 @@
 		54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1E2C0B649500D83A08 /* TodoListView.swift */; };
 		54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */; };
 		54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */; };
+		A773B5ED2C1C9FC60071D7FF /* LottiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A773B5EA2C1C9FC60071D7FF /* LottiView.swift */; };
+		A773B5EE2C1C9FC60071D7FF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A773B5EB2C1C9FC60071D7FF /* SplashView.swift */; };
+		A773B5F12C1CA0B00071D7FF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = A773B5F02C1CA0B00071D7FF /* Lottie */; };
 		FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE360DC42C16D79D007BA9AE /* JSONModel.swift */; };
 		FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6732C16BA24005DA54E /* Test_pdg.swift */; };
 		FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */; };
@@ -67,6 +70,8 @@
 		54F80F1E2C0B649500D83A08 /* TodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListView.swift; sourceTree = "<group>"; };
 		54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoListView.swift; sourceTree = "<group>"; };
 		54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoListView.swift; sourceTree = "<group>"; };
+		A773B5EA2C1C9FC60071D7FF /* LottiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottiView.swift; sourceTree = "<group>"; };
+		A773B5EB2C1C9FC60071D7FF /* SplashView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		FE360DC42C16D79D007BA9AE /* JSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONModel.swift; sourceTree = "<group>"; };
 		FE5CC6732C16BA24005DA54E /* Test_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_pdg.swift; sourceTree = "<group>"; };
 		FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test2_pdg.swift; sourceTree = "<group>"; };
@@ -78,6 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5471ADBB2C0EDACD00D24E62 /* Zoomable in Frameworks */,
+				A773B5F12C1CA0B00071D7FF /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,6 +171,7 @@
 		54F80F132C0AF56900D83A08 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A773B5EC2C1C9FC60071D7FF /* Splash */,
 				546496542C18381200B1FF48 /* Setting */,
 				543337862C16C659000809D9 /* Schedule */,
 				54F80F222C0BE53900D83A08 /* TodoList */,
@@ -224,6 +231,15 @@
 			path = TodoList;
 			sourceTree = "<group>";
 		};
+		A773B5EC2C1C9FC60071D7FF /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				A773B5EA2C1C9FC60071D7FF /* LottiView.swift */,
+				A773B5EB2C1C9FC60071D7FF /* SplashView.swift */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
 		FE5CC6722C16BA11005DA54E /* Test */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +267,7 @@
 			name = HaruSijak;
 			packageProductDependencies = (
 				5471ADBA2C0EDACD00D24E62 /* Zoomable */,
+				A773B5F02C1CA0B00071D7FF /* Lottie */,
 			);
 			productName = HaruSijak;
 			productReference = 54F80F022C0AF4EE00D83A08 /* HaruSijak.app */;
@@ -282,6 +299,7 @@
 			mainGroup = 54F80EF92C0AF4EE00D83A08;
 			packageReferences = (
 				5471ADB92C0EDACD00D24E62 /* XCRemoteSwiftPackageReference "Zoomable" */,
+				A773B5EF2C1CA0B00071D7FF /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 54F80F032C0AF4EE00D83A08 /* Products */;
 			projectDirPath = "";
@@ -313,6 +331,7 @@
 			files = (
 				54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */,
 				54F80F1B2C0B5D7B00D83A08 /* PredictView.swift in Sources */,
+				A773B5ED2C1C9FC60071D7FF /* LottiView.swift in Sources */,
 				54F80F172C0AF59300D83A08 /* TodoLists.swift in Sources */,
 				543337902C16FE09000809D9 /* CalendarDB.swift in Sources */,
 				FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */,
@@ -331,6 +350,7 @@
 				5464965E2C1A810400B1FF48 /* TimeSettingView.swift in Sources */,
 				54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */,
 				FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */,
+				A773B5EE2C1C9FC60071D7FF /* SplashView.swift in Sources */,
 				5464966A2C1A98D900B1FF48 /* Notification.swift in Sources */,
 				54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */,
 				5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */,
@@ -564,6 +584,14 @@
 				kind = branch;
 			};
 		};
+		A773B5EF2C1CA0B00071D7FF /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -571,6 +599,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5471ADB92C0EDACD00D24E62 /* XCRemoteSwiftPackageReference "Zoomable" */;
 			productName = Zoomable;
+		};
+		A773B5F02C1CA0B00071D7FF /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A773B5EF2C1CA0B00071D7FF /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
