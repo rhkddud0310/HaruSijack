@@ -97,9 +97,9 @@ class Service:
         
         return f"{bold_code}{color_code}{text}{reset_code}"
     def Explaination(title,explain):
-        title =str(title).capitalize
-        print(Service.colored_text(f" <<< {title}. >>>",'yellow',bold=True))
-        print(Service.colored_text(f"  📌 {explain}",'yellow'))
+        title =str(title).upper()
+        print(Service.colored_text(f"___ 🟡 {title}. ",'green',bold=True))
+        print(Service.colored_text(f"______ 📌 {explain}",'yellow'))
     def plotSetting(pltStyle="seaborn-v0_8"):
         '''
         # Fucntion Description : Plot 한글화 Setting
@@ -107,7 +107,7 @@ class Service:
         # Author : Forrest D Park 
         # update : 
         '''
-        Service.Explaination("plotSetting"," matplotlibn plot 한글화 Setting")
+        Service.Explaination("plotSetting","matplotlibn plot 한글화 Setting")
         # graph style seaborn
         import matplotlib.pyplot as plt # visiulization
         import platform
@@ -935,13 +935,180 @@ class Service:
         '''
 
 
+    ### 통합 머신러닝을 위한 feature table 정제 
+    def from_StationInfo_csv_latlang_dispatchTable_merge(parent_dir):
+        """
+        # 📌 Description : 기초적인 역정보데이터(역이름,역코드,호선)에 위도경도배차시간표를 머지하는 작업
+        # 📌 Date : 2024.06.09
+        # 📌 Author : pdg
+        # 📌 Detail:
+            * StationInfo 파일에대한 배차테이블을 제작 
+            🔸 parent : /Users/forrestdpark/Desktop/PDG/Python_/Project/HaruSijack/DataAnalysis
 
-if __name__ == '__main__':  
-    print("main stdart")
-    # 프로세스를 생성
-    # p0 = Process(target=start_get, args=(0, 100000000)) ## cpu1에서 돌아간다. 
-    # p1 = Process(target=start_get, args=(100000001, 200000000))  # cpu2에서 돌아간다. 
-    # p2 = Process(target=start_get, args=(200000001, 300000000)) # cpu3에서 돌아간다. 
+            🔸 Returns: -> Save files 
+                table_merge_subwayInfo_dispatch 함수를 이용하여 머지후 저장함. 
+                : 
+        # 📌 Update:
+
+        """
+        Service.Explaination('from_StationInfo_csv_latlang_dispatchTable_merge','기초적인 역정보데이터(역이름,역코드,호선)에 위도경도배차시간표를 머지하는 작업')
+        import pandas as pd, numpy as np, os
+        ##머신러닝을 위해 필요한것 = feature table
+        ## feature table 을 만들기 위해 필요한것 -> 지하철 역정보(역사코드,역사이름, 호선, 배차정보) 
+        # 역사 정보 정제파일 Fetch
+        # 년도별로 역사정보(StationInfo_) 가 Data 폴더 내에 있다. 
+        # 이폴더를 list dir 함수를 사용해 읽어들여서 각년도별 역사정보를 dicitionary 로 변수저장한다. 
+        StationInfo_dict = {}
+        print(Service.colored_text("Parent Directory : "+parent_dir,'green'))
+        for i in os.listdir(parent_dir):
+            # print(i)
+            file_order = 0 # file 순서 
+            if i =='Data': # Data 폴더 이면 실행 
+                print(Service.colored_text("  |-Data 폴더에서 역사 정보를 가진 StationInfo  csv 파일을 검색합니다.",'yellow'))
+                for idx, filename in enumerate(os.listdir(os.path.join(parent_dir,i))):
+                    # print(" |-",j)
+                    if 'StationInfo' in filename: # Station info 만 추출
+                        file_order += 1
+                        print(f" {file_order}. -> ",filename)
+                        key_name=filename.split(".csv")[0]
+                        # print(key_name)
+                        StationInfo_dict[f'{key_name}'] = pd.read_csv(os.path.join(parent_dir,i,filename))
+        print(Service.colored_text("  >> 📌 Data folder 에 있는 년도별 Station Info 를  StationInfo_dict 에 저장합니다.", 'blue'))
+        print("[[🔹🔹🔹 StationInfo keys 값 정보🔹🔹🔹]]")
+        for i in StationInfo_dict.keys():
+            print("  |-",Service.colored_text(i,'cyan'))
+        
+        print(Service.colored_text("  >> 📌 각역에서의 위도경도 데이터를 저장하고 배차시간표를 병합하여 지하철 배차시간데이터폴더에 저장합니다.", 'blue'))
+        for key in StationInfo_dict.keys():
+            ## 역정보 데이터의  이름 (ex. StationInfo_18) 
+            data_name = key
+            print(Service.colored_text(f"✅ {data_name} :역사정보 \n",'yellow'),StationInfo_dict[data_name].head(3))
+            latlng = pd.read_csv("../Data/seoul_subway_latlon_zenzen.csv")
+            latlng.rename( {'고유역번호(외부역코드)':'역사코드'}, inplace=True, axis=1)
+            latlng.drop(['역명','호선','환승역수'], axis=1,inplace=True)
+            print(Service.colored_text(f"✅ {data_name} : 역사별 위도경도 : \n",'yellow'),latlng.head(3))
+
+            ## 위도 경도 데이터 merge 
+            StationInfo_dict[data_name] = pd.merge(StationInfo_dict[data_name],latlng, on='역사코드',how='inner' )
+            print(Service.colored_text('✅ Merged data check(tail)','yellow'))
+            print(StationInfo_dict[data_name].tail(3))
+
+            # 호선별 배차시간데이터  저장 
+            savefilename_indexName = data_name.split('StationInfo')[-1]
+            line_배치_dict ={}
+            for i in range(1,9):
+                try:
+                    line_배치_dict[f'{i}호선'] = pd.read_csv(f'../Data/지하철배차시간데이터/StationInfo{savefilename_indexName}_{i}_호선배차.csv')
+                    line_배치_dict[f'{i}호선'] = \
+                        Service.table_merge_subwayInfo_dispatch(
+                            StationInfo_dict[data_name],
+                            line_배치_dict[f'{i}호선'],
+                            histPlot=False
+                            )
+                except: 
+                    print(f"{key}데이터의{i}호선에 문제 가있습니다")
+                    continue
+            # line_배치_dict['7호선'].tail()
+        # return StationInfo_dict ## dictionary 반환 
+    def mlTableGen(subway_dict, save_mlTable_dict_fileName):
+        """
+                # 📌 Description : 머신러닝을 위한 Feature table 생성, 날짜별 승하차정보와 배차정보, 날짜적 특징을 보유한 테이블 생성
+                # 📌 Date : 2024.06.14
+                # 📌 Author : pdg
+                # 📌 Detail:
+                    03-2.머신러닝 통합.ipynb 에서 활용되는 함수 
+                    승하차 데이터 dictionary에서 승하차 인원 데이터를 추출하고 년도별 호선별 배차시간표데이터와 조합하여
+                    머신러닝이 돌아갈수잇는 Feature table 을 생성함.
+                    🔸 Returns: -> Save files 
+
+                # 📌 Update:
+
+        """
+        import pandas as pd, numpy as np, os
+        Service.Explaination('ml_Table_Generator','머신러닝을 위한 Feature table 생성, 날짜별 승하차정보와 배차정보, 날짜적 특징을 보유한 테이블 생성')
+        # 전체학습데이터 생성 
+        # 기본 승하차데이터의 승하차 칼럼들을 다시 정제 해야함. 
+        mlTable_dict = {}
+        for i,key in enumerate(subway_dict.keys()):
+            print(Service.colored_text(f'🔹 {i} key : {key}','cyan'))
+            mlTable_dict[key]= Service.data_preprocessing_toAnalysis(subway_dict,key)
+
+        print(Service.colored_text("########### 정제된 데이터에서 Feature Engineering 을 시작합니다 #################",'yellow'))
+
+        for i,key in enumerate(mlTable_dict.keys()):
+            print(Service.colored_text(f'🔹 {i} key : {key}','cyan'))
+            # print(Service.colored_text(f">> 📌{key}data 의 수송일자 칼럼에서 요일(int)을 추출한뒤 4번째 칼럼으로 이동",'yellow'))
+            print(Service.colored_text(f'🔹 mlTable 에 날짜를 정제하여 날짜관련 feature 를 생성합니다. ','cyan'))
+            mlTable_dict[key]= Service.dayToIntConvert(mlTable_dict[key], "수송일자")
+            mlTable_dict[key] = Service.reorder_columns(mlTable_dict[key],col_name="요일",target_idx=4)
+            ##날짜에서 년도,월, 주차
+            mlTable_dict[key] = Service.date_Divid_Add_YMW_cols(mlTable_dict[key] ,'수송일자')
+            ## 날짜에서 공휴일 데이터 추가
+            mlTable_dict[key]= Service.holidaysToIntConvert(mlTable_dict[key],DateColName='수송일자')
+            ## 수송일자 , 연번 삭제 시간관련데이터 앞으로 이동 
+            for idx, col in enumerate(["년도","월","주차","공휴일"]):
+                mlTable_dict[key] =Service.reorder_columns(col_name=col,df=mlTable_dict[key] ,target_idx=idx)
+            mlTable_dict[key]['주중주말'] = ['SAT' if day in [5, 6] else 'DAY' for day in mlTable_dict[key]['요일']]
+            mlTable_dict[key]=Service.reorder_columns(col_name='주중주말',df= mlTable_dict[key],target_idx=4)
+
+        # 시간대 칼럼 이름 변경 ~시 인원으로 
+        print(Service.colored_text("시간대 칼럼 이름 변경 ~시 인원으로",'yellow'))
+        for key in  mlTable_dict.keys():
+            colnamelist =mlTable_dict[key].columns.tolist()
+            시간대시작index=Service.indexFind(colnamelist,'06')[0]
+            # print(*colnamelist[시간대시작index:])
+            for colname in colnamelist[시간대시작index:]:
+                # print(f'{colname[:2]}시인원')
+                if '06시이전' == colname:
+                    mlTable_dict[key].rename({colname:f'05시인원'}, inplace=True, axis=1)    
+                else:
+                    mlTable_dict[key].rename({colname:f'{colname[:2]}시인원'}, inplace=True, axis=1)
+        print(Service.colored_text("########### Feature Engineering 완료 #################",'yellow'))
+        integrated_mltable_line_dict ={}
+        # 배차시간표는 Line 별로되어있기때문에 나눠서 머신러닝 만듬... 
+        for key in mlTable_dict.keys():
+
+            data_name=key # 'subway19'
+            print(Service.colored_text(f"#___ data name = {data_name}",'yellow'))
+            savefilename_indexName = data_name.split('subway')[-1]
+            mlTable=mlTable_dict[key]
+            
+            mlTable_line_dict  ={}
+            for line in range(1,9):
+                # print(mlTable[mlTable['호선']==line])
+                try: 
+                    mlt= mlTable[mlTable['호선']==line]
+                    # print(mlt.columns)
+                    line_배치 = pd.read_csv(f'../Data/지하철배차시간데이터/StationInfo_{savefilename_indexName}_{i}_호선배차.csv')
+                    mlTable_line_dict[f'{key}_{line}호선']= pd.merge(line_배치,mlt,on = ['역사코드','주중주말','호선'])
+                    
+                except: continue
+            # integrated_mltable_line_dict[f'{key}_line_dict']=mlTable_line_dict
+            mlTable_dict[key]=mlTable_line_dict
+        print(Service.colored_text("########### 호선별 mlTable 생성 완료 #################",'yellow'))
+        # return integrated_mltable_line_dict
+        # return mlTable_dict
+        ## 배차 시간대 칼럼 이름 ~배차로 바꾸기 
+        for key in mlTable_dict.keys():
+            for line in mlTable_dict[key].keys():
+                table = mlTable_dict[key][line]
+                colnamelist = table.columns
+                배차StartIndex = Service.indexFind(colnamelist=colnamelist.tolist(),search_target_word='05')[0]
+                배차FinalIndex = Service.indexFind(colnamelist=colnamelist.tolist(),search_target_word='24')[0]
+                for colname in colnamelist[배차StartIndex:배차FinalIndex+1]:
+                    # print(f'{colname[:2]}시인원')
+                    table.rename({colname:f'{colname[:2]}배차'}, inplace=True, axis=1)
+                mlTable_dict[key][line]=table
+                print(mlTable_dict[key][line])
+        print(Service.colored_text("###########배차 시간대 칼럼 이름 ~배차로 바꾸기 완료 #################",'yellow'))
+        # print("#"*20)   
+        # print(mlTable_dict)
+        np.save(f'../Data/mlTables/mlTable_dict_{save_mlTable_dict_fileName}.npy',mlTable_dict, allow_pickle=True)
+        return mlTable_dict
+        
+
+if __name__ == '__main__':  print("main stdart")
+    
 
 
 
