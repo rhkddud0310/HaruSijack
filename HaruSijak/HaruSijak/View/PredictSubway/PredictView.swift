@@ -134,19 +134,33 @@ struct PredictView: View {
                                         Text("\(showingcurrentTime)시의 예상 하차인원은 \(Int(AlightingPersonValue))명 입니다")
                                         
                                         ScrollView {
+                                            HStack {
+                                                          Circle()
+                                                    .fill(Color.green.opacity(0.7))
+                                                              .frame(width: 20, height: 20)
+                                                          Text("탑승 인원")
+                                                          
+                                                          Circle()
+                                                              .fill(Color(red: 0.9, green: 0.6, blue: 0.3))
+                                                              .frame(width: 20, height: 20)
+                                                          Text("하차 인원")
+                                                      }
+                                                      .padding()
+
                                             Chart {
                                                 // 승차인원 차트
                                                 ForEach(Array(BoardingPersondictionary.keys.sorted()), id: \.self) { key in
                                                     if let value = BoardingPersondictionary[key] {
                                                         BarMark(
                                                             x: .value("인원수", Int(value)),
-                                                            y: .value("시간", key)
+                                                            y: .value("시간", key),
+                                                            width: 25
                                                         )
-                                                        .foregroundStyle(Color.green.opacity(0.7))
+                                                        .foregroundStyle(Color.green.opacity(0.8))
                                                         .annotation(position: .top) {
                                                             Text("\(Int(value))")
                                                                 .font(.caption)
-                                                                .foregroundColor(.blue)
+                                                                .foregroundColor(Color.green.opacity(0.7))
                                                         }
                                                     }
                                                 }
@@ -156,7 +170,8 @@ struct PredictView: View {
                                                     if let value = AlightinggPersondictionary[key] {
                                                         BarMark(
                                                             x: .value("인원수", Int(value)),
-                                                            y: .value("시간", key)
+                                                            y: .value("시간", key),
+                                                            width: 25
                                                         )
                                                         .foregroundStyle(Color.orange)
                                                         .annotation(position: .top) {
@@ -180,7 +195,7 @@ struct PredictView: View {
                                         }
                                         
                                     })
-                                    .presentationDetents([.medium])
+                                    .presentationDetents([.fraction(CGFloat(0.75))])
                                     .presentationDragIndicator(.visible)
                                 }) //sheet
                             }
