@@ -23,6 +23,7 @@ import SwiftUI
 
 struct SettingView: View {
     
+    
     @State var isShowSheet: Bool = false    // 시간 변경 sheet alert
     let timeList = [Int](5..<25)            // 5~24까지 리스트
     @State var selectedTime = 0             // picker뷰 선택 value
@@ -50,7 +51,7 @@ struct SettingView: View {
                     }
                 })
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
-                .padding(.leading, 50)
+                .padding(.leading, 20)
                 .onTapGesture {
                     isShowSheet = true
                 }
@@ -64,7 +65,7 @@ struct SettingView: View {
                     Text("버전정보 : v.1.0.0")
                 })
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
-                .padding(.leading, 50)
+                .padding(.leading, 20)
                 
                 Spacer()
                 
@@ -72,12 +73,15 @@ struct SettingView: View {
             .padding(.top, 30)
             .navigationTitle("설정")
             .navigationBarTitleDisplayMode(.large)
+            .font(.custom("Ownglyph_noocar-Rg", size: 20))
+            
             
             // 시간설정 sheet
             .sheet(isPresented: $isShowSheet, content: {
                 TimeSettingView(titleName: "시간변경")
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.medium])
             })//sheet
-            .presentationDragIndicator(.visible)
         }) //NavigationView
         
     }

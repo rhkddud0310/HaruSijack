@@ -57,6 +57,7 @@
 ---
 """
 ## project data processing functions 
+# print(Service.colored_text(,'yellow'))
 from multiprocessing import Process
 import matplotlib.pyplot as plt, seaborn as sns
 class Service:
@@ -91,8 +92,7 @@ class Service:
         }
         
         color_code = colors.get(color, colors['default'])
-        return f'{color_code}{text}{colors["reset"]}'
-        
+        return f'{color_code}{text}{colors["reset"]}'        
     def plotSetting(pltStyle="seaborn-v0_8"):
         '''
         # Fucntion Description : Plot 한글화 Setting
@@ -113,8 +113,13 @@ class Service:
             rc('font', family=font_name)
         else:
             print("Unknown System")
-        print("___## OS platform 한글 세팅완료 ## ___")
-
+        print(Service.colored_text("___## OS platform 한글 세팅완료 ## ___",'magenta'))
+##### Index findeing
+    def indexFind(colnamelist, search_target_word):
+        import numpy as np
+        # 해당 단어가 존재하는 칼럼의 이름이있는 칼럼의 indx를 출력합니다. 
+        indices = np.where([search_target_word in col for col in colnamelist])[0]
+        return indices
 ####  데이터 체크및 정제 관련 함수들 
     def dataInfoProcessing(df, replace_Nan=False, PrintOutColnumber = 6,nanFillValue=0):
         ''' 
@@ -128,11 +133,13 @@ class Service:
             🟦 2024.06.04 by pdg : 함수변경
                 ✅ 관심 칼럼이 많을때 칼럼 개수를 조정할수있게 함. 
         '''
-        print(f"\n1. Data row/colum numbers : {len(df.index)}/{len(df.columns)}",)
+        print("--"*110)
+        print(Service.colored_text(f" <<< dataInfoProcessing. >>>",'yellow'))
+        print(Service.colored_text(f"  1️⃣ Data row/colum numbers : {len(df.index)}/{len(df.columns)}",'red'))
         #print(subway.columns)
         #print(subway.info())
         null_message =f"총 {df.isnull().sum().sum()}개의 null 이 있습니다!" if df.isnull().sum().sum() else "Null 없는 clean data!"
-        print("\n2. null ceck 결과",null_message)
+        print(Service.colored_text(f"  2️⃣ null ceck 결과{null_message}",'red'))
         ### Null 이 있는 칼럼 추출
         haveNullColumn =[]
         for idx, col in enumerate(df.columns):
@@ -143,7 +150,7 @@ class Service:
             df[col].fillna(value=nanFillValue, inplace=True)  
             
         
-        print("\n3. Column  Information (중복체크)")
+        print(Service.colored_text("  3️⃣ Column  Information (중복체크)",'red'))
         print( "\tidx.columName |\t\t\t\t |Colum Info(dtype)|** ")
         print( "\t","--"*len("columIdx |\t\t\t\t **|Col(dtype)|** "))
         for idx, col in enumerate(df.dtypes.keys()):
@@ -169,10 +176,12 @@ class Service:
             * target_idx (int): The target index where the column should be placed.
             * Returns: pandas.DataFrame: The DataFrame with the column reordered.
         """
+        print(Service.colored_text(f'{col_name}을 {target_idx}로 이동함','yellow'))
         cols = list(df.columns)
         current_idx = cols.index(col_name)
         cols.pop(current_idx)
         cols.insert(target_idx, col_name)
+        # print("--"*110)
         return df[cols]
 
 #### 지하철 역사 정보 정제 후 저장
@@ -248,9 +257,8 @@ class Service:
 
         return to_saveDataframe
 
-
 #### 지하철 배차표 호선별 테이블 정제 함수 
-    def dispatch_table_forML(line_배치):
+    def dispatch_table_forML(line_배치, save=False, saveFileName=""):
         """
         #### 📌 Description : 특정 호선에대한 배치표 정보를 받아서 pivotable 로시간대별 칼럼생성후 배차 수를 계산
         #### 📌 Date : 2024.06.09
@@ -296,12 +304,20 @@ class Service:
         interval.rename(columns={'00': '24'}, inplace=True)
         interval['호선']=line_배치['호선'].unique()[0] 
         interval=Service.reorder_columns(col_name='호선',df=interval,target_idx=1)
-        print(line_배치['호선'].unique() , "호선 에 대한 배차 테이블 표정제 결과")
+        print(Service.colored_text(f" 🔸{line_배치['호선'].unique() }호선 에 대한 배차 테이블 표정제 결과",'green'))
+        
+        if save: 
+            print(Service.colored_text('배차정보를 저장합니다.','red'))
+            interval.to_csv(f'../Data/지하철배차시간데이터/{saveFileName}_호선배차.csv',index =None)
+        else:
+            print(Service.colored_text('배차정보를 저장하지 않습니다','red'))
         return interval
-    def table_merge_subwayInfo_dispatch(subwayInfo,line_배치):
-        print(f"{line_배치['호선'].unique() }호선 배차시간표 역사코드 개수 :{len(line_배치['역사코드'].unique())}")
+    def table_merge_subwayInfo_dispatch(subwayInfo,line_배치,histPlot = False):
+        import pandas as pd 
+        print(Service.colored_text('--- 배차시간표 + 역사정보 ---','yellow'))
+        print(Service.colored_text(f"{line_배치['호선'].unique() }호선 배차시간표 역사코드 개수 :{len(line_배치['역사코드'].unique())}",'yellow'))
         test_merged_interval= pd.merge(subwayInfo,line_배치, on= ['역사코드','호선'])
-        print(f"{line_배치['호선'].unique()}호선테이블 병합후 서비스가능한 총 역 개수",len(test_merged_interval['역사코드'].unique()))
+        print(Service.colored_text(f"{line_배치['호선'].unique()}호선테이블 병합후 서비스가능한 총 역 개수",'yellow'),len(test_merged_interval['역사코드'].unique()))
         ## 주중 주말  카테고리를 0,1 로 바꾸어줌 주말일경우 1 주중일경우 0  ->onehot encoding 
         test_mi = test_merged_interval.copy()
         # test_mi.rename({'주중주말':'주말'}, axis=1,inplace=True)
@@ -327,13 +343,102 @@ class Service:
                 'DAY':'주중'
             }, axis=1, inplace=True
         )
-        print("예시히스토그램 2개만 플랏합니다")
-        for i in range(0,len(test_[:4]),2): ## 예시로 2개
-            Service.stationDispatchBarplot(test_,i, title_columnName='역이름',startColNum=9)
-        print("최종 병합된 테이블을 출력합니다")
+        print(Service.colored_text('SAT,DAY -> 주말,주중'))
+        if histPlot:
+            print("예시히스토그램 1개만 플랏합니다(나머지는 저장됨)")
+            for i in range(0,len(test_[:2]),2): ## 예시로 2개
+                Service.stationDispatchBarplot(test_,i, title_columnName='역이름',startColNum=9)
+        print(Service.colored_text("최종 병합된 테이블을 출력합니다",'yellow'))
         return test_
+    def data_preprocessing_toAnalysis(data_dict,key_data):
+        """
+            # 📌 Description : 데이터 통합 정제 함수!!!
+            # 📌 Date : 2024.06.13
+            # 📌 Author : Forrest Dpark
+            # 📌 Detail:
+                * key_data(str) : 예를 들면 subway_23_0 이라는데이터에서 23_0 을 의미함!
+                * data_dict : 승하차 데이터를 포함하고 있는 dictionary
+                * 사용시 이상한부분 문의 => 010-7722-15920
+                * Returns: colum 이름들을 정제하고 Nan을 제거한 정제 데이터 table
+        """
+        import pandas as pd, numpy as np
+        # 필수 항목 check 
+        # coloum check 
+        saveFileName = "StationInfo_"+key_data.split("subway")[-1]
+        test = data_dict[key_data] # 예시-> subway_dict_22_23['subway23_0']
+        print(Service.colored_text("columns ---👇", 'green'))
+        print(test.columns.tolist())
+        # 호선, 역사번호,역명, 승하차구분
+        # 연번은 drop 한다. 
+        if '연번' in test.columns.tolist():
+            print(" 1. 연번을 삭제합니다. ")
+            test.drop('연번',axis=1,inplace = True)
+            # print(test.columns)
+        # 역명 -> 역이름
+        if '역명' in test.columns.tolist():
+            print(' 2."역명" ->"역이름", "역번호"->"역사코드 ".')
+            test.rename({
+                '날짜': '수송일자',
+                '역번호':'역사코드',
+                '역명':'역이름'}
+                ,axis = 1
+                ,inplace = True 
+                )
+        # 역번호 -> 역사번호 
+        # 호선 데이터가 integer 인지 확인 
+        if str(test['호선'].dtype)=='object':
+            print(' 3. 호선 데이터가 object 입니다. ')
+            for idx,line in enumerate(test['호선'].unique()):
+                print("   -",line)
+                if idx==2:
+                    print(" ..")
+                    break
+            line_int=[int(linename.split("호선")[0]) for linename in test['호선']]
+            print(" 😀호선을 integer 로 만듭니다.")
+            print(" 3-1. 호선 을 제거한 이름 unique : ",*np.unique(line_int),sep=", ")
+            test['호선'] = line_int
+            print(" ✅변경된 호선 칼럼의 data type :",test['호선'].dtype)
+        else : 
+            print('3. 호선 데이터가 integer 입니다.')
+            for idx,line in enumerate(test['호선'].unique()):
+                print(" -",line)
+                if idx==2:
+                    print(" ..")
+                    break
+        ## null check -> 없다고 가정 
+        subway=Service.dataInfoProcessing(test,replace_Nan=True,nanFillValue=0 )
+        #역코드 개수 체크 -> 상관없음
+        stationInfo = Service.subway_info_table(
+            subway,
+            save=True,
+            saveFileName=saveFileName
+            )
+        print(subway.iloc[:4,:6])
+        stationInfo
 
+        station= pd.read_csv(f'../Data/{saveFileName}.csv')
+        subway_dispatch = pd.read_csv("../Data/지하철배차시간데이터/서울교통공사_서울 도시철도 열차운행시각표_20240305.csv", encoding='euc-kr')
 
+        for i in range(1,8):
+            _ = Service.호선당서비스불가역이름추출(i,station, subway_dispatch)
+        print("배차 시간 제공 역 개수: ",len(subway_dispatch['역사명'].unique())) # 총 394개의 역에대한 배차 시간데이터가 있다. 
+        print(" 호선 ->",*np.sort(subway_dispatch['호선'].unique())) #1, 2, 3, 4, 5, 6, 7, 8, 9  -> 9호선 데이터 까지 있음
+
+        ## line 별로 테이블을 따로 만든다, 
+        # line1_배치= subway_dispatch[subway_dispatch['호선']==1]
+
+        line_배치_dict = {}
+
+        for i in range(1,9):
+            line_배치_dict[f"{i}호선"] =subway_dispatch[subway_dispatch['호선']==i]
+            interval= Service.dispatch_table_forML(
+                line_배치_dict[f"{i}호선"],
+                save=True,
+                saveFileName=saveFileName+f"_{i}"
+                )
+            print(interval.iloc[0:3,:6].head(3))
+        #정제후 데이터 출력
+        return subway
 
 #### 현재탑승객수 추정 및 배차 간격 시각화 
     def currentPassengerCalc(stations,pass_in,pass_out,dispached_subway_number):
@@ -454,14 +559,12 @@ class Service:
         df['월'] = months
         df['주차'] = weeks
         return df
-
-
     def date_string_to_MonthWeekHolyDayname(date_str):
         from datetime import datetime,timedelta
         # 날짜 문자열을 datetime 객체로 변환
         date_object = datetime.strptime(date_str, '%Y-%m-%d')
         year = date_object.year
-         # 해당 날짜의 첫 번째 날이 속한 주의 첫 번째 날짜를 찾음
+        # 해당 날짜의 첫 번째 날이 속한 주의 첫 번째 날짜를 찾음
         first_day_of_year = datetime(year, 1, 1)
         first_day_of_year_weekday = first_day_of_year.weekday()  # 해당 년도의 1월 1일의 요일
         first_week_start_date = first_day_of_year - timedelta(days=first_day_of_year_weekday)
@@ -487,7 +590,6 @@ class Service:
         }
         dayname_code = day_name_mapping.get(day_name)
         return month_number, week_number, is_holi,dayname_code
-
     def holidaysToIntConvert(df,DateColName):
         # !pip install holidays
         import holidays
@@ -558,7 +660,6 @@ class Service:
         joblib.dump(multi_output_regressor, filename)
         
         return multi_output_regressor
-        
     def station_name_to_code(line,station_name):
         """
             # Description : 역이름을 코드로 반환하는 함수
@@ -740,8 +841,6 @@ class Service:
         print(target_table.loc[target_table.index[dayName_int]])
 
         return prediction
-
-
 
 ### 데이터 신뢰성 판단 관련 함수
     def 호선당서비스불가역이름추출(line,승하차_역정보테이블, 배차역정보_테이블):

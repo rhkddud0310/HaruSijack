@@ -19,6 +19,8 @@
         🆕 환승역에서는 검색이 안되는 이유 찾기
         🆕 하차모델 적용 하기
         🆕 인풋을 데이터 포맷에 맞게 반환해주는 함수 만들기 <- 하찰모델 만들어 적용
+    2024.06.13 pdg : 통합데이터 정제 함수 만들기
+        ✅ data_preprocessing_toAnalysis 만듬. 
          
 ---
 """
@@ -31,7 +33,6 @@ import warnings ; warnings.filterwarnings('ignore')
 # 함수 사용하기 위한 나의 모듈위치 추적 
 import sys
 import os
-
 # 현재 파일의 디렉토리 경로를 기준으로 상위 폴더 경로를 가져온다.
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 상위 폴더 경로를 sys.path에 추가한다.
@@ -39,7 +40,6 @@ sys.path.append(parent_dir)
 
 # 이제 상위 폴더에 있는 Module 폴더 안의 Functions 모듈을 import한다.
 from Module.Functions import Service
-
 # my_functions 모듈의 함수를 사용할 수 있습니다.
 app = Flask(__name__) # 난 flask 서버야!! 
 app.config['JSON_AS_ASCII'] = False 
@@ -55,12 +55,9 @@ def subway():
     date = data.get('date')
     time = data.get('time')
     stationLine = data.get('stationLine')
-    
-    
     ## 월 정보 
     station_code= Service.station_name_to_code(int(stationLine),station_name.replace(" ",""))
     print('필요정보:',*['월', '주차', '공휴일', '요일', '역사코드', '주중', '주말','위도','경도',' 배차 '],sep='\t')
-    
     
     
     # 월, 주, 휴일여부, 요일코드 추출 
@@ -72,7 +69,6 @@ def subway():
     import pandas as pd 
     배차_data_path = os.path.join(parent_dir, "Data", "지하철배차시간데이터", f"{stationLine}호선배차.csv")
     table_배차 = pd.read_csv(배차_data_path)
-    
     target_row = table_배차[table_배차['역사코드']==station_code]
     selected_index = 'SAT' if is주말 else 'DAY'
     target_row = target_row[target_row['주중주말'] == selected_index]
@@ -84,7 +80,6 @@ def subway():
     a= latlng[latlng['역사코드']==station_code].to_numpy()[0][-2:]#['latitude','longitude']
     위도, 경도 = a[0],a[1]
     rows=[month_number, week_number,is_holi,dayname_code,station_code,not is주말,is주말,위도,경도,*시간별배차정보]
-    
     print('입력정보:',*rows,sep='\t')
 
     try:
