@@ -110,7 +110,7 @@ struct PredictView: View {
                     Image("Line7")
                         .resizable()
                         .frame(width: 800, height: 800)
-                        .zoomable() // double click시 화면 확대
+                    //.zoomable() // double click시 화면 확대
                         .overlay(
                             ForEach(stations, id: \.0) { station in
                                 Button(action: {
@@ -123,11 +123,15 @@ struct PredictView: View {
                                 .position(x: station.1, y: station.2)
                                 .sheet(isPresented: $showAlertForStation, content: {
                                     VStack(content: {
+                                        
                                         Text(stationName)
+                                            .font(.system(size: 24))
+                                            .bold()
+                                            .padding(30)
+                                            
+                                        
                                         Text("\(showingcurrentTime)시의 예상 승차인원은 \(Int(boardingPersonValue))명 입니다. ")
                                         Text("\(showingcurrentTime)시의 예상 하차인원은 \(Int(AlightingPersonValue))명 입니다")
-                                        
-                                        //차트그리기 +- 2씩 5개로 보여주기
                                         
                                         ScrollView {
                                             Chart {
@@ -138,7 +142,7 @@ struct PredictView: View {
                                                             x: .value("인원수", Int(value)),
                                                             y: .value("시간", key)
                                                         )
-                                                        .foregroundStyle(Color.blue)
+                                                        .foregroundStyle(Color.green.opacity(0.7))
                                                         .annotation(position: .top) {
                                                             Text("\(Int(value))")
                                                                 .font(.caption)
@@ -154,7 +158,7 @@ struct PredictView: View {
                                                             x: .value("인원수", Int(value)),
                                                             y: .value("시간", key)
                                                         )
-                                                        .foregroundStyle(Color.red)
+                                                        .foregroundStyle(Color.orange)
                                                         .annotation(position: .top) {
                                                             Text("\(Int(value))")
                                                                 .font(.caption)
@@ -171,6 +175,7 @@ struct PredictView: View {
                                             }
                                             
                                             .frame(height: 400)
+                                            
                                             
                                         }
                                         
@@ -194,34 +199,34 @@ struct PredictView: View {
                 .offset(x: dragAmount.width, y: dragAmount.height)
             }
         }
-                        .onAppear(perform: {
-                            if dbModel.queryDB().isEmpty {
-                                isShowSheet = true
-                            }
-                            setNotification()
-                        })
-                        .sheet(isPresented: $isShowSheet, content: {
-                            TimeSettingView(titleName: "출근 시간대 설정")
-                                .presentationDetents([.medium])
-                                .presentationDragIndicator(.visible)
-                        })//sheet
+//        .onAppear(perform: {
+//            if dbModel.queryDB().isEmpty {
+//                isShowSheet = true
+//            }
+//            //                            setNotification()
+//        })
+//        .sheet(isPresented: $isShowSheet, content: {
+//            TimeSettingView(titleName: "출근 시간대 설정")
+//                .presentationDetents([.medium])
+//                .presentationDragIndicator(.visible)
+//        })//sheet
     }
     
     
-        func setNotification() {
-            let manager = NotificationManager()
-            manager.addNotification(title: "hellow")
-            manager.scheduleNotifications()
-        }
+    //        func setNotification() {
+    //            let manager = NotificationManager()
+    //            manager.addNotification(title: "hellow")
+    //            manager.scheduleNotifications()
+    //        }
     
-//     역 클릭 처리 함수
+    //     역 클릭 처리 함수
     func handleStationClick(stationName: String) {
         self.stationName = stationName
         
         let (dateString, timeString) = getCurrentDateTime()
         showingcurrentTime =  timeString
         showingcurrentdate =  dateString
-
+        
         
         //승차인원
         fetchDataFromServerBoarding(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
@@ -240,7 +245,7 @@ struct PredictView: View {
                 //lowerBound: 현재시시간에서 -7값이 0보다 작으면 0으로 고정(-7한 이유는 시간이 5시부터 시작하기 때문)
                 let lowerBound = max(0, Int(showingcurrentTime)! - 7)
                 let upperBound = min(sortedKeys.count - 1, Int(showingcurrentTime)! - 3)
-
+                
                 if lowerBound <= upperBound && sortedKeys.indices.contains(upperBound) {
                     for index in lowerBound...upperBound {
                         if sortedKeys.indices.contains(index) {
@@ -251,174 +256,174 @@ struct PredictView: View {
                         }
                     }
                 }
-                    self.BoardingPersondictionary = newBoardingPersondictionary
-                    print("#####################dictionary승차인원######################")
-                    print(BoardingPersondictionary)
-                    print("#####################dictionary######################")
-                } else {
-                    print("인덱스 범위에 해당하는 요소가 없습니다.")
-                }
-                
-                
-                
-                showAlertForStation = true
+                self.BoardingPersondictionary = newBoardingPersondictionary
+                print("#####################dictionary승차인원######################")
+                print(BoardingPersondictionary)
+                print("#####################dictionary######################")
+            } else {
+                print("인덱스 범위에 해당하는 요소가 없습니다.")
             }
             
-            //하차인원
-            fetchDataFromServerAlighting(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
-                self.serverResponseAlightingPerson = responseString
-                self.AlightingPersonValue = getValueForCurrentTime(jsonString: responseString, currentTime: timeString)
-                let alightingTime=showingcurrentTime
-                if let dictionary = convertJSONStringToDictionary(responseString) {
-                    print(serverResponseAlightingPerson)
-                    print("###################ΩserverResponseAlightingPerson########################")
-                    print(alightingTime)
-                    
-                    print("###################alightingTime#######################")
-                    //                    print(dictionary)
-                    //                    print("#####################dictionary하차dictionary######################")
-                    //현재시간에서 범위에 있는 값들을 임시저장하기위한 딕셔너리
-                    var newAlightingPersondictionary: [String: Double] = [:]
-                    // 정렬해서 배열로 가져오기(index번호로 데이터 가져오기 위해서)
-                    let sortedKeys = dictionary.keys.sorted()
-                    print(Int(alightingTime)!-2...Int(alightingTime)!+2)
-                    print("--------------------ssortedKeysstart--------------")
-                    print(sortedKeys[0])
-                    print(sortedKeys[15])
-                    print(sortedKeys[8])
-                    
-                    print("--------------------ssortedKeysend--------------")
-                    // 인덱스 범위 확인 후 값 가져오기(딕셔너리 값에서 시작값과 끝값이 존재하는지 확인후 값 뽑아옴)
-                    let lowerBound = max(0, Int(showingcurrentTime)! - 7)
-                    let upperBound = min(sortedKeys.count - 1, Int(showingcurrentTime)! - 3)
-
-                    if lowerBound <= upperBound && sortedKeys.indices.contains(upperBound) {
-                        for index in lowerBound...upperBound {
-                            if sortedKeys.indices.contains(index) {
-                                let key = sortedKeys[index]
-                                if let value = dictionary[key] {
-                                    newAlightingPersondictionary[key] = value
-                                }
+            
+            
+            showAlertForStation = true
+        }
+        
+        //하차인원
+        fetchDataFromServerAlighting(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
+            self.serverResponseAlightingPerson = responseString
+            self.AlightingPersonValue = getValueForCurrentTime(jsonString: responseString, currentTime: timeString)
+            let alightingTime=showingcurrentTime
+            if let dictionary = convertJSONStringToDictionary(responseString) {
+                print(serverResponseAlightingPerson)
+                print("###################ΩserverResponseAlightingPerson########################")
+                print(alightingTime)
+                
+                print("###################alightingTime#######################")
+                //                    print(dictionary)
+                //                    print("#####################dictionary하차dictionary######################")
+                //현재시간에서 범위에 있는 값들을 임시저장하기위한 딕셔너리
+                var newAlightingPersondictionary: [String: Double] = [:]
+                // 정렬해서 배열로 가져오기(index번호로 데이터 가져오기 위해서)
+                let sortedKeys = dictionary.keys.sorted()
+                print(Int(alightingTime)!-2...Int(alightingTime)!+2)
+                print("--------------------ssortedKeysstart--------------")
+                print(sortedKeys[0])
+                print(sortedKeys[15])
+                print(sortedKeys[8])
+                
+                print("--------------------ssortedKeysend--------------")
+                // 인덱스 범위 확인 후 값 가져오기(딕셔너리 값에서 시작값과 끝값이 존재하는지 확인후 값 뽑아옴)
+                let lowerBound = max(0, Int(showingcurrentTime)! - 7)
+                let upperBound = min(sortedKeys.count - 1, Int(showingcurrentTime)! - 3)
+                
+                if lowerBound <= upperBound && sortedKeys.indices.contains(upperBound) {
+                    for index in lowerBound...upperBound {
+                        if sortedKeys.indices.contains(index) {
+                            let key = sortedKeys[index]
+                            if let value = dictionary[key] {
+                                newAlightingPersondictionary[key] = value
                             }
                         }
                     }
-                        self.AlightinggPersondictionary = newAlightingPersondictionary
-                        print("#####################dictionary하차인원######################")
-                        print(AlightinggPersondictionary)
-                        print("#####################dictionary######################")
-                    } else {
-                        print("인덱스 범위에 해당하는 요소가 없습니다.")
-                    }
-                    showAlertForStation = true
                 }
-                
-                
+                self.AlightinggPersondictionary = newAlightingPersondictionary
+                print("#####################dictionary하차인원######################")
+                print(AlightinggPersondictionary)
+                print("#####################dictionary######################")
+            } else {
+                print("인덱스 범위에 해당하는 요소가 없습니다.")
             }
+            showAlertForStation = true
         }
         
-        #Preview {
-            PredictView()
-        }
         
-        // 현재시간 가져오는 함수
-        func getCurrentDateTime() -> (String, String) {
-            let currentDate = Date()
-            
-            // Date Formatter for Date
-            let dateFormatterDate = DateFormatter()
-            dateFormatterDate.dateFormat = "yyyy-MM-dd"
-            let dateString = dateFormatterDate.string(from: currentDate)
-            
-            // Date Formatter for Time
-            let dateFormatterTime = DateFormatter()
-            dateFormatterTime.dateFormat = "HH"
-            let timeString = String(Int(dateFormatterTime.string(from: currentDate))!)
-            
-            return (dateString, timeString)
-        }
-        
-        // Flask 통신을 위한 함수(승차인원)
-        func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
-            let url = URL(string: "http://localhost:5000/subway")!
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            let parameters: [String: Any] = [
-                "stationName": stationName,
-                "date": date,
-                "time": time,
-                "stationLine": stationLine
-            ]
-            request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                guard let data = data, error == nil else {
-                    print("Error:", error ?? "Unknown error")
-                    return
-                }
-                if let responseString = String(data: data, encoding: .utf8) {
-                    completion(responseString)
-                }
-            }
-            task.resume()
-        }
-        
-        // Flask 통신을 위한 함수(하차인원)
-        func fetchDataFromServerAlighting(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
-            print(stationName,date,time,stationLine)
-            let url = URL(string: "http://localhost:5000/subwayAlighting")!
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            let parameters: [String: Any] = [
-                "stationName": stationName,
-                "date": date,
-                "time": time,
-                "stationLine": stationLine
-            ]
-            request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                guard let data = data, error == nil else {
-                    print("Error:", error ?? "Unknown error")
-                    
-                    return
-                }
-                if let responseString = String(data: data, encoding: .utf8) {
-                    completion(responseString)
-                }
-            }
-            task.resume()
-        }
-        // 현재탑승인원 받기(출발역 부터 탑승인원 - 현재인원
-        
-        
-        // 현재시간에 "시인원"을 더한 값을 key값으로 서버에서 받아온 JSON값에서 검색해서 값을 가져오는 함수
-        func getValueForCurrentTime(jsonString: String, currentTime: String) -> Double {
-            guard let jsonData = jsonString.data(using: .utf8) else { return 0.0 }
-            do {
-                if let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                    let keyForCurrentTime = "\(currentTime)시인원"
-                    if let value = json[keyForCurrentTime] as? Double {
-                        return value
-                    }
-                }
-            } catch {
-                print("Error parsing JSON:", error)
-            }
-            return 0.0
-        }
-        // JSON 데이터를 dictionary로 변환(차트그리기 위해서)
-        func convertJSONStringToDictionary(_ jsonString: String) -> [String: Double]? {
-            guard let jsonData = jsonString.data(using: .utf8) else {
-                print("Failed to convert JSON string to data.")
-                return nil
-            }
-            
-            do {
-                let dictionary = try JSONDecoder().decode([String: Double].self, from: jsonData)
-                return dictionary
-            } catch {
-                print("Error decoding JSON: \(error.localizedDescription)")
-                return nil
-            }
-        }
+    }
+}
+
+#Preview {
+    PredictView()
+}
+
+// 현재시간 가져오는 함수
+func getCurrentDateTime() -> (String, String) {
+    let currentDate = Date()
     
+    // Date Formatter for Date
+    let dateFormatterDate = DateFormatter()
+    dateFormatterDate.dateFormat = "yyyy-MM-dd"
+    let dateString = dateFormatterDate.string(from: currentDate)
+    
+    // Date Formatter for Time
+    let dateFormatterTime = DateFormatter()
+    dateFormatterTime.dateFormat = "HH"
+    let timeString = String(Int(dateFormatterTime.string(from: currentDate))!)
+    
+    return (dateString, timeString)
+}
+
+// Flask 통신을 위한 함수(승차인원)
+func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
+    let url = URL(string: "http://localhost:5000/subway")!
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    let parameters: [String: Any] = [
+        "stationName": stationName,
+        "date": date,
+        "time": time,
+        "stationLine": stationLine
+    ]
+    request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        guard let data = data, error == nil else {
+            print("Error:", error ?? "Unknown error")
+            return
+        }
+        if let responseString = String(data: data, encoding: .utf8) {
+            completion(responseString)
+        }
+    }
+    task.resume()
+}
+
+// Flask 통신을 위한 함수(하차인원)
+func fetchDataFromServerAlighting(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
+    print(stationName,date,time,stationLine)
+    let url = URL(string: "http://localhost:5000/subwayAlighting")!
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    let parameters: [String: Any] = [
+        "stationName": stationName,
+        "date": date,
+        "time": time,
+        "stationLine": stationLine
+    ]
+    request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        guard let data = data, error == nil else {
+            print("Error:", error ?? "Unknown error")
+            
+            return
+        }
+        if let responseString = String(data: data, encoding: .utf8) {
+            completion(responseString)
+        }
+    }
+    task.resume()
+}
+// 현재탑승인원 받기(출발역 부터 탑승인원 - 현재인원
+
+
+// 현재시간에 "시인원"을 더한 값을 key값으로 서버에서 받아온 JSON값에서 검색해서 값을 가져오는 함수
+func getValueForCurrentTime(jsonString: String, currentTime: String) -> Double {
+    guard let jsonData = jsonString.data(using: .utf8) else { return 0.0 }
+    do {
+        if let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+            let keyForCurrentTime = "\(currentTime)시인원"
+            if let value = json[keyForCurrentTime] as? Double {
+                return value
+            }
+        }
+    } catch {
+        print("Error parsing JSON:", error)
+    }
+    return 0.0
+}
+// JSON 데이터를 dictionary로 변환(차트그리기 위해서)
+func convertJSONStringToDictionary(_ jsonString: String) -> [String: Double]? {
+    guard let jsonData = jsonString.data(using: .utf8) else {
+        print("Failed to convert JSON string to data.")
+        return nil
+    }
+    
+    do {
+        let dictionary = try JSONDecoder().decode([String: Double].self, from: jsonData)
+        return dictionary
+    } catch {
+        print("Error decoding JSON: \(error.localizedDescription)")
+        return nil
+    }
+}
+
