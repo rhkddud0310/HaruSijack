@@ -1,7 +1,16 @@
 /*
- Description
- - 2024.06.11 j.park : 혼잡도 작업 실시
- - 2024.06.13 snr : 출근시간대 설정 sheet 연결
+ Description: 각 지하철 역별 승,하차인원 에측 페이지
+ 
+ 
+    Update:
+             - 2024.06.11 j.park : 1. 버튼 구현
+                                   2. flask 서버에서 하차인원 Json통신
+             - 2024.06.12 j.park : 1. 현재시간, 특정역 기준 하차인원 추가
+             - 2024.06.13 snr : 출근시간대 설정 sheet 연결
+             - 2024.06.13 j.park : 1.승차인원 추가
+                                   2. actionsheet에서 sheet로 변경
+             - 2024.06.14 j.park : 1.특정역에 대한 전체 승하차인원 그래프 구현
+                                   
  */
 import SwiftUI
 import Zoomable
@@ -23,7 +32,8 @@ struct PredictView: View {
     @FocusState var isTextFieldFocused: Bool
     @State private var offsetX: CGFloat = 0
     @State private var offsetY: CGFloat = 0
-    @State var isAlert = false            // actionSheet 실행
+    // actionSheet 실행
+    @State var isAlert = false
     
     //----  server  ----
     @State private var showAlertForStation = false
@@ -46,15 +56,11 @@ struct PredictView: View {
     @State private var AlightinggPersondictionary: [String: Double] = [:]
     
     
-    
-    let dbModel = TimeSettingDB() //시간설정 db instance
+    //시간설정 db instance
+    let dbModel = TimeSettingDB()
     @State var isShowSheet: Bool = false
     
-    
-    
-    //문제 역 -> 노원, 태릉입구, 군자,건대입구, 고속터미널,대림
-    // 서버에서 확인해본 결과 노원에 대한 데이터를 찾을 수 없음 -> 데이터셋에는 있는데 역사 코드가 중첩된게 문제인걸까?
-    // 역과 위치 정보
+    // 역과 버튼위치 정보
     let stations = [
         ("장암", 80.0, 163.0),
         ("도봉산", 135.0, 164.0),
@@ -101,7 +107,6 @@ struct PredictView: View {
         
     ]
     
-    
     var body: some View {
         VStack {
             ZStack {
@@ -110,7 +115,7 @@ struct PredictView: View {
                     Image("Line7")
                         .resizable()
                         .frame(width: 800, height: 800)
-                    //.zoomable() // double click시 화면 확대
+                    .zoomable() // double click시 화면 확대
                         .overlay(
                             ForEach(stations, id: \.0) { station in
                                 Button(action: {
@@ -123,30 +128,28 @@ struct PredictView: View {
                                 .position(x: station.1, y: station.2)
                                 .sheet(isPresented: $showAlertForStation, content: {
                                     VStack(content: {
-                                        
                                         Text(stationName)
                                             .font(.system(size: 24))
                                             .bold()
                                             .padding(30)
-                                            
                                         
                                         Text("\(showingcurrentTime)시의 예상 승차인원은 \(Int(boardingPersonValue))명 입니다. ")
                                         Text("\(showingcurrentTime)시의 예상 하차인원은 \(Int(AlightingPersonValue))명 입니다")
                                         
                                         ScrollView {
                                             HStack {
-                                                          Circle()
+                                                Circle()
                                                     .fill(Color.green.opacity(0.7))
-                                                              .frame(width: 20, height: 20)
-                                                          Text("탑승 인원")
-                                                          
-                                                          Circle()
-                                                              .fill(Color(red: 0.9, green: 0.6, blue: 0.3))
-                                                              .frame(width: 20, height: 20)
-                                                          Text("하차 인원")
-                                                      }
-                                                      .padding()
-
+                                                    .frame(width: 20, height: 20)
+                                                Text("탑승 인원")
+                                                
+                                                Circle()
+                                                    .fill(Color(red: 0.9, green: 0.6, blue: 0.3))
+                                                    .frame(width: 20, height: 20)
+                                                Text("하차 인원")
+                                            }
+                                            .padding()
+                                            
                                             Chart {
                                                 // 승차인원 차트
                                                 ForEach(Array(BoardingPersondictionary.keys.sorted()), id: \.self) { key in
@@ -188,14 +191,12 @@ struct PredictView: View {
                                             .chartYAxis {
                                                 AxisMarks(position: .leading)
                                             }
-                                            
                                             .frame(height: 400)
-                                            
                                             
                                         }
                                         
                                     })
-                                    .presentationDetents([.fraction(CGFloat(0.75))])
+                                    .presentationDetents([.fraction(CGFloat(0.8))])
                                     .presentationDragIndicator(.visible)
                                 }) //sheet
                             }
@@ -214,17 +215,17 @@ struct PredictView: View {
                 .offset(x: dragAmount.width, y: dragAmount.height)
             }
         }
-//        .onAppear(perform: {
-//            if dbModel.queryDB().isEmpty {
-//                isShowSheet = true
-//            }
-//            //                            setNotification()
-//        })
-//        .sheet(isPresented: $isShowSheet, content: {
-//            TimeSettingView(titleName: "출근 시간대 설정")
-//                .presentationDetents([.medium])
-//                .presentationDragIndicator(.visible)
-//        })//sheet
+        //        .onAppear(perform: {
+        //            if dbModel.queryDB().isEmpty {
+        //                isShowSheet = true
+        //            }
+        //            //                            setNotification()
+        //        })
+        //        .sheet(isPresented: $isShowSheet, content: {
+        //            TimeSettingView(titleName: "출근 시간대 설정")
+        //                .presentationDetents([.medium])
+        //                .presentationDragIndicator(.visible)
+        //        })//sheet
     }
     
     
@@ -234,6 +235,8 @@ struct PredictView: View {
     //            manager.scheduleNotifications()
     //        }
     
+    
+//--------------Functions-----------------
     //     역 클릭 처리 함수
     func handleStationClick(stationName: String) {
         self.stationName = stationName
@@ -242,45 +245,38 @@ struct PredictView: View {
         showingcurrentTime =  timeString
         showingcurrentdate =  dateString
         
-        
         //승차인원
         fetchDataFromServerBoarding(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
             self.serverResponseBoardingPerson = responseString
             self.boardingPersonValue = getValueForCurrentTime(jsonString: responseString, currentTime: timeString)
             // 받아온 JSON데이터를 dictionary로 변경
             if let dictionary = convertJSONStringToDictionary(responseString) {
-                //                print("#####################dictionary승차dictionary######################")
-                //                print(dictionary)
-                //                print("#####################dictionary승차dictionary######################")
+                
                 //현재시간에서 범위에 있는 값들을 임시저장하기위한 딕셔너리
-                var newBoardingPersondictionary: [String: Double] = [:]
+                var tempBoardingPersondictionary: [String: Double] = [:]
                 // 정렬해서 배열로 가져오기(index번호로 데이터 가져오기 위해서)
                 let sortedKeys = dictionary.keys.sorted()
                 
-                //lowerBound: 현재시시간에서 -7값이 0보다 작으면 0으로 고정(-7한 이유는 시간이 5시부터 시작하기 때문)
+                //lowerBound: 현재시시간에서 -7값이 0보다 작으면 0으로 고정(-7한 이유:배차시작이5기 때문)
+                //upperBound: 키값에 인덱스를 초과한 값 방지
                 let lowerBound = max(0, Int(showingcurrentTime)! - 7)
                 let upperBound = min(sortedKeys.count - 1, Int(showingcurrentTime)! - 3)
-                
+                //
                 if lowerBound <= upperBound && sortedKeys.indices.contains(upperBound) {
                     for index in lowerBound...upperBound {
-                        if sortedKeys.indices.contains(index) {
-                            let key = sortedKeys[index]
-                            if let value = dictionary[key] {
-                                newBoardingPersondictionary[key] = value
-                            }
+                        
+                        let key = sortedKeys[index]
+                        if let value = dictionary[key] {
+                            tempBoardingPersondictionary[key] = value
                         }
                     }
                 }
-                self.BoardingPersondictionary = newBoardingPersondictionary
-                print("#####################dictionary승차인원######################")
-                print(BoardingPersondictionary)
-                print("#####################dictionary######################")
+                //전역변수에 저장
+                self.BoardingPersondictionary = tempBoardingPersondictionary
+                
             } else {
-                print("인덱스 범위에 해당하는 요소가 없습니다.")
+                print("인덱스 범위 오류")
             }
-            
-            
-            
             showAlertForStation = true
         }
         
@@ -288,57 +284,40 @@ struct PredictView: View {
         fetchDataFromServerAlighting(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
             self.serverResponseAlightingPerson = responseString
             self.AlightingPersonValue = getValueForCurrentTime(jsonString: responseString, currentTime: timeString)
-            let alightingTime=showingcurrentTime
+//            let alightingTime=showingcurrentTime
             if let dictionary = convertJSONStringToDictionary(responseString) {
-                print(serverResponseAlightingPerson)
-                print("###################ΩserverResponseAlightingPerson########################")
-                print(alightingTime)
                 
-                print("###################alightingTime#######################")
-                //                    print(dictionary)
-                //                    print("#####################dictionary하차dictionary######################")
                 //현재시간에서 범위에 있는 값들을 임시저장하기위한 딕셔너리
-                var newAlightingPersondictionary: [String: Double] = [:]
+                var tempAlightingPersondictionary: [String: Double] = [:]
                 // 정렬해서 배열로 가져오기(index번호로 데이터 가져오기 위해서)
                 let sortedKeys = dictionary.keys.sorted()
-                print(Int(alightingTime)!-2...Int(alightingTime)!+2)
-                print("--------------------ssortedKeysstart--------------")
-                print(sortedKeys[0])
-                print(sortedKeys[15])
-                print(sortedKeys[8])
-                
-                print("--------------------ssortedKeysend--------------")
-                // 인덱스 범위 확인 후 값 가져오기(딕셔너리 값에서 시작값과 끝값이 존재하는지 확인후 값 뽑아옴)
+                                
+                //lowerBound: 현재시시간에서 -7값이 0보다 작으면 0으로 고정(-7한 이유:배차시작이5기 때문)
+                //upperBound: 키값에 인덱스를 초과한 값 방지
                 let lowerBound = max(0, Int(showingcurrentTime)! - 7)
                 let upperBound = min(sortedKeys.count - 1, Int(showingcurrentTime)! - 3)
                 
                 if lowerBound <= upperBound && sortedKeys.indices.contains(upperBound) {
                     for index in lowerBound...upperBound {
-                        if sortedKeys.indices.contains(index) {
-                            let key = sortedKeys[index]
-                            if let value = dictionary[key] {
-                                newAlightingPersondictionary[key] = value
-                            }
+                        
+                        let key = sortedKeys[index]
+                        if let value = dictionary[key] {
+                            tempAlightingPersondictionary[key] = value
                         }
                     }
                 }
-                self.AlightinggPersondictionary = newAlightingPersondictionary
-                print("#####################dictionary하차인원######################")
-                print(AlightinggPersondictionary)
-                print("#####################dictionary######################")
+                //전역변수에 저장
+                self.AlightinggPersondictionary = tempAlightingPersondictionary
+                
             } else {
                 print("인덱스 범위에 해당하는 요소가 없습니다.")
             }
             showAlertForStation = true
         }
-        
-        
     }
 }
 
-#Preview {
-    PredictView()
-}
+
 
 // 현재시간 가져오는 함수
 func getCurrentDateTime() -> (String, String) {
@@ -352,7 +331,7 @@ func getCurrentDateTime() -> (String, String) {
     // Date Formatter for Time
     let dateFormatterTime = DateFormatter()
     dateFormatterTime.dateFormat = "HH"
-    let timeString = String(Int(dateFormatterTime.string(from: currentDate))!)
+    let timeString = String(Int(dateFormatterTime.string(from: currentDate))!+10)
     
     return (dateString, timeString)
 }
@@ -408,7 +387,6 @@ func fetchDataFromServerAlighting(stationName: String, date: String, time: Strin
     }
     task.resume()
 }
-// 현재탑승인원 받기(출발역 부터 탑승인원 - 현재인원
 
 
 // 현재시간에 "시인원"을 더한 값을 key값으로 서버에서 받아온 JSON값에서 검색해서 값을 가져오는 함수
@@ -426,10 +404,11 @@ func getValueForCurrentTime(jsonString: String, currentTime: String) -> Double {
     }
     return 0.0
 }
+
 // JSON 데이터를 dictionary로 변환(차트그리기 위해서)
 func convertJSONStringToDictionary(_ jsonString: String) -> [String: Double]? {
     guard let jsonData = jsonString.data(using: .utf8) else {
-        print("Failed to convert JSON string to data.")
+        print("딕셔너리 변환 실패.")
         return nil
     }
     
@@ -442,3 +421,8 @@ func convertJSONStringToDictionary(_ jsonString: String) -> [String: Double]? {
     }
 }
 
+//---------------preview------------------
+
+#Preview {
+    PredictView()
+}
