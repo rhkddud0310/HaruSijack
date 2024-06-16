@@ -54,13 +54,14 @@
     * 2024.06.14 by pdg :
         머신러닝 통합 파일에서 사용하는 StationInfo 파일 dict 화 함수 추가 
         - 각함수에프린트를 넣어서 무엇을 실행하는 함수인지 print 한후 실행될수있도록 함. 
-        
+        - mlTableGen함 수 추가 
+        - 통합 feature 테이블 형성하여 npy 저장함. 
     
 
 ---
 """
 ## project data processing functions 
-# Service.Explaination(title,explain)
+# Service.Explaination(title,explain
 class Service:
     def __init__(self) -> None:
         pass
@@ -147,15 +148,15 @@ class Service:
         #print(subway.columns)
         #print(subway.info())
         null_message =f"총 {df.isnull().sum().sum()}개의 null 이 있습니다!" if df.isnull().sum().sum() else "Null 없는 clean data!"
-        print(Service.colored_text(f"  2️⃣ null ceck 결과{null_message}",'red'))
+        print(Service.colored_text(f"  2️⃣ null check 결과{null_message}",'red'))
         ### Null 이 있는 칼럼 추출
         haveNullColumn =[]
         for idx, col in enumerate(df.columns):
             if df[f"{col}"].isnull().sum():
                 print(f"   => {idx}번째.[{col}]컬럼 : ",f"null {df[f'{col}'].isnull().sum()} 개,\t not null {df[f'{col}'].notnull().sum()} 개")
                 ## Null data fill
-        if replace_Nan : ## nan 을 0 으로 대체 
-            df[col].fillna(value=nanFillValue, inplace=True)  
+                if replace_Nan : ## nan 을 0 으로 대체 
+                    df=df[col].fillna(value=nanFillValue, inplace=True)  
             
         
         print(Service.colored_text("  3️⃣ Column  Information (중복체크)",'red'))
@@ -572,7 +573,29 @@ class Service:
             'Friday': 5,
             'Saturday': 6
         }
+        
+        from datetime import datetime, timedelta
+        # Service.Explaination(title,explain)
+        years = []
+        weeks = []
+        months = []
+        for data in df[dateColName] :
+            date_obj = pd.to_datetime(data)
+            year, week, _ = date_obj.isocalendar()
+            month = date_obj.month
+            years.append(year)
+            weeks.append(week)
+            months.append(month)
+            
+        import holidays
+        kr_holidays = holidays.KR()
+        df['주중주말'] = df['요일'].apply(lambda x: 'SAT' if x in [0, 6] else 'DAY')
+        df['년도'] = years
+        df['월'] = months
+        df['주차'] = weeks
         df['요일'] = df['요일'].map(day_name_mapping)
+        df['공휴일'] = df[dateColName].apply(lambda x: 0 if x in kr_holidays else 1)
+
         return df
     def date_Divid_Add_YMW_cols(df,DateColName):
         """
