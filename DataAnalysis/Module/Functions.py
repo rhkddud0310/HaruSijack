@@ -62,6 +62,10 @@
 """
 ## project data processing functions 
 # Service.Explaination(title,explain
+
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import mean_squared_error, r2_score
 class Service:
     def __init__(self) -> None:
         pass
@@ -1128,7 +1132,24 @@ class Service:
         # print(mlTable_dict)
         np.save(f'../Data/mlTables/mlTable_dict_{save_mlTable_dict_fileName}.npy',mlTable_dict, allow_pickle=True)
         return mlTable_dict
-        
+    def grid_search(X_train,X_test,y_train,y_test,params, reg = DecisionTreeRegressor(random_state=2)):
+        from sklearn.model_selection import GridSearchCV
+        import numpy as np
+        params = {'max_depth':[None,2,3,4,6,8,10,20]}
+        reg = DecisionTreeRegressor(random_state=2)
+        grid_reg = GridSearchCV(reg,params, scoring='neg_mean_squared_error',
+                                cv=5,
+                                return_train_score=True,
+                                n_jobs=-1
+                                )
+        grid_reg.fit(X_train,y_train)
+        best_params= grid_reg.best_params_
+        print("최상의 매개변수: ",best_params)
+        best_score = np.sqrt(-grid_reg.best_score_)
+        print(f"훈련점수 : {best_score:.3f}")
+        y_pred =grid_reg.predict(X_test)
+        rmse_test = mean_squared_error(y_test,y_pred)**0.5
+        print(f'테스트 점수: {rmse_test:.3f}')
 
 if __name__ == '__main__':  print("main stdart")
     
