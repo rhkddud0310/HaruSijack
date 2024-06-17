@@ -36,7 +36,8 @@ struct NewsView: View {
         .padding()
         
       } // end of ScrollView
-      .navigationTitle("News Recommendations")
+      .navigationTitle("🍇 Today News")
+      .navigationBarTitleDisplayMode(.automatic)
       
     } // end of NavigationView
     
