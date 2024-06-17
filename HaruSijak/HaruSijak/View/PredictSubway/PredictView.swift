@@ -114,7 +114,7 @@ struct PredictView: View {
     
     var body: some View {
         VStack {
-            Text("지하철 승,하차인원 예측")
+            Text("지하철 승하차인원 예측")
                 .font(.system(size: 24, weight: .bold, design: .rounded))
             ZStack {
                 // 스크롤뷰 [노선도 사진]
@@ -253,7 +253,7 @@ struct PredictView: View {
                     if dbModel.queryDB().isEmpty {
                         isShowSheet = true
                     }
-                    //                            setNotification()
+                                                setNotification()
                 })
                 .sheet(isPresented: $isShowSheet, content: {
                     TimeSettingView(titleName: "출근 시간대 설정")
@@ -263,11 +263,11 @@ struct PredictView: View {
     }
     
     
-    //        func setNotification() {
-    //            let manager = NotificationManager()
-    //            manager.addNotification(title: "hellow")
-    //            manager.scheduleNotifications()
-    //        }
+            func setNotification() {
+                let manager = NotificationManager()
+                manager.addNotification(title: "hellow")
+                manager.scheduleNotifications()
+            }
     
     
     //--------------Functions-----------------
@@ -372,7 +372,7 @@ func getCurrentDateTime() -> (String, String) {
 
 // Flask 통신을 위한 함수(승차인원)
 func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
-    let url = URL(string: "http://localhost:5000/subway")!
+    let url = URL(string: "http://54.180.247.41:5000/subway")!
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -398,7 +398,7 @@ func fetchDataFromServerBoarding(stationName: String, date: String, time: String
 // Flask 통신을 위한 함수(하차인원)
 func fetchDataFromServerAlighting(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
     print(stationName,date,time,stationLine)
-    let url = URL(string: "http://localhost:5000/subwayAlighting")!
+    let url = URL(string: "http://54.180.247.41:5000/subwayAlighting")!
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
