@@ -12,5 +12,4 @@ struct NewsRecommendation: Codable, Identifiable {
   let press: String
   let title: String
   let link: String
-  let similarity: Double
 } // end of struct NewsRecommendation: Codable, Identifiable

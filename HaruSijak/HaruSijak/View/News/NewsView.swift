@@ -1,12 +1,12 @@
-//  Created by 신나라 on 6/1/24.
+//  Created by G.Zen on 6/15/24.
 // MARK: -- Description
 /*
     Description : HaruSijack App 개발 News Crawling Page
-    Date : 2024. 06. 01
+    Date : 2024. 06. 15. (Sat)
     Author :
     Dtail :
     Updates :
-        * 2024.06.16. (Sun) by. G.Zen:
+        * 2024.06.15. (Sun) by. G.Zen: 기초 Design 구상
  */
 
 import SwiftUI
@@ -36,7 +36,8 @@ struct NewsView: View {
         .padding()
         
       } // end of ScrollView
-      .navigationTitle("News Recommendations")
+      .navigationTitle("🍇 Today News")
+      .navigationBarTitleDisplayMode(.automatic)
       
     } // end of NavigationView
     
