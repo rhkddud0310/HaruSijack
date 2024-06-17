@@ -9,6 +9,7 @@
         - 2024.06.11 snr : - 일정 추가 후 alert 닫히도록 isAlert = false 처리
                            - 필요없는 변수 제거
         - 2024.06.12 snr : idValue 매개변수 추가
+        - 2024.06.17 snr : + 버튼의 배경색 삭제 및 +버튼 색 변경
  */
 
 import SwiftUI
@@ -48,7 +49,7 @@ struct CalendarView: View {
                         .fontWeight(.bold)
                         .frame(width: 100)
                         .padding(.vertical)
-                        .background(Color(.blue), in: Circle())
+                        .background(Color("myColor"), in: Circle())
                 })
                 .sheet(isPresented: $isAlert, content: {
                     VStack(content: {
@@ -121,10 +122,10 @@ struct CalendarView: View {
                 }) //sheet
             })
             .padding(.horizontal)
-            .background(.ultraThinMaterial)
-            .padding(.top, 10)
+            .background(.clear)
+            .padding(.bottom, 10)
             
-        })
+        })//safeArea
     }//body
     
     
