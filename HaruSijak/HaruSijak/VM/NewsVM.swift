@@ -6,20 +6,20 @@
 //
 
 import Foundation
-import Combine
 
-class NewsViewModel: ObservableObject {
-  @Published var recommendations: [NewsRecommendation] = []
+struct NewsVM {
   
-  init() {
-    fetchRecommendations()
-  } // end of init()
+  /*
+      async, await 방식으로 JSON Data 연결하는 로직
+   */
+  func loadData (url: URL) async throws -> [NewsModel] {
+    /*
+        shared : Singleton Session Object
+     */
+    let (data, _) = try await URLSession.shared.data(from: url)
+    
+    return try JSONDecoder().decode([NewsModel].self, from: data)
+    
+  } // end of functions loadData()
   
-  func fetchRecommendations() {
-    NewsNetwork.shared.fetchNewsRecommendations { [weak self] recommendations in
-      DispatchQueue.main.async {
-        self?.recommendations = recommendations ?? []
-      }
-    }
-  } // end of functions fecthRecommendations()
-} // end of class NewsViewModel: ObservableObject
+} // end of struct NewsVM

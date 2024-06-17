@@ -9,15 +9,17 @@ import SwiftUI
 
 struct NewsCell: View {
   // Property
-  let news: NewsRecommendation
+//  let news: NewsModel
+  let newsTitle: String
+  let newsPress: String
   
   var body: some View {
     
     VStack(alignment: .leading) {
-      Text(news.press)
+      Text(newsPress)
         .font(.headline)
         .padding([.top, .leading, .trailing])
-      Text(news.title)
+      Text(newsTitle)
         .font(.subheadline)
         .padding([.leading, .bottom, .trailing])
     } // end of VStack

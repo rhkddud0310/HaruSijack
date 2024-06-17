@@ -14,7 +14,7 @@ class NewsNetwork {
   private init() {}
   
   func fetchNewsRecommendations(completion: @escaping ([NewsRecommendation]?) -> Void) {
-    guard let url = URL(string: "http://127.0.0.1:5000/news_recommendations") else {
+    guard let url = URL(string: "http://127.0.0.1:5000/news") else {
       completion(nil)
       return
     }
