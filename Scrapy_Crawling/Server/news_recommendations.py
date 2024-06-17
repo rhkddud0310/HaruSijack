@@ -65,7 +65,7 @@ nltk.download('punkt')
 ### 2. 한국어 불용어 사전
 # ****************************************************************
 ## 한국어 불용어 모음집 불러오기
-stopword_list = pd.read_csv("Data/updated_stopword.txt", header = None)
+stopword_list = pd.read_csv("../Data/updated_stopword.txt", header = None)
 # ****************************************************************
 stopword_list[0] = stopword_list[0].apply(lambda x: x.strip())
 stopwords = stopword_list[0].to_numpy()
