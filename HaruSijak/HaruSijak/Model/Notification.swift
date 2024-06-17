@@ -5,6 +5,7 @@
     Detail :
     Updates :
         * 2024.06.13 by snr : class for notification
+        * 2024.06.17 by snr : 설정대 시간대에서 한시간 일찍 알림 뜨도록 설정
  */
 
 import SwiftUI
@@ -49,28 +50,54 @@ class NotificationManager {
     func scheduleNotifications() {
         
         let dbModel = TimeSettingDB()
+        let calendarModel = CalendarDB()
         
         for notification in notifications {
             // 날짜 설정
             var dateComponents = DateComponents()
             dateComponents.calendar = Calendar.current
-            dateComponents.hour = 18 /*dbModel.queryDB().first?.time ?? 0 //db에서 저장한 시간 가져오기*/
-            dateComponents.minute = 28
-            print("dateComponents.hour : ",dateComponents.hour!)
             
-            let content = UNMutableNotificationContent()
-            content.title = notification.title
-            content.sound = .default
-            content.subtitle = "약 먹을 시간"
+            // 알림 시간 설정
+            print("시간 : ",dbModel.queryDB().first?.time ?? 0)
+            dateComponents.hour = (dbModel.queryDB().first?.time ?? 0) - 1 //db에서 저장한 시간에서 한시간 먼저 알려주기*/
+            dateComponents.minute = 06
             
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-            let request = UNNotificationRequest(identifier: notification.id, content: content, trigger: trigger)
+            // 현재날짜와 calendar 날짜가 같은지 비교해서 알림표시
+            let currentDate = Date() //오늘날짜에서
+            let todayDate = formattedDate(currentDate: currentDate) //yyyy-MM-dd만 가져옴
+            
+            // CalendarDB()에서 캘린더일정과 todayDate가 같으면 알림에 task의 title값을 띄우기
+            if let task = calendarModel.queryDB().first(where: { task in
+                return isSameDay(date1: task.taskDate, date2: todayDate!)
+            }) {
+                print("진입시작")
+                let content = UNMutableNotificationContent()
+                content.title = "🔔하루시작 스케줄이 도착했습니다🔔"
+                content.sound = .default
+                content.subtitle = task.task[0].title
                 
-            UNUserNotificationCenter.current().add(request) { error in
-                guard error == nil else {return}
-                print("scheduling notification with id:\(notification.id)")
+                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+                let request = UNNotificationRequest(identifier: notification.id, content: content, trigger: trigger)
+                    
+                UNUserNotificationCenter.current().add(request) { error in
+                    guard error == nil else {return}
+                    print("scheduling notification with id:\(notification.id)")
+                }
             }
         }
+    }
+    
+    /* MARK: 날짜 체크 */
+    func isSameDay(date1: Date, date2: Date) -> Bool {
+        let calendar = Calendar.current
+        return calendar.isDate(date1, inSameDayAs: date2)
+    }
+    
+    /* MARK: yyyy-MM-dd formatter */
+    func formattedDate(currentDate: Date) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.date(from: formatter.string(from: currentDate))
     }
     
     func cancleNotification() {
