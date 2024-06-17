@@ -9,7 +9,7 @@
     - 뉴스 기사의 본문: 11분 10초
 
   - 자연어 처리 평균 소요시간
-    - 뉴스 기사 본문의 Keyword 추출: 2분 20초
+    - 뉴스 기사 본문의 Keyword 추출: 2분
     - 뉴스 기사 본문의 Embedding 처리: 2분 20초
 
   > (1) 환경 설정 및 라이브러리 설치
@@ -227,4 +227,4 @@ def get_recommendations () :
   return jsonify(recommendations)
 
 if __name__ == '__main__' :
-  app.run(host = '127.0.0.1', port = 5000, debug = True)
+  app.run(host = '127.0.0.1', port = 5000, debug = False)
