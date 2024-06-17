@@ -9,6 +9,7 @@
         - 2024.06.11 snr : - 일정 추가 후 alert 닫히도록 isAlert = false 처리
                            - 필요없는 변수 제거
         - 2024.06.12 snr : idValue 매개변수 추가
+        - 2024.06.17 snr : + 버튼의 배경색 삭제 및 +버튼 색 변경
  */
 
 import SwiftUI
@@ -38,93 +39,93 @@ struct CalendarView: View {
             })//VStack
             .padding(.vertical)
         }//ScrollView
-        .safeAreaInset(edge: .bottom, content: {
-            HStack(content: {
-                Button(action: {
-                    isAlert = true
-                }, label: {
-                    Image(systemName: "plus")
-                        .foregroundStyle(.white)
-                        .fontWeight(.bold)
-                        .frame(width: 100)
-                        .padding(.vertical)
-                        .background(Color(.blue), in: Circle())
-                })
-                .sheet(isPresented: $isAlert, content: {
-                    VStack(content: {
-                        
-                        //일정 textfield
-                        TextField("일정 제목", text: $task)
-                            .font(.title3.bold())
-                            .frame(width: 200)
-                            .padding()
-                            .cornerRadius(8)
-                            .focused($isTextFieldFocused)
-                        
-                        //요일 설정 picker
-                        DatePicker(
-                            "요일 설정 : ",
-                            selection: $date,
-                            displayedComponents: [.date]
-                        )
-                        .frame(width: 200)
-                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
-                        .tint(Color("color1"))
-                        
-                        //시간 설정 picker
-                        DatePicker(
-                            "시간 설정 : ",
-                            selection: $time,
-                            displayedComponents: [.hourAndMinute]
-                        )
-                        .frame(maxWidth: 200)
-                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
-                        .tint(Color("color1"))
-                        
-                        //추가 버튼
-                        Button("추가하기", action: {
-                            if task != "" {
-                                let newTask = Task(id: UUID().uuidString, title: task, time: time)
-                                dbModel.insertDB(task: newTask, taskDate: date)
-                                isAlert = false //alert창 닫기
-                            } else {
-                                isSubAlert = true
-                            }
-                            
-                            //추가 후 초기화처리
-                            task = ""
-                            date = Date()
-                            time = Date()
-                        }) // Button
-                        .tint(.white)
-                        .buttonStyle(.bordered)
-                        .buttonBorderShape(.capsule)
-                        .background(Color("color1"))
-                        .cornerRadius(30)
-                        .controlSize(.large)
-                        .frame(width: 200, height: 50) // 버튼의 크기 조정
-                        .padding(.top, 40)
-                        
-                        // 일정 == empty일 때, alert처리
-                        .alert(isPresented: $isSubAlert) {
-                            Alert(
-                                title: Text("경고"),
-                                message: Text("일정을 작성해주세요."),
-                                dismissButton: .default(Text("확인"), action: {
-                                    isSubAlert = false
-                                })
-                            )
-                        }// alert
-                    })
-                    .presentationDetents([.medium])
-                    .presentationDragIndicator(.visible)
-                }) //sheet
-            })
-            .padding(.horizontal)
-            .background(.ultraThinMaterial)
-            .padding(.top, 10)
-            
-        })
+//        .safeAreaInset(edge: .bottom, content: {
+//            HStack(content: {
+//                Button(action: {
+//                    isAlert = true
+//                }, label: {
+//                    Image(systemName: "plus")
+//                        .foregroundStyle(.white)
+//                        .fontWeight(.bold)
+//                        .frame(width: 100)
+//                        .padding(.vertical)
+//                        .background(Color("myColor"), in: Circle())
+//                })
+//                .sheet(isPresented: $isAlert, content: {
+//                    VStack(content: {
+//                        
+//                        //일정 textfield
+//                        TextField("일정 제목", text: $task)
+//                            .font(.title3.bold())
+//                            .frame(width: 200)
+//                            .padding()
+//                            .cornerRadius(8)
+//                            .focused($isTextFieldFocused)
+//                        
+//                        //요일 설정 picker
+//                        DatePicker(
+//                            "요일 설정 : ",
+//                            selection: $date,
+//                            displayedComponents: [.date]
+//                        )
+//                        .frame(width: 200)
+//                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
+//                        .tint(Color("color1"))
+//                        
+//                        //시간 설정 picker
+//                        DatePicker(
+//                            "시간 설정 : ",
+//                            selection: $time,
+//                            displayedComponents: [.hourAndMinute]
+//                        )
+//                        .frame(maxWidth: 200)
+//                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
+//                        .tint(Color("color1"))
+//                        
+//                        //추가 버튼
+//                        Button("추가하기", action: {
+//                            if task != "" {
+//                                let newTask = Task(id: UUID().uuidString, title: task, time: time)
+//                                dbModel.insertDB(task: newTask, taskDate: date)
+//                                isAlert = false //alert창 닫기
+//                            } else {
+//                                isSubAlert = true
+//                            }
+//                            
+//                            //추가 후 초기화처리
+//                            task = ""
+//                            date = Date()
+//                            time = Date()
+//                        }) // Button
+//                        .tint(.white)
+//                        .buttonStyle(.bordered)
+//                        .buttonBorderShape(.capsule)
+//                        .background(Color("color1"))
+//                        .cornerRadius(30)
+//                        .controlSize(.large)
+//                        .frame(width: 200, height: 50) // 버튼의 크기 조정
+//                        .padding(.top, 40)
+//                        
+//                        // 일정 == empty일 때, alert처리
+//                        .alert(isPresented: $isSubAlert) {
+//                            Alert(
+//                                title: Text("경고"),
+//                                message: Text("일정을 작성해주세요."),
+//                                dismissButton: .default(Text("확인"), action: {
+//                                    isSubAlert = false
+//                                })
+//                            )
+//                        }// alert
+//                    })
+//                    .presentationDetents([.medium])
+//                    .presentationDragIndicator(.visible)
+//                }) //sheet
+//            })
+//            .padding(.horizontal)
+//            .background(.clear)
+//            .padding(.bottom, 10)
+//            
+//        })//safeArea
     }//body
     
     
