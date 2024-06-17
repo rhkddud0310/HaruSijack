@@ -115,7 +115,7 @@ struct PredictView: View {
                     Image("Line7")
                         .resizable()
                         .frame(width: 800, height: 800)
-                    .zoomable() // double click시 화면 확대
+//                    .zoomable() // double click시 화면 확대
                         .overlay(
                             ForEach(stations, id: \.0) { station in
                                 Button(action: {
@@ -201,6 +201,7 @@ struct PredictView: View {
                                 }) //sheet
                             }
                         )
+                        .zoomable() // double click시 화면 확대
                 }
                 .frame(maxWidth: .infinity)
                 .gesture(
@@ -331,7 +332,7 @@ func getCurrentDateTime() -> (String, String) {
     // Date Formatter for Time
     let dateFormatterTime = DateFormatter()
     dateFormatterTime.dateFormat = "HH"
-    let timeString = String(Int(dateFormatterTime.string(from: currentDate))!+10)
+    let timeString = String(Int(dateFormatterTime.string(from: currentDate))!)
     
     return (dateString, timeString)
 }

@@ -24,13 +24,20 @@ struct SplashView: View {
             
             Spacer()
             ZStack {
-                LottieView(jsonName: "train2")
-                    .frame(width: 250, height: 300)
+                LottieView(jsonName: "SplashLotti")
+                    .frame(width: 400, height: 400)
                 Spacer()
-                Text("HaruSijack")
-                    .font(.system(size: 40, weight: .bold, design: .rounded))
-                    .foregroundColor(.black)
-                    .offset(y: 100)
+                RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.white, lineWidth: 4)
+                            .background(Color.white)
+                            .frame(width: 200, height: 100)
+                            .offset(x: 0, y: 100)
+                        
+                        Text("HaruSijack")
+                            .font(.system(size: 40, weight: .bold, design: .rounded))
+                            .foregroundColor(.black)
+                            .offset(y: 120)
+                
             }
             
             Spacer()
@@ -38,7 +45,7 @@ struct SplashView: View {
             
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 withAnimation {
                     self.isActive = true
                 }
