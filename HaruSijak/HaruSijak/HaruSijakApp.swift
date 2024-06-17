@@ -30,8 +30,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             options: authOptions,
             completionHandler: { _, _ in }
         )
+        
         return true
     }
+    
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
