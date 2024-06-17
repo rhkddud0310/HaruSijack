@@ -36,6 +36,10 @@
 		A773B5ED2C1C9FC60071D7FF /* LottiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A773B5EA2C1C9FC60071D7FF /* LottiView.swift */; };
 		A773B5EE2C1C9FC60071D7FF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A773B5EB2C1C9FC60071D7FF /* SplashView.swift */; };
 		A773B5F12C1CA0B00071D7FF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = A773B5F02C1CA0B00071D7FF /* Lottie */; };
+		A773B6132C1FD2AA0071D7FF /* train1.json in Resources */ = {isa = PBXBuildFile; fileRef = A773B6122C1FD2AA0071D7FF /* train1.json */; };
+		A773B6162C1FD49C0071D7FF /* train3.json in Resources */ = {isa = PBXBuildFile; fileRef = A773B6142C1FD49C0071D7FF /* train3.json */; };
+		A773B6172C1FD49C0071D7FF /* train2.json in Resources */ = {isa = PBXBuildFile; fileRef = A773B6152C1FD49C0071D7FF /* train2.json */; };
+		A773B6192C2001670071D7FF /* SplashLotti.json in Resources */ = {isa = PBXBuildFile; fileRef = A773B6182C2001670071D7FF /* SplashLotti.json */; };
 		FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE360DC42C16D79D007BA9AE /* JSONModel.swift */; };
 		FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6732C16BA24005DA54E /* Test_pdg.swift */; };
 		FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */; };
@@ -72,6 +76,10 @@
 		54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoListView.swift; sourceTree = "<group>"; };
 		A773B5EA2C1C9FC60071D7FF /* LottiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottiView.swift; sourceTree = "<group>"; };
 		A773B5EB2C1C9FC60071D7FF /* SplashView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		A773B6122C1FD2AA0071D7FF /* train1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = train1.json; path = ../../../../../Downloads/train1.json; sourceTree = "<group>"; };
+		A773B6142C1FD49C0071D7FF /* train3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = train3.json; sourceTree = "<group>"; };
+		A773B6152C1FD49C0071D7FF /* train2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = train2.json; sourceTree = "<group>"; };
+		A773B6182C2001670071D7FF /* SplashLotti.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SplashLotti.json; sourceTree = "<group>"; };
 		FE360DC42C16D79D007BA9AE /* JSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONModel.swift; sourceTree = "<group>"; };
 		FE5CC6732C16BA24005DA54E /* Test_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_pdg.swift; sourceTree = "<group>"; };
 		FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test2_pdg.swift; sourceTree = "<group>"; };
@@ -163,6 +171,10 @@
 		54F80F0B2C0AF4EF00D83A08 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				A773B6182C2001670071D7FF /* SplashLotti.json */,
+				A773B6152C1FD49C0071D7FF /* train2.json */,
+				A773B6142C1FD49C0071D7FF /* train3.json */,
+				A773B6122C1FD2AA0071D7FF /* train1.json */,
 				54F80F0C2C0AF4EF00D83A08 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -317,8 +329,12 @@
 			files = (
 				546496682C1A8C6100B1FF48 /* 온글잎 누카.ttf in Resources */,
 				546496662C1A8BD600B1FF48 /* KCC-Hanbit.ttf in Resources */,
+				A773B6132C1FD2AA0071D7FF /* train1.json in Resources */,
+				A773B6172C1FD49C0071D7FF /* train2.json in Resources */,
 				54F80F0D2C0AF4EF00D83A08 /* Preview Assets.xcassets in Resources */,
+				A773B6162C1FD49C0071D7FF /* train3.json in Resources */,
 				54F80F0A2C0AF4EF00D83A08 /* Assets.xcassets in Resources */,
+				A773B6192C2001670071D7FF /* SplashLotti.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
