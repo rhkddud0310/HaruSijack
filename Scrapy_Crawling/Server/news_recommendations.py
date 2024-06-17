@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 # Projectr : 하루시작 지하철 혼잡도 분석
 ### Description : NAVER News - 언론사별 랭킹 뉴스를 웹크롤링 후 BERT Model을 활용한 오늘의 뉴스 추천하기
@@ -38,6 +40,7 @@
 # Import Library Package
 ## Flask Server
 from flask import Flask, request, jsonify
+# from flask_cors import CORS
 
 ## Basic
 import pandas as pd, numpy as np
@@ -63,10 +66,10 @@ from collections import Counter # 단어의 빈도를 계산하기 위해 사용
 nltk.download('punkt')
 
 ### 2. 한국어 불용어 사전
-# ****************************************************************
+# *************************************************************************
 ## 한국어 불용어 모음집 불러오기
 stopword_list = pd.read_csv("../Data/updated_stopword.txt", header = None)
-# ****************************************************************
+# *************************************************************************
 stopword_list[0] = stopword_list[0].apply(lambda x: x.strip())
 stopwords = stopword_list[0].to_numpy()
 
@@ -78,7 +81,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 # ****************************************************************************************************************************************************************
 
 app = Flask(__name__)
+# ***********************************************
+app.config['JSON_AS_ASCII'] = False # for utf-8
+# ***********************************************
 
+# CORS(app)  # 모든 출처에서 접근할 수 있도록 설정
 
 # 1. NAVER News Web Crawling
 ## 1-1. 언론사별 랭킹뉴스 Crawling 함수 정의
@@ -183,16 +190,16 @@ model = BertModel.from_pretrained('bert-base-multilingual-cased')
 """
 ## 4-2. 문장 임베딩 생성 함수 정의
 def get_bert_embedding (text) :
-    inputs = tokenizer(
-        text,
-        return_tensors = 'pt',
-        truncation = True,
-        padding = True,
-        max_length = 512
-    )
-    with torch.no_grad() :
-        outputs = model(**inputs)
-    return outputs.last_hidden_state.mean(dim = 1).detach().numpy()
+  inputs = tokenizer(
+    text,
+    return_tensors = 'pt',
+    truncation = True,
+    padding = True,
+    max_length = 512
+  )
+  with torch.no_grad() :
+    outputs = model(**inputs)
+  return outputs.last_hidden_state.mean(dim = 1).detach().numpy()
 
 ## 4-3. 각 뉴스 기사 임베딩 생성
 embed_pbar = tqdm(news_df['content'], desc = "Embedding 처리 중", unit = "text")
@@ -212,19 +219,31 @@ keyword_embedding = get_bert_embedding(keyword_text)
 """
 ## 4-5. 코사인 유사도 계산 함수 정의
 def recommend_news (df, keyword_embedding, top_n = 10) :
-    embeddings = np.vstack(df['embedding'].values)
-    similarities = cosine_similarity(embeddings, keyword_embedding.reshape(1, -1)).flatten()
-    df['similarity'] = similarities
-    return df.nlargest(top_n, 'similarity')
+  embeddings = np.vstack(df['embedding'].values)
+  similarities = cosine_similarity(embeddings, keyword_embedding.reshape(1, -1)).flatten()
+  df['similarity'] = similarities
+  return df.nlargest(top_n, 'similarity')
 
 ## 4-6. 추천된 뉴스 Data 생성
 recommended_news = recommend_news(news_df, keyword_embedding)
 
+# """
+#     NumPy 배열을 JSON 직렬화 가능한 형식으로 변환하기 위해 List로 변환하기.
+#       - 'embeddding' Column에 NumPy 배열이 포함되어 있기 때문임.
+#       - 'Object of type ndarray is not JSON serializable' Error 해결 방법 
+# """
+# ## 4-7. # embedding Column(열)을 List로 변환
+# recommended_news['embedding'] = recommended_news['embedding'].apply(lambda x: x.tolist())
+
+## 4-7. 필요한 Column만 선택
+columns_to_return = ['Link', 'Press', 'Title', 'content', 'keywords']
+final_recommended_news = recommended_news[columns_to_return]
+
 # 5. JSON 형식으로 반환하는 EndPorint 정의
-@app.route('/news_recommendations', methods = ['POST'])
+@app.route('/news_recommendations', methods = ['GET', 'POST'])
 def get_recommendations () :
-  recommendations = recommended_news.to_dict(orient = 'records')
+  recommendations = final_recommended_news.to_dict(orient = 'records')
   return jsonify(recommendations)
 
 if __name__ == '__main__' :
-  app.run(host = '127.0.0.1', port = 5000, debug = False)
+  app.run(host = '127.0.0.1', port = 5000, debug = True)
