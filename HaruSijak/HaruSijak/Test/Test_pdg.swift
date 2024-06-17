@@ -38,17 +38,17 @@ struct Test_pdg: View {
                 }//NL
 
                 HStack(content: {
-                    NavigationLink(destination: NewsView()) {
-                        Text("뉴스\n요약 보기")
-                            .frame(width: 140, height: 150)
-                            .padding()
-                            .font(.system(.largeTitle, design: .rounded))
-                            .fontWeight(.black)
-                            .background(Color.orange)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                            .scaleEffect(1.0)
-                    }
+//                    NavigationLink(destination: NewsView()) {
+//                        Text("뉴스\n요약 보기")
+//                            .frame(width: 140, height: 150)
+//                            .padding()
+//                            .font(.system(.largeTitle, design: .rounded))
+//                            .fontWeight(.black)
+//                            .background(Color.orange)
+//                            .foregroundColor(.white)
+//                            .cornerRadius(8)
+//                            .scaleEffect(1.0)
+//                    }
                     NavigationLink(destination: TodoListView()) {
                         Text("TodoList")
                             .frame(width: 140, height: 150)

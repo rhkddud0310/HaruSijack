@@ -16,6 +16,8 @@
         * 2024.06.13 by snr : 시간설정 추가 및 수정기능 완료
                               시간 선택 picker를 TimeSettingView로 view로 생성함 -> 다른페이지에서도 사용하기 위해
  
+        * 2024.06.17 by snr : 시간설정 + 출발역 지정 기능 추가하기
+ 
  */
 
 
@@ -33,22 +35,20 @@ struct SettingView: View {
     @State var alertType: SettingAlertType?        // 추가, 수정 alert
     
     
+    
     var body: some View {
         NavigationView(content: {
             
             //NavigationView
             VStack(content: {
+                
+                //출근 시간대 설정하기
                 HStack(content: {
                     Image(systemName: "clock")
                         .font(.system(size: 25))
                         .padding()
                     
-                    Text("시간대 변경하기")
-                    
-                    if !dbModel.queryDB().isEmpty {
-                        Text("[설정시간 : \(dbModel.queryDB()[0].time)시]") //저장되어있는 설정시간 보여주기
-                            .foregroundStyle(.gray)
-                    }
+                    Text("출발역, 시간대 설정하기")
                 })
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
                 .padding(.leading, 20)
@@ -56,7 +56,16 @@ struct SettingView: View {
                     isShowSheet = true
                 }
                 
+                VStack(content: {
+                    if !dbModel.queryDB().isEmpty {
+                        let result = dbModel.queryDB()[0]
+                        
+                        Text("[출발역 : \(result.station)역, 설정시간 : \(result.time)시]") //저장되어있는 설정시간 보여주기
+                            .foregroundStyle(.gray)
+                    }
+                })
                 
+                // 버전정보 출력
                 HStack(content: {
                     Image(systemName: "v.square")
                         .font(.system(size: 25))
@@ -78,7 +87,7 @@ struct SettingView: View {
             
             // 시간설정 sheet
             .sheet(isPresented: $isShowSheet, content: {
-                TimeSettingView(titleName: "시간변경")
+                TimeSettingView(titleName: "출발역, 시간대 설정하기")
                     .presentationDragIndicator(.visible)
                     .presentationDetents([.medium])
             })//sheet

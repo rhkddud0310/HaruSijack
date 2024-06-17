@@ -16,9 +16,12 @@
 
 import SwiftUI
 struct ContentView: View {
+    
     // MARK: -- properties
     @State private var isPressed = false
     @State var selection = 0
+    
+    
     // MARK: -- body
     var body: some View {
         NavigationView {
@@ -37,12 +40,12 @@ struct ContentView: View {
                                     Text("혼잡도")
                                 }
                                 .tag(0)
-                            NewsView()
-                                .tabItem {
-                                    Image(systemName: "newspaper")
-                                    Text("뉴스")
-                                }
-                                .tag(1)
+//                            NewsView()
+//                                .tabItem {
+//                                    Image(systemName: "newspaper")
+//                                    Text("뉴스")
+//                                }
+//                                .tag(1)
                             CalendarView()
                                 .tabItem {
                                     Image(systemName: "calendar")
@@ -55,11 +58,20 @@ struct ContentView: View {
                                     Text("설정")
                                 }
                         })//G
-                        .toolbarBackground(.visible, for: .tabBar)
+                        .toolbarBackground(.white, for: .tabBar)
+                        
 
                 })//TV
+                
+                .tint(Color("color1"))
                 Spacer()
             }// VS
+//            .padding()
+//            .background {
+//                    RoundedRectangle(cornerRadius: 24)
+//                        .shadow(color: .black.opacity(0.15), radius: 8, y: 2)
+//                }
+            
         } //NV
     }// Body
     //MARK: FUNCTIONS
