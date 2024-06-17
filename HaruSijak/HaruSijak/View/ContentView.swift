@@ -40,12 +40,12 @@ struct ContentView: View {
                                     Text("혼잡도")
                                 }
                                 .tag(0)
-//                            NewsView()
-//                                .tabItem {
-//                                    Image(systemName: "newspaper")
-//                                    Text("뉴스")
-//                                }
-//                                .tag(1)
+                            NewsView()
+                                .tabItem {
+                                    Image(systemName: "newspaper")
+                                    Text("뉴스")
+                                }
+                                .tag(1)
                             CalendarView()
                                 .tabItem {
                                     Image(systemName: "calendar")
