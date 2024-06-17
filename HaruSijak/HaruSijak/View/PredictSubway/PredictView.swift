@@ -256,7 +256,7 @@ struct PredictView: View {
                                                 setNotification()
                 })
                 .sheet(isPresented: $isShowSheet, content: {
-                    TimeSettingView(titleName: "출근 시간대 설정")
+                    TimeSettingView(titleName: "출근 시간대, 출발역 설정")
                         .presentationDetents([.medium])
                         .presentationDragIndicator(.visible)
                 })//sheet
