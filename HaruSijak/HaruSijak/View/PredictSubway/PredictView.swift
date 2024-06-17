@@ -10,6 +10,7 @@
              - 2024.06.13 j.park : 1.승차인원 추가
                                    2. actionsheet에서 sheet로 변경
              - 2024.06.14 j.park : 1.특정역에 대한 전체 승하차인원 그래프 구현
+             - 2024.06.17 j.park : 1. 예측페이지 진입전 lotti를 활용한 대기화면 구현
                                    
  */
 import SwiftUI
@@ -34,6 +35,10 @@ struct PredictView: View {
     @State private var offsetY: CGFloat = 0
     // actionSheet 실행
     @State var isAlert = false
+    //로딩중 화면
+    @State private var isLoading = false
+    //lotti 시간설정
+    @State private var isLotti = false
     
     //----  server  ----
     @State private var showAlertForStation = false
@@ -109,25 +114,52 @@ struct PredictView: View {
     
     var body: some View {
         VStack {
+            Text("지하철 승,하차인원 예측")
+                .font(.system(size: 24, weight: .bold, design: .rounded))
             ZStack {
                 // 스크롤뷰 [노선도 사진]
                 ScrollView([.horizontal, .vertical], showsIndicators: false) {
                     Image("Line7")
                         .resizable()
-                        .frame(width: 800, height: 800)
-//                    .zoomable() // double click시 화면 확대
-                        .overlay(
+                        .frame( width:  CGFloat(800), height: CGFloat(800))
+                    //                    .zoomable() // double click시 화면 확대
+                        .overlay( GeometryReader { geometry in
                             ForEach(stations, id: \.0) { station in
                                 Button(action: {
+                                    isLoading = true
                                     handleStationClick(stationName: station.0)
                                 }) {
                                     Text("")
                                         .frame(width: 20, height: 20)
                                         .background(Color.clear)
                                 }
-                                .position(x: station.1, y: station.2)
-                                .sheet(isPresented: $showAlertForStation, content: {
-                                    VStack(content: {
+                                .position(x: CGFloat(station.1), y: CGFloat(station.2))
+                            }
+                            
+                            .sheet(isPresented: $showAlertForStation, content: {
+                                VStack(content: {
+                                    if isLoading {
+                                        ZStack {
+                                            LottieView(jsonName: "SplashLotti")
+                                                .onAppear {
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                                        withAnimation {
+                                                            isLoading = false
+                                                        }
+                                                    }
+                                                }
+                                            Spacer()
+                                            RoundedRectangle(cornerRadius: 10)
+                                                        .stroke(Color.white, lineWidth: 4)
+                                                        .background(Color.white)
+                                                        .frame(width: 250, height: 100)
+                                                        .offset(x: 0, y: 200)
+                                            Text("잠시만 기다려 주세요...")
+                                                .font(.system(size: 24, weight: .bold, design: .rounded))
+                                                .offset(y: 120)
+                                        }
+                                    }
+                                    else{
                                         Text(stationName)
                                             .font(.system(size: 24))
                                             .bold()
@@ -194,15 +226,16 @@ struct PredictView: View {
                                             .frame(height: 400)
                                             
                                         }
-                                        
-                                    })
-                                    .presentationDetents([.fraction(CGFloat(0.8))])
-                                    .presentationDragIndicator(.visible)
-                                }) //sheet
-                            }
+                                    }
+                                })
+                                .presentationDetents([.fraction(CGFloat(0.8))])
+                                .presentationDragIndicator(.visible)
+                            }) //sheet
+                        }
                         )
-                        .zoomable() // double click시 화면 확대
+                    //                        .zoomable() // double click시 화면 확대 -> scrollView랑 충돌나서 버튼이 작동 안되는거같아서 주석처리
                 }
+//                .allowsHitTesting(true) // ScrollView가 터치 이벤트를 받도록 설정
                 .frame(maxWidth: .infinity)
                 .gesture(
                     DragGesture()
@@ -216,17 +249,17 @@ struct PredictView: View {
                 .offset(x: dragAmount.width, y: dragAmount.height)
             }
         }
-        //        .onAppear(perform: {
-        //            if dbModel.queryDB().isEmpty {
-        //                isShowSheet = true
-        //            }
-        //            //                            setNotification()
-        //        })
-        //        .sheet(isPresented: $isShowSheet, content: {
-        //            TimeSettingView(titleName: "출근 시간대 설정")
-        //                .presentationDetents([.medium])
-        //                .presentationDragIndicator(.visible)
-        //        })//sheet
+                .onAppear(perform: {
+                    if dbModel.queryDB().isEmpty {
+                        isShowSheet = true
+                    }
+                    //                            setNotification()
+                })
+                .sheet(isPresented: $isShowSheet, content: {
+                    TimeSettingView(titleName: "출근 시간대 설정")
+                        .presentationDetents([.medium])
+                        .presentationDragIndicator(.visible)
+                })//sheet
     }
     
     
@@ -237,7 +270,7 @@ struct PredictView: View {
     //        }
     
     
-//--------------Functions-----------------
+    //--------------Functions-----------------
     //     역 클릭 처리 함수
     func handleStationClick(stationName: String) {
         self.stationName = stationName
@@ -285,14 +318,14 @@ struct PredictView: View {
         fetchDataFromServerAlighting(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
             self.serverResponseAlightingPerson = responseString
             self.AlightingPersonValue = getValueForCurrentTime(jsonString: responseString, currentTime: timeString)
-//            let alightingTime=showingcurrentTime
+            //            let alightingTime=showingcurrentTime
             if let dictionary = convertJSONStringToDictionary(responseString) {
                 
                 //현재시간에서 범위에 있는 값들을 임시저장하기위한 딕셔너리
                 var tempAlightingPersondictionary: [String: Double] = [:]
                 // 정렬해서 배열로 가져오기(index번호로 데이터 가져오기 위해서)
                 let sortedKeys = dictionary.keys.sorted()
-                                
+                
                 //lowerBound: 현재시시간에서 -7값이 0보다 작으면 0으로 고정(-7한 이유:배차시작이5기 때문)
                 //upperBound: 키값에 인덱스를 초과한 값 방지
                 let lowerBound = max(0, Int(showingcurrentTime)! - 7)

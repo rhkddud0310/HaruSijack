@@ -24,16 +24,16 @@ struct SplashView: View {
             
             Spacer()
             ZStack {
-                LottieView(jsonName: "SplashLotti")
+                LottieView(jsonName: "train2")
                     .frame(width: 400, height: 400)
                 Spacer()
-                RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.white, lineWidth: 4)
-                            .background(Color.white)
-                            .frame(width: 200, height: 100)
-                            .offset(x: 0, y: 100)
+//                RoundedRectangle(cornerRadius: 10)
+//                            .stroke(Color.white, lineWidth: 4)
+//                            .background(Color.white)
+//                            .frame(width: 200, height: 100)
+//                            .offset(x: 0, y: 100)
                         
-                        Text("HaruSijack")
+                        Text("하루시작")
                             .font(.system(size: 40, weight: .bold, design: .rounded))
                             .foregroundColor(.black)
                             .offset(y: 120)
