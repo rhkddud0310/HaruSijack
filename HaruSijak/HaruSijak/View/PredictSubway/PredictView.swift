@@ -142,7 +142,7 @@ struct PredictView: View {
                                         ZStack {
                                             LottieView(jsonName: "SplashLotti")
                                                 .onAppear {
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                                         withAnimation {
                                                             isLoading = false
                                                         }
