@@ -60,7 +60,8 @@ class NotificationManager {
             // 알림 시간 설정
             print("시간 : ",dbModel.queryDB().first?.time ?? 0)
             dateComponents.hour = (dbModel.queryDB().first?.time ?? 0) - 1 //db에서 저장한 시간에서 한시간 먼저 알려주기*/
-            dateComponents.minute = 08
+            print("dddhour : ", dateComponents.hour!)
+            dateComponents.minute = 05
             
             // 현재날짜와 calendar 날짜가 같은지 비교해서 알림표시
             let currentDate = Date() //오늘날짜에서
@@ -76,13 +77,13 @@ class NotificationManager {
 
             if let info = info {
                 
-                fetchDataFromServerBoarding2(stationName: info.station, date: todate, time: String(info.time-1), stationLine: "7") { response in
+                fetchDataFromServerBoarding2(stationName: info.station, date: todate, time: String(info.time), stationLine: "7") { response in
                     
-                    let ride = Int(self.getValueForCurrentTime(jsonString: response, currentTime: String(info.time-1)))
+                    let ride = Int(self.getValueForCurrentTime(jsonString: response, currentTime: String(info.time)))
                     
                     
-                    self.fetchDataFromServerAlighting(stationName: info.station, date: todate, time: String(info.time-1), stationLine: "7") { response2 in
-                        let down = Int(self.getValueForCurrentTime(jsonString: response2, currentTime: String(info.time-1)))
+                    self.fetchDataFromServerAlighting(stationName: info.station, date: todate, time: String(info.time), stationLine: "7") { response2 in
+                        let down = Int(self.getValueForCurrentTime(jsonString: response2, currentTime: String(info.time)))
                         
                         
                         print("ride :", ride)
