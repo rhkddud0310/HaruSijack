@@ -43,38 +43,38 @@ from flask import Flask, request, jsonify
 ## Basic
 import pandas as pd, numpy as np
 
-# ## Crawling
-# import requests # 인터넷에서 Data를 가져오기 위한 Library (웹페이지에 접속하고 HTML 코드를 가져오기 위해 사용)
-# from bs4 import BeautifulSoup # 웹 페이지 내용을 분석하기 위한 Library (가져온 HTML 코드에서 우리가 필요한 정보를 추출하기 위해 사용)
+## Crawling
+import requests # 인터넷에서 Data를 가져오기 위한 Library (웹페이지에 접속하고 HTML 코드를 가져오기 위해 사용)
+from bs4 import BeautifulSoup # 웹 페이지 내용을 분석하기 위한 Library (가져온 HTML 코드에서 우리가 필요한 정보를 추출하기 위해 사용)
 
-# import time # 대기 시간을 추가하기 위한 Library (요청 사이에 랜덤한 시간을 기다리기 위해 사용)
-# import random # Random한 대기 시간을 만들기 위한 Library
-# from tqdm import tqdm # Crawling 진행 상황을 체크하기 위한 Module (진행 상황을 시각적으로 보여주기 위해 사용)
+import time # 대기 시간을 추가하기 위한 Library (요청 사이에 랜덤한 시간을 기다리기 위해 사용)
+import random # Random한 대기 시간을 만들기 위한 Library
+from tqdm import tqdm # Crawling 진행 상황을 체크하기 위한 Module (진행 상황을 시각적으로 보여주기 위해 사용)
 
-# from selenium import webdriver
-# from selenium.webdriver.chrome.service import Service
-# from webdriver_manager.chrome import ChromeDriverManager
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
-# ## Bag of Words (BoW)
-# import nltk # Natural Language Toolkit (자연어 처리를 위해 사용)
-# from konlpy.tag import Okt
-# from collections import Counter # 단어의 빈도를 계산하기 위해 사용
+## Bag of Words (BoW)
+import nltk # Natural Language Toolkit (자연어 처리를 위해 사용)
+from konlpy.tag import Okt
+from collections import Counter # 단어의 빈도를 계산하기 위해 사용
 
-# ### 1. nltk Data Download
-# nltk.download('punkt')
+### 1. nltk Data Download
+nltk.download('punkt')
 
-# ### 2. 한국어 불용어 사전
-# # *************************************************************************
-# ## 한국어 불용어 모음집 불러오기
-# stopword_list = pd.read_csv("../Data/updated_stopword.txt", header = None)
-# # *************************************************************************
-# stopword_list[0] = stopword_list[0].apply(lambda x: x.strip())
-# stopwords = stopword_list[0].to_numpy()
+### 2. 한국어 불용어 사전
+# *************************************************************************
+## 한국어 불용어 모음집 불러오기
+stopword_list = pd.read_csv("../Data/updated_stopword.txt", header = None)
+# *************************************************************************
+stopword_list[0] = stopword_list[0].apply(lambda x: x.strip())
+stopwords = stopword_list[0].to_numpy()
 
-# ## Deep Learning
-# import torch
-# from transformers import BertModel, BertTokenizer
-# from sklearn.metrics.pairwise import cosine_similarity
+## Deep Learning
+import torch
+from transformers import BertModel, BertTokenizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # ****************************************************************************************************************************************************************
 
@@ -243,9 +243,6 @@ final_recommended_news = pd.read_csv("../Data/recommended_news.csv")
 # 5. JSON 형식으로 반환하는 EndPorint 정의
 @app.route('/news', methods = ['GET', 'POST'])
 def get_recommendations () :
-  # import json
-  # json_data = json.dumps(recommendations, ensure_ascii=False).encode('utf-8')
-  # return json_data
   recommendations = final_recommended_news.to_dict(orient = 'records')
   return jsonify(recommendations)
 
