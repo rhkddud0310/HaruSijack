@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 # Projectr : 하루시작 지하철 혼잡도 분석
 ### Description : NAVER News - 언론사별 랭킹 뉴스를 웹크롤링 후 BERT Model을 활용한 오늘의 뉴스 추천하기
@@ -40,7 +39,6 @@
 # Import Library Package
 ## Flask Server
 from flask import Flask, request, jsonify
-# from flask_cors import CORS
 
 ## Basic
 import pandas as pd, numpy as np
@@ -85,162 +83,165 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False # for utf-8
 # ***********************************************
 
-# CORS(app)  # 모든 출처에서 접근할 수 있도록 설정
-
-# 1. NAVER News Web Crawling
-## 1-1. 언론사별 랭킹뉴스 Crawling 함수 정의
-def get_news_links_by_press (url) :
-  """
-    headers:
-    - 나는 bot이 아니고 사람임을 증명하는 부분이다.
-      - 사용하지 않을 시 언론사에서 웹크롤링을 막을 수 있으니 주의할 것!
-  """
-  headers = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
-  }
-  response = requests.get(url, headers = headers) # url(페이지)에 접속
-  soup = BeautifulSoup(response.content, 'html.parser') # HTML 코드를 파싱(분석)하여 soup 객체에 저장
+# # 1. NAVER News Web Crawling
+# ## 1-1. 언론사별 랭킹뉴스 Crawling 함수 정의
+# def get_news_links_by_press (url) :
+#   """
+#     headers:
+#     - 나는 bot이 아니고 사람임을 증명하는 부분이다.
+#       - 사용하지 않을 시 언론사에서 웹크롤링을 막을 수 있으니 주의할 것!
+#   """
+#   headers = {
+#     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+#   }
+#   response = requests.get(url, headers = headers) # url(페이지)에 접속
+#   soup = BeautifulSoup(response.content, 'html.parser') # HTML 코드를 파싱(분석)하여 soup 객체에 저장
   
-  press_data = {}
-  press_sections = soup.select('.rankingnews_box')
+#   press_data = {}
+#   press_sections = soup.select('.rankingnews_box')
   
-  for press_section in tqdm(press_sections, desc = "언론사별 뉴스 Crawling") :
-    press_name = press_section.select_one('.rankingnews_name').get_text(strip = True)
-    news_links = set()  # 중복 제거를 위한 set 사용
-    for item in press_section.select('li a') :
-      title = item.get_text(strip = True)
-      link = item['href']
-      if title and link and "동영상" not in title :  # Title이 존재하고 "동영상"이 포함되지 않은 경우에만 추가
-        news_links.add((title, link))
-    press_data[press_name] = list(news_links)[:5]  # 다시 list로 변환 후 상위 5개만 저장
+#   for press_section in tqdm(press_sections, desc = "언론사별 뉴스 Crawling") :
+#     press_name = press_section.select_one('.rankingnews_name').get_text(strip = True)
+#     news_links = set()  # 중복 제거를 위한 set 사용
+#     for item in press_section.select('li a') :
+#       title = item.get_text(strip = True)
+#       link = item['href']
+#       if title and link and "동영상" not in title :  # Title이 존재하고 "동영상"이 포함되지 않은 경우에만 추가
+#         news_links.add((title, link))
+#     press_data[press_name] = list(news_links)[:5]  # 다시 list로 변환 후 상위 5개만 저장
     
-    # *********************************************
-    # 각 언론사별 뉴스 Crawling 후 대기 시간 추가
-    time.sleep(random.uniform(0.5, 2.0))
-    # *********************************************
+#     # *********************************************
+#     # 각 언론사별 뉴스 Crawling 후 대기 시간 추가
+#     time.sleep(random.uniform(0.5, 2.0))
+#     # *********************************************
   
-  return press_data
+#   return press_data
 
-## 1-2. 언론사별 랭킹뉴스의 Press, Title, Link를 토대로 하는 DataFrame 생성
-base_url = 'https://news.naver.com/main/ranking/popularDay.naver'
-press_news_data = get_news_links_by_press(base_url)
+# ## 1-2. 언론사별 랭킹뉴스의 Press, Title, Link를 토대로 하는 DataFrame 생성
+# base_url = 'https://news.naver.com/main/ranking/popularDay.naver'
+# press_news_data = get_news_links_by_press(base_url)
 
-news_list = []
-for press_name, news_data in press_news_data.items() :
-  for title, link in news_data :
-    news_list.append([press_name, title, link])
-news_df = pd.DataFrame(news_list, columns = ['Press', 'Title', 'Link'])
+# news_list = []
+# for press_name, news_data in press_news_data.items() :
+#   for title, link in news_data :
+#     news_list.append([press_name, title, link])
+# news_df = pd.DataFrame(news_list, columns = ['Press', 'Title', 'Link'])
 
 
-# 2. 언론사별 뉴스 기사 본문 Crawling
-## 2-1. Chrome Browser와 Chrome Driver Version 확인 및 WebDriver 객체 생성
-chrome_options = webdriver.ChromeOptions()
-# ******************************************************
-chrome_options.add_argument('headless') # Run chrome browser in the background
-chrome_options.add_argument('window-size = 1920x1080')  # Chrome Browser Window Size
-# ******************************************************
-driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = chrome_options)
+# # 2. 언론사별 뉴스 기사 본문 Crawling
+# ## 2-1. Chrome Browser와 Chrome Driver Version 확인 및 WebDriver 객체 생성
+# chrome_options = webdriver.ChromeOptions()
+# # ******************************************************
+# chrome_options.add_argument('headless') # Run chrome browser in the background
+# chrome_options.add_argument('window-size = 1920x1080')  # Chrome Browser Window Size
+# # ******************************************************
+# driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = chrome_options)
 
-# 2-2. 언론사별 뉴스 기사 본문 Crawling 함수 정의
-def get_article_text (url) :
-  driver.get(url)
-  html = driver.page_source
-  article_soup = BeautifulSoup(html, "html.parser")
-  content = article_soup.select_one("#contents")
-  if content :
-    # 공백과 HTML Tag 제거
-    text =''.join(content.text.split())
-    # *******************************************
-    # 요청 후 임의의 시간만큼 대기 (Page Loaded)
-    time.sleep(random.uniform(0.5, 2.0))
-    # *******************************************
+# # 2-2. 언론사별 뉴스 기사 본문 Crawling 함수 정의
+# def get_article_text (url) :
+#   driver.get(url)
+#   html = driver.page_source
+#   article_soup = BeautifulSoup(html, "html.parser")
+#   content = article_soup.select_one("#contents")
+#   if content :
+#     # 공백과 HTML Tag 제거
+#     text =''.join(content.text.split())
+#     # *******************************************
+#     # 요청 후 임의의 시간만큼 대기 (Page Loaded)
+#     time.sleep(random.uniform(0.5, 2.0))
+#     # *******************************************
     
-    return text
+#     return text
 
-## 2-3. 뉴스 기사 본문 수집
-content_pbar = tqdm(news_df['Link'], desc = "뉴스 기사 본문 Crawling 진행 중", unit = "Link")
-news_df['content'] = [get_article_text(url) for url in content_pbar]
+# ## 2-3. 뉴스 기사 본문 수집
+# content_pbar = tqdm(news_df['Link'], desc = "뉴스 기사 본문 Crawling 진행 중", unit = "Link")
+# news_df['content'] = [get_article_text(url) for url in content_pbar]
 
-## 2-4. Browser 종료 (모든 Tab 종료)
-driver.quit()
-
-
-# 3. 주요 Keyword 추출
-# 3-1. Keyword 추출 함수 정의
-def get_keywords (text, num_keywords = 10) :
-  okt = Okt()
-  tokens = okt.nouns(text)
-  tokens = [word for word in tokens if word not in stopwords and len(word) > 1]
-  return [word for word, freq in Counter(tokens).most_common(num_keywords)]
-
-# 3-2. 각 언론사별 Keyword 추출
-text_pbar = tqdm(news_df['content'], desc = "Text 처리 중", unit = "기사")
-news_df['keywords'] = [get_keywords(text) for text in text_pbar]
+# ## 2-4. Browser 종료 (모든 Tab 종료)
+# driver.quit()
 
 
-# 4. News Recommendations System
-## 4-1. BERT 모델 및 토크나이저 불러오기
-tokenizer = BertTokenizer.from_pretrained('bert-base-multilingual-cased')
-model = BertModel.from_pretrained('bert-base-multilingual-cased')
+# # 3. 주요 Keyword 추출
+# # 3-1. Keyword 추출 함수 정의
+# def get_keywords (text, num_keywords = 10) :
+#   okt = Okt()
+#   tokens = okt.nouns(text)
+#   tokens = [word for word in tokens if word not in stopwords and len(word) > 1]
+#   return [word for word, freq in Counter(tokens).most_common(num_keywords)]
 
-"""
-    with torch.no_grad():
-    - 블록을 사용하여 모델의 출력을 계산할 때 그래디언트를 저장하지 않도록 했습니다.
-        - 이는 메모리 사용량을 줄이고 성능을 향상시킵니다.
-"""
-## 4-2. 문장 임베딩 생성 함수 정의
-def get_bert_embedding (text) :
-  inputs = tokenizer(
-    text,
-    return_tensors = 'pt',
-    truncation = True,
-    padding = True,
-    max_length = 512
-  )
-  with torch.no_grad() :
-    outputs = model(**inputs)
-  return outputs.last_hidden_state.mean(dim = 1).detach().numpy()
+# # 3-2. 각 언론사별 Keyword 추출
+# text_pbar = tqdm(news_df['content'], desc = "Text 처리 중", unit = "기사")
+# news_df['keywords'] = [get_keywords(text) for text in text_pbar]
 
-## 4-3. 각 뉴스 기사 임베딩 생성
-embed_pbar = tqdm(news_df['content'], desc = "Embedding 처리 중", unit = "text")
-news_df['embedding'] = [get_bert_embedding(text) for text in embed_pbar]
 
-"""
-    keyword_text 생성 시, sum(news_df['keywords'], [])을 사용하여 List의 List를 평탄화한 후 Keyword를 결합합니다.
-"""
-## 4-4. 주요 Keyword 임베딩 생성
-keyword_text = ' '.join(sum(news_df['keywords'], []))
-keyword_embedding = get_bert_embedding(keyword_text)
-
-"""
-    np.vstack(df['embedding'].values:
-    - numpy 배열로 변환하는 부분입니다.
-        - 이는 embeddings 변수를 numpy 배열로 변환하여 코사인 유사도를 계산할 수 있게 합니다.
-"""
-## 4-5. 코사인 유사도 계산 함수 정의
-def recommend_news (df, keyword_embedding, top_n = 10) :
-  embeddings = np.vstack(df['embedding'].values)
-  similarities = cosine_similarity(embeddings, keyword_embedding.reshape(1, -1)).flatten()
-  df['similarity'] = similarities
-  return df.nlargest(top_n, 'similarity')
-
-## 4-6. 추천된 뉴스 Data 생성
-recommended_news = recommend_news(news_df, keyword_embedding)
+# # 4. News Recommendations System
+# ## 4-1. BERT 모델 및 토크나이저 불러오기
+# tokenizer = BertTokenizer.from_pretrained('bert-base-multilingual-cased')
+# model = BertModel.from_pretrained('bert-base-multilingual-cased')
 
 # """
-#     NumPy 배열을 JSON 직렬화 가능한 형식으로 변환하기 위해 List로 변환하기.
-#       - 'embeddding' Column에 NumPy 배열이 포함되어 있기 때문임.
-#       - 'Object of type ndarray is not JSON serializable' Error 해결 방법 
+#     with torch.no_grad():
+#     - 블록을 사용하여 모델의 출력을 계산할 때 그래디언트를 저장하지 않도록 했습니다.
+#         - 이는 메모리 사용량을 줄이고 성능을 향상시킵니다.
 # """
-# ## 4-7. # embedding Column(열)을 List로 변환
-# recommended_news['embedding'] = recommended_news['embedding'].apply(lambda x: x.tolist())
+# ## 4-2. 문장 임베딩 생성 함수 정의
+# def get_bert_embedding (text) :
+#   inputs = tokenizer(
+#     text,
+#     return_tensors = 'pt',
+#     truncation = True,
+#     padding = True,
+#     max_length = 512
+#   )
+#   with torch.no_grad() :
+#     outputs = model(**inputs)
+#   return outputs.last_hidden_state.mean(dim = 1).detach().numpy()
 
-## 4-7. 필요한 Column만 선택
-columns_to_return = ['Link', 'Press', 'Title', 'content', 'keywords']
-final_recommended_news = recommended_news[columns_to_return]
+# ## 4-3. 각 뉴스 기사 임베딩 생성
+# embed_pbar = tqdm(news_df['content'], desc = "Embedding 처리 중", unit = "text")
+# news_df['embedding'] = [get_bert_embedding(text) for text in embed_pbar]
+
+# """
+#     keyword_text 생성 시, sum(news_df['keywords'], [])을 사용하여 List의 List를 평탄화한 후 Keyword를 결합합니다.
+# """
+# ## 4-4. 주요 Keyword 임베딩 생성
+# keyword_text = ' '.join(sum(news_df['keywords'], []))
+# keyword_embedding = get_bert_embedding(keyword_text)
+
+# """
+#     np.vstack(df['embedding'].values:
+#     - numpy 배열로 변환하는 부분입니다.
+#         - 이는 embeddings 변수를 numpy 배열로 변환하여 코사인 유사도를 계산할 수 있게 합니다.
+# """
+# ## 4-5. 코사인 유사도 계산 함수 정의
+# def recommend_news (df, keyword_embedding, top_n = 10) :
+#   embeddings = np.vstack(df['embedding'].values)
+#   similarities = cosine_similarity(embeddings, keyword_embedding.reshape(1, -1)).flatten()
+#   df['similarity'] = similarities
+#   return df.nlargest(top_n, 'similarity')
+
+# ## 4-6. 추천된 뉴스 Data 생성
+# recommended_news = recommend_news(news_df, keyword_embedding)
+
+# # """
+# #     NumPy 배열을 JSON 직렬화 가능한 형식으로 변환하기 위해 List로 변환하기.
+# #       - 'embeddding' Column에 NumPy 배열이 포함되어 있기 때문임.
+# #       - 'Object of type ndarray is not JSON serializable' Error 해결 방법 
+# # """
+# # ## 4-7. # embedding Column(열)을 List로 변환
+# # recommended_news['embedding'] = recommended_news['embedding'].apply(lambda x: x.tolist())
+
+# ## 4-7. 필요한 Column만 선택
+# columns_to_return = ['Link', 'Press', 'Title', 'content', 'keywords']
+# final_recommended_news = recommended_news[columns_to_return]
+
+# ## 4-8. CSV 파일로 저장
+# final_recommended_news.to_csv("../Data/recommended_news.csv", index = False)
+
+final_recommended_news = pd.read_csv("../Data/recommended_news.csv")
 
 # 5. JSON 형식으로 반환하는 EndPorint 정의
-@app.route('/news_recommendations', methods = ['GET', 'POST'])
+@app.route('/news', methods = ['GET', 'POST'])
 def get_recommendations () :
   recommendations = final_recommended_news.to_dict(orient = 'records')
   return jsonify(recommendations)
