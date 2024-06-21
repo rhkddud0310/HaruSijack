@@ -50,7 +50,7 @@ class NotificationManager {
     func scheduleNotifications() {
         
         let dbModel = TimeSettingDB()
-        let calendarModel = CalendarDB()
+//        let calendarModel = CalendarDB()
         
         for notification in notifications {
             // 날짜 설정
@@ -64,8 +64,8 @@ class NotificationManager {
             dateComponents.minute = 05
             
             // 현재날짜와 calendar 날짜가 같은지 비교해서 알림표시
-            let currentDate = Date() //오늘날짜에서
-            let todayDate = formattedDate(currentDate: currentDate) //yyyy-MM-dd만 가져옴
+//            let currentDate = Date() //오늘날짜에서
+//            let todayDate = formattedDate(currentDate: currentDate) //yyyy-MM-dd만 가져옴
             
             let info = dbModel.queryDB().first
             
@@ -79,11 +79,11 @@ class NotificationManager {
                 
                 fetchDataFromServerBoarding2(stationName: info.station, date: todate, time: String(info.time), stationLine: "7") { response in
                     
-                    let ride = Int(self.getValueForCurrentTime(jsonString: response, currentTime: String(info.time)))
+                    let ride = Int(self.getValueForCurrentTime(jsonString: response, currentTime: String(info.time))) // 승차인원수 가져오기
                     
                     
                     self.fetchDataFromServerAlighting(stationName: info.station, date: todate, time: String(info.time), stationLine: "7") { response2 in
-                        let down = Int(self.getValueForCurrentTime(jsonString: response2, currentTime: String(info.time)))
+                        let down = Int(self.getValueForCurrentTime(jsonString: response2, currentTime: String(info.time))) //하차인원수 가져오기
                         
                         
                         print("ride :", ride)
