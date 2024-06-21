@@ -12,6 +12,7 @@ struct Task: Identifiable {
     var id = UUID().uuidString
     var title: String
     var time: Date = Date()
+    var status : Int
 }
 
 // 총 할일 데이터
