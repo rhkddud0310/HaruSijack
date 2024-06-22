@@ -67,9 +67,11 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error, r2_score
 class Service:
+    
     def __init__(self) -> None:
         pass
-    ##### 기본 Setting 함수
+    
+#### 기본 Setting 함수
     def colored_text(text, color='default', bold=False):
         '''
         #### 예시 사용법
@@ -961,8 +963,7 @@ class Service:
             _ = Service.호선당서비스불가역이름추출(i,station, subway_dispatch) 
         '''
 
-
-    ### 통합 머신러닝을 위한 feature table 정제 
+### 통합 머신러닝을 위한 feature table 정제 
     def from_StationInfo_csv_latlang_dispatchTable_merge(parent_dir):
         """
         # 📌 Description : 기초적인 역정보데이터(역이름,역코드,호선)에 위도경도배차시간표를 머지하는 작업
