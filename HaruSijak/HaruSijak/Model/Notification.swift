@@ -50,7 +50,7 @@ class NotificationManager {
     func scheduleNotifications() {
         
         let dbModel = TimeSettingDB()
-        let calendarModel = CalendarDB()
+//        let calendarModel = CalendarDB()
         
         for notification in notifications {
             // 날짜 설정
@@ -60,29 +60,57 @@ class NotificationManager {
             // 알림 시간 설정
             print("시간 : ",dbModel.queryDB().first?.time ?? 0)
             dateComponents.hour = (dbModel.queryDB().first?.time ?? 0) - 1 //db에서 저장한 시간에서 한시간 먼저 알려주기*/
-            dateComponents.minute = 06
+            print("dddhour : ", dateComponents.hour!)
+            dateComponents.minute = 05
             
             // 현재날짜와 calendar 날짜가 같은지 비교해서 알림표시
-            let currentDate = Date() //오늘날짜에서
-            let todayDate = formattedDate(currentDate: currentDate) //yyyy-MM-dd만 가져옴
+//            let currentDate = Date() //오늘날짜에서
+//            let todayDate = formattedDate(currentDate: currentDate) //yyyy-MM-dd만 가져옴
             
-            // CalendarDB()에서 캘린더일정과 todayDate가 같으면 알림에 task의 title값을 띄우기
-            if let task = calendarModel.queryDB().first(where: { task in
-                return isSameDay(date1: task.taskDate, date2: todayDate!)
-            }) {
-                print("진입시작")
-                let content = UNMutableNotificationContent()
-                content.title = "🔔하루시작 스케줄이 도착했습니다🔔"
-                content.sound = .default
-                content.subtitle = task.task[0].title
+            let info = dbModel.queryDB().first
+            
+            let dateFormatterDate = DateFormatter()
+            dateFormatterDate.dateFormat = "yyyy-MM-dd"
+
+            // todayDate를 Optional<String>로 선언
+            let todate = dateFormatterDate.string(from: Date())
+
+            if let info = info {
                 
-                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-                let request = UNNotificationRequest(identifier: notification.id, content: content, trigger: trigger)
+                fetchDataFromServerBoarding2(stationName: info.station, date: todate, time: String(info.time), stationLine: "7") { response in
                     
-                UNUserNotificationCenter.current().add(request) { error in
-                    guard error == nil else {return}
-                    print("scheduling notification with id:\(notification.id)")
+                    let ride = Int(self.getValueForCurrentTime(jsonString: response, currentTime: String(info.time))) // 승차인원수 가져오기
+                    
+                    
+                    self.fetchDataFromServerAlighting(stationName: info.station, date: todate, time: String(info.time), stationLine: "7") { response2 in
+                        let down = Int(self.getValueForCurrentTime(jsonString: response2, currentTime: String(info.time))) //하차인원수 가져오기
+                        
+                        
+                        print("ride :", ride)
+                        print("down :", down)
+                        let content = UNMutableNotificationContent()
+                        content.title = "🔔\(String(info.time-1))시 \(info.station)역의 혼잡도 🔔"
+                        content.sound = .default
+                        content.subtitle = "승차인원 : \(ride)명, 하차인원 : \(down)명입니다."
+                        print("dddd : ",response)
+
+                        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+                        let request = UNNotificationRequest(identifier: notification.id, content: content, trigger: trigger)
+                        print("성공이 보인다.")
+                        UNUserNotificationCenter.current().add(request) { error in
+                            guard error == nil else {return}
+                            print("scheduling notification with id:\(notification.id)")
+                        }
+                        print("성공햤다 난..")
+                    }
+                    
+                    
                 }
+                
+                
+                
+            } else {
+                print("info is nil")
             }
         }
     }
@@ -91,6 +119,21 @@ class NotificationManager {
     func isSameDay(date1: Date, date2: Date) -> Bool {
         let calendar = Calendar.current
         return calendar.isDate(date1, inSameDayAs: date2)
+    }
+    
+    func getValueForCurrentTime(jsonString: String, currentTime: String) -> Double {
+        guard let jsonData = jsonString.data(using: .utf8) else { return 0.0 }
+        do {
+            if let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                let keyForCurrentTime = "\(currentTime)시인원"
+                if let value = json[keyForCurrentTime] as? Double {
+                    return value
+                }
+            }
+        } catch {
+            print("Error parsing JSON:", error)
+        }
+        return 0.0
     }
     
     /* MARK: yyyy-MM-dd formatter */
@@ -111,5 +154,59 @@ class NotificationManager {
     func deleteBadgeNumber() {
         UNUserNotificationCenter.current().setBadgeCount(0)
     }
+ 
+    //승차함수
+    func fetchDataFromServerBoarding2(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
+        let url = URL(string: "http://54.180.247.41:5000//subway")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let parameters: [String: Any] = [
+            "stationName": stationName,
+            "date": date,
+            "time": time,
+            "stationLine": stationLine
+        ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Error:", error ?? "Unknown error")
+                return
+            }
+            if let responseString = String(data: data, encoding: .utf8) {
+                completion(responseString)
+                print(responseString)
+            }
+        }
+        task.resume()
+    }
+    
+    //하차함수
+    func fetchDataFromServerAlighting(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
+        print(stationName,date,time,stationLine)
+        let url = URL(string: "http://54.180.247.41:5000/subwayAlighting")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let parameters: [String: Any] = [
+            "stationName": stationName,
+            "date": date,
+            "time": time,
+            "stationLine": stationLine
+        ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Error:", error ?? "Unknown error")
+                
+                return
+            }
+            if let responseString = String(data: data, encoding: .utf8) {
+                completion(responseString)
+            }
+        }
+        task.resume()
+    }
 }
+
 

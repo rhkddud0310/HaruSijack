@@ -2,24 +2,39 @@
 //  NewsCell.swift
 //  HaruSijak
 //
-//  Created by Gwangyeong Kim on 2024-06-17.
+//  Created by G.Zen on 2024-06-17.
 //
+
+// MARK: -- Description
+/*
+    Description : HaruSijack App 개발 News Crawling Page
+    Date : 2024. 06. 16. (Sun)
+    Author :
+    Detail :
+    Updates :
+        * 2024.06.16. (Sun) by. G.Zen: 기초 Design 구상
+ */
 
 import SwiftUI
 
 struct NewsCell: View {
-  // Property
-  let news: NewsRecommendation
+  
+  // MARK: * Property *
+  let newsTitle: String
+  let newsPress: String
   
   var body: some View {
     
     VStack(alignment: .leading) {
-      Text(news.press)
+      
+      Text(newsPress)
         .font(.headline)
         .padding([.top, .leading, .trailing])
-      Text(news.title)
+      
+      Text(newsTitle)
         .font(.subheadline)
         .padding([.leading, .bottom, .trailing])
+      
     } // end of VStack
     .background(Color.white)
     .cornerRadius(8)

@@ -114,7 +114,7 @@ struct PredictView: View {
     
     var body: some View {
         VStack {
-            Text("지하철 승,하차인원 예측")
+            Text("지하철 승하차인원 예측")
                 .font(.system(size: 24, weight: .bold, design: .rounded))
             ZStack {
                 // 스크롤뷰 [노선도 사진]
@@ -253,21 +253,21 @@ struct PredictView: View {
                     if dbModel.queryDB().isEmpty {
                         isShowSheet = true
                     }
-                    //                            setNotification()
+                                                setNotification()
                 })
                 .sheet(isPresented: $isShowSheet, content: {
-                    TimeSettingView(titleName: "출근 시간대 설정")
+                    TimeSettingView(titleName: "출근 시간대, 출발역 설정")
                         .presentationDetents([.medium])
                         .presentationDragIndicator(.visible)
                 })//sheet
     }
     
     
-    //        func setNotification() {
-    //            let manager = NotificationManager()
-    //            manager.addNotification(title: "hellow")
-    //            manager.scheduleNotifications()
-    //        }
+            func setNotification() {
+                let manager = NotificationManager()
+                manager.addNotification(title: "hellow")
+                manager.scheduleNotifications()
+            }
     
     
     //--------------Functions-----------------
