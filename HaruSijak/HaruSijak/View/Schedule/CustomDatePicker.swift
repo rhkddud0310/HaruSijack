@@ -18,6 +18,7 @@
                          - 달력 사이즈 조정
  
     - 2024. 06. 17 snr - 추가 후에 달력에 바로 반영되기 위해서 onDismiss 처리
+    - 2024.06.21 snr - 완료 처리 기능 추가
                          
  */
 
@@ -43,7 +44,8 @@ struct CustomDatePicker: View {
     @State var date: Date = Date()              // 선택된 날짜 변수
     @State var time: Date = Date()              // 선택된 시간 변수
     @State var task: String = ""
-    
+    @State var checked: Bool = false            // 완료처리 check 변수
+    @State var status: Int = 0                  // 완료 변수
     
     var body: some View {
         
@@ -109,11 +111,6 @@ struct CustomDatePicker: View {
                     CardView(value: value)
                         .id(value.id)
                         .background(
-//                            Capsule()
-//                                .fill(Color("color2"))
-//                                .padding(.horizontal, 8)
-//                                .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
-                            
                             Circle()
                                 .fill(Color("color2"))
                                 .padding(.horizontal, 2)
@@ -139,7 +136,7 @@ struct CustomDatePicker: View {
                             .padding(.vertical, 10)
                             .padding(.horizontal)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(task.status == 0 ? Color.black : Color.gray) // 완료처리 되었으면 gray
                             .background(
                                 Color("color1")
                                     .opacity(0.3)
@@ -216,11 +213,26 @@ struct CustomDatePicker: View {
                         .frame(maxWidth: 200)
                         .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
                         .tint(Color("color1"))
+                    
+                        HStack(content: {
+                            Text("완료")
+                            Image(systemName: checked ? "checkmark.square.fill" : "square")
+                                .foregroundColor(checked ? Color(UIColor.systemBlue) : Color.secondary)
+                                .onTapGesture {
+                                    self.checked.toggle()
+                                    checked ? status = 1 : (status = 0)
+                                    print("checked : ", checked)
+                                    print("status : ", status)
+                                    
+                                }
+                        })//HStack
+                        .padding(.top, 10)
+                        .padding(.trailing, 140)
                         
                         //추가 버튼
                         Button("추가하기", action: {
                             if task != "" {
-                                let newTask = Task(id: UUID().uuidString, title: task, time: time)
+                                let newTask = Task(id: UUID().uuidString, title: task, time: time, status: status)
                                 dbModel.insertDB(task: newTask, taskDate: date)
                                 isAlert = false //alert창 닫기
                             } else {
