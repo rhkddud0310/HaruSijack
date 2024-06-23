@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct PredictView_ver2: View {
+    let sublist = SubwayList()
+    
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("\(sublist.stations_line5[0].0)")
+        Text("test")
+        Image("subwayMap")
     }
 }
 
