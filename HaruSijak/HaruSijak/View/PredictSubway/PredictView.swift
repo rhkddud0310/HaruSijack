@@ -66,8 +66,11 @@ struct PredictView: View {
     //시간설정 db instance
     let dbModel = TimeSettingDB()
     @State var isShowSheet: Bool = false
-    let line5 = SubwayList().stations_line5_02
+    let line5 = SubwayList().stations_line5_2
     let line7 = SubwayList().stations_line7
+    let line3 = SubwayList().stations_line3
+    let line2 = SubwayList().stations_line2
+    let line23 = SubwayList().stations_line_23
 
     
     var body: some View {
@@ -82,14 +85,16 @@ struct PredictView: View {
                         .frame( width:  CGFloat(6189), height: CGFloat(4465))
                     //                    .zoomable() // double click시 화면 확대
                         .overlay( GeometryReader { geometry in
-                            ForEach(Array(line5.enumerated()), id: \.0) { index, station in
+                            ForEach(Array(line23.enumerated()), id: \.0) { index, station in
                                 Button(action: {
                                     isLoading = true
                                     print("line5 station \(station.0)")
                                     handleStationClick(stationName: station.0)
                                 }) {
                                     Text(".\(index) \(station.0)")
-                                        .font(.largeTitle)
+                                        .font(.system(size: 10))
+//                                        .font(.largeTitle)
+                                        .bold()
                                         .frame(width: 100, height: 20)
                                         .background(Color.red)
                                 }
