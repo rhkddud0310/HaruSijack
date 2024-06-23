@@ -26,7 +26,7 @@ import argparse
 import numpy as np
 
 warnings.filterwarnings("ignore", category=UserWarning, module='cv2')
-
+wait_time = 1
 class ImageProcessing:
     zoom_factor = 1.0
     zoom_center = None
@@ -87,7 +87,7 @@ class ImageProcessing:
         
         zoomed = ImageProcessing.zoom_image(image, ImageProcessing.zoom_factor, ImageProcessing.zoom_center)
         cv2.imshow("image", zoomed)
-        cv2.waitKey(1)  # 이 줄을 추가합니다
+        cv2.waitKey(wait_time)  # 이 줄을 추가합니다
 
     @staticmethod
     def GetArgument():
@@ -143,7 +143,7 @@ class ImageProcessing:
 
                 if key == ord('n'):
                     df = pd.DataFrame(ImageProcessing.clicked_points, columns=['y', 'x'])
-                    csv_path = os.path.join(path, f'{os.path.splitext(image_name)[0]}_points.csv')
+                    csv_path = os.path.join(path, f'{os.path.splitext(image_name)[0]}_points_line5.csv')
                     df.to_csv(csv_path, index=False)
                     break
 
@@ -158,24 +158,25 @@ class ImageProcessing:
 
                 elif key in [ord('+'), ord('=')]:
                     ImageProcessing.zoom_factor *= 1.1
+                    print(ImageProcessing.zoom_factor)
                     if ImageProcessing.zoom_center is None:
                         h, w = ImageProcessing.current_image.shape[:2]
                         ImageProcessing.zoom_center = (w//2, h//2)
                     ImageProcessing.update_image()
-                    cv2.waitKey(1)
+                    cv2.waitKey(wait_time)
 
                 elif key in [ord('-'), ord('_')]:
                     ImageProcessing.zoom_factor = max(1.0, ImageProcessing.zoom_factor / 1.1)
                     if ImageProcessing.zoom_factor == 1.0:
                         ImageProcessing.zoom_center = None
                     ImageProcessing.update_image()
-                    cv2.waitKey(1)
+                    cv2.waitKey(wait_time)
 
                 elif key == ord('r'):
                     ImageProcessing.zoom_factor = 1.0
                     ImageProcessing.zoom_center = None
                     ImageProcessing.update_image()
-                cv2.waitKey(1)
+                cv2.waitKey(wait_time)
 
 
 
