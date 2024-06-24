@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5428DFF62C291C7B00B31F0E /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5428DFF52C291C7B00B31F0E /* TabBarButton.swift */; };
 		543337882C16C71E000809D9 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543337872C16C71E000809D9 /* CalendarView.swift */; };
 		5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543337892C16C751000809D9 /* CustomDatePicker.swift */; };
 		5433378C2C16C781000809D9 /* DateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378B2C16C781000809D9 /* DateModel.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5428DFF52C291C7B00B31F0E /* TabBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
 		543337872C16C71E000809D9 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		543337892C16C751000809D9 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
 		5433378B2C16C781000809D9 /* DateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateModel.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */,
 				54F80F092C0AF4EF00D83A08 /* Assets.xcassets */,
 				54F80F0B2C0AF4EF00D83A08 /* Preview Content */,
+				5428DFF52C291C7B00B31F0E /* TabBarButton.swift */,
 			);
 			path = HaruSijak;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 				54F80F172C0AF59300D83A08 /* TodoLists.swift in Sources */,
 				AE7B76DB2C202E1F0061E55D /* NewsCell.swift in Sources */,
 				543337902C16FE09000809D9 /* CalendarDB.swift in Sources */,
+				5428DFF62C291C7B00B31F0E /* TabBarButton.swift in Sources */,
 				FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */,
 				54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */,
 				54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */,
@@ -524,7 +528,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
-				DEVELOPMENT_TEAM = ATM2B7QCY2;
+				DEVELOPMENT_TEAM = 449GDZ2X3Q;
 				ENABLE_CODE_COVERAGE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				ENABLE_PREVIEWS = YES;
@@ -562,7 +566,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
-				DEVELOPMENT_TEAM = ATM2B7QCY2;
+				DEVELOPMENT_TEAM = 449GDZ2X3Q;
 				ENABLE_CODE_COVERAGE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				ENABLE_PREVIEWS = YES;
