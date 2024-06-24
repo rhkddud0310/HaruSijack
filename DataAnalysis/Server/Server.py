@@ -21,6 +21,8 @@
         🆕 인풋을 데이터 포맷에 맞게 반환해주는 함수 만들기 <- 하찰모델 만들어 적용
     2024.06.13 pdg : 통합데이터 정제 함수 만들기
         ✅ data_preprocessing_toAnalysis 만듬. 
+    2024.06.22 pdg : 모든 호선에 대한 머신러닝 모델 적용 
+        - match case 사용 aws 에 맞춤 
          
 ---
 """
@@ -83,8 +85,27 @@ def subway():
     print('입력정보:',*rows,sep='\t')
 
     try:
+        ### machine learning model case 
+        match stationLine: 
+            case stationLine if stationLine == 1:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_1호선_승차.h5")        
+            case stationLine if stationLine == 2:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_2호선_승차.h5")        
+            case stationLine if stationLine == 3:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_3호선_승차.h5")        
+            case stationLine if stationLine == 4:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_4호선_승차.h5")        
+            case stationLine if stationLine == 5:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_5호선_승차.h5")        
+            case stationLine if stationLine == 6:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_6호선_승차.h5")        
+            case stationLine if stationLine == 7:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_line7_승차.h5")        
+            case stationLine if stationLine == 8:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_8호선_승차.h5")        
         #지하철 승하차 모델 path 
-        model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_line7_승차.h5")
+        
+        # model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_line7_승차.h5")
 
         knn_regressor_승차 = joblib.load(model_path)
         
@@ -164,6 +185,24 @@ def subwayAlighting():
     print('입력정보:',*rows,sep='\t')
 
     try:
+        match stationLine: 
+            case stationLine if stationLine == 1:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_1호선_하차.h5")        
+            case stationLine if stationLine == 2:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_2호선_하차.h5")        
+            case stationLine if stationLine == 3:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_3호선_하차.h5")        
+            case stationLine if stationLine == 4:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_4호선_하차.h5")        
+            case stationLine if stationLine == 5:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_5호선_하차.h5")        
+            case stationLine if stationLine == 6:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_6호선_하차.h5")        
+            case stationLine if stationLine == 7:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_line7_하차.h5")        
+            case stationLine if stationLine == 8:
+                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_8호선_하차.h5")    
+        
         #지하철 승하차 모델 path 
         model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_line7_하차.h5")
 
@@ -214,5 +253,5 @@ def format_response(resp):
     }
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True) # 서버구동
+    app.run(host="0.0.0.0", port=5000, debug=True) # 서버구동
     
