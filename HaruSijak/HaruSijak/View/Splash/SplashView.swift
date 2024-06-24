@@ -27,6 +27,7 @@ struct SplashView: View {
                 LottieView(jsonName: "train2")
                     .frame(width: 400, height: 400)
                 Spacer()
+                
 //                RoundedRectangle(cornerRadius: 10)
 //                            .stroke(Color.white, lineWidth: 4)
 //                            .background(Color.white)

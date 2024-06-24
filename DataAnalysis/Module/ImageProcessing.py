@@ -15,9 +15,17 @@
 ## 📌 Updates:
     🟦 2024.06.10 by pdg : blog code, gpt 활용하여 앱 만듬.
     🆕 2024.06.12 by pdg : 지하철 노선도가 큰 경우 줌해서 점을 클릭할수있도록 하는 기능 추가  
+
+    2024.06.23 by pjh , pdg : 
+        - 지하철 노선도 이미지 확대하여 좌표 값 추출 하도록 변경 
 """
 import sys,subprocess,os,warnings,pandas as pd
 from datetime import datetime
+# zoom factor init
+global zoom_factor, zoom_center
+zoom_factor = 1.0
+zoom_center = None
+
 
 # 경고 무시 설정
 warnings.filterwarnings("ignore", category=UserWarning, module='cv2')
@@ -63,20 +71,39 @@ clone = None
 class ImageProcessing:
     def __init__(self) -> None:
         pass
-
+    # 외쪽 버튼 클릭시 좌표 반환
     @staticmethod
     def MouseLeftClick(event, x, y, flags, param):
-        # 왼쪽 마우스가 클릭되면 (x, y) 좌표를 저장한다.
+        global zoom_factor, zoom_center, clicked_points, clone
         if event == cv2.EVENT_LBUTTONDOWN:
-            clicked_points.append((y, x))
-            print(f"Clicked at: ({x}, {y})")  # 클릭한 좌표를 터미널에 출력
+            # 확대된 좌표를 원본 좌표로 변환
+            if zoom_center is not None:
+                orig_x = int((x - zoom_center[0]) / zoom_factor + zoom_center[0])
+                orig_y = int((y - zoom_center[1]) / zoom_factor + zoom_center[1])
+            else:
+                orig_x, orig_y = x, y
+            
+            clicked_points.append((orig_y, orig_x))
+            print(f"Clicked at: ({orig_x}, {orig_y})")
 
-            # 원본 파일을 가져 와서 clicked_points에 있는 점들을 그린다.
+            # 원본 이미지에 점 찍기
             image = clone.copy()
             for point in clicked_points:
-                cv2.circle(image, (point[1], point[0]), 5, (100, 5, 95), thickness = -1)
-            cv2.imshow("image", image)
-
+                cv2.circle(image, (point[1], point[0]), 5, (100, 5, 95), thickness=-1)
+            
+            # 확대된 이미지 표시
+            zoomed = ImageProcessing.zoom_image(image, zoom_factor, zoom_center)
+            cv2.imshow("image", zoomed)
+    ## zoom 된 이미지를 반환
+    @staticmethod
+    def zoom_image(image, factor=1.0, center=None):
+        h, w = image.shape[:2]
+        if center is None:
+            center = (w//2, h//2)
+        M = cv2.getRotationMatrix2D(center, 0, factor)
+        zoomed = cv2.warpAffine(image, M, (w, h))
+        return zoomed
+    
     @staticmethod
     def GetArgument():
         ap = argparse.ArgumentParser()
@@ -90,6 +117,7 @@ class ImageProcessing:
     @staticmethod
     def main():
         global clone, clicked_points
+        global zoom_factor, zoom_center
         print("\n")
         print("1. 입력한 파라미터인 이미지 경로(--path)에서 이미지들을 차례대로 읽어옵니다.")
         print("2. 키보드에서 'n'을 누르면(next 약자) 다음 이미지로 넘어갑니다. 이 때, 작업한 점의 좌표가 저장 됩니다.")
@@ -124,11 +152,13 @@ class ImageProcessing:
             if (idx % sampling != 0):
                 continue
 
-            image_path = path + dir_del + image_name
+            image_path = path + dir_del + "Z노선도_국문.jpg"
+            print(image_path)
             image = cv2.imread(image_path)
 
+            print("--------------------")
+            print(image)
             clone = image.copy()
-
             flag = False
 
             while True:
@@ -159,8 +189,60 @@ class ImageProcessing:
                     flag = True
                     break
 
-            if flag:
-                break
+                elif key == ord('+') or key == ord('='):  # 확대
+                    zoom_factor *= 1.1
+                    print(zoom_factor)
+                    if zoom_center is None:
+                        h, w = image.shape[:2]
+                        zoom_center = (w//2, h//2)
+                    print("zoom 됨")
+                    zoomed_image = ImageProcessing.zoom_image(image, zoom_factor, zoom_center)
+                    cv2.imshow("image", zoomed_image)
+
+                elif key == ord('-') or key == ord('_'):  # 축소
+                    zoom_factor /= 1.1
+                    print(zoom_factor)
+                    if zoom_factor < 1:
+                        zoom_factor = 1
+                        zoom_center = None
+                    zoomed_image = ImageProcessing.zoom_image(image, zoom_factor, zoom_center)
+                    cv2.imshow("image", zoomed_image)
+                    
+
+                elif key == ord('r'):  # 리셋
+                    zoom_factor = 1
+                    zoom_center = None
+                    # 즉시 리셋된 이미지를 표시
+                    cv2.imshow("image", image)
+
+                # WASD로 이미지 이동
+                elif key == ord('w'):
+                    if zoom_center: 
+                        zoom_center = (zoom_center[0], max(0, zoom_center[1]-10))
+                        zoomed_image = ImageProcessing.zoom_image(image, zoom_factor, zoom_center)
+                        cv2.imshow("image", zoomed_image)
+                elif key == ord('s'):
+                    if zoom_center: 
+                        zoom_center = (zoom_center[0], min(image.shape[0], zoom_center[1]+10))
+                        zoomed_image = ImageProcessing.zoom_image(image, zoom_factor, zoom_center)
+                        cv2.imshow("image", zoomed_image)
+                elif key == ord('a'):
+                    if zoom_center: 
+                        zoom_center = (max(0, zoom_center[0]-10), zoom_center[1])
+                        zoomed_image = ImageProcessing.zoom_image(image, zoom_factor, zoom_center)
+                        cv2.imshow("image", zoomed_image)
+                elif key == ord('d'):
+                    if zoom_center: 
+                        zoom_center = (min(image.shape[1], zoom_center[0]+10), zoom_center[1])
+                        zoomed_image = ImageProcessing.zoom_image(image, zoom_factor, zoom_center)
+                        cv2.imshow("image", zoomed_image)
+
+
+
+                if flag:
+                    break
+                
+                
 
         # 모든 window를 종료합니다.
         cv2.destroyAllWindows()
