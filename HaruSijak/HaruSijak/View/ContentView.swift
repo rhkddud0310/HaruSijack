@@ -34,7 +34,7 @@ struct ContentView: View {
                 // TabBarview
                 TabView(selection: $selection,content:  {
                         Group(content: {
-                            PredictView()
+                            PredictView03()
                                 .tabItem {
                                     Image(systemName: "tram")
                                     Text("혼잡도")
