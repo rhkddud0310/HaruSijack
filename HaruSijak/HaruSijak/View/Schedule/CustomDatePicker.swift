@@ -46,6 +46,7 @@ struct CustomDatePicker: View {
     @State var task: String = ""
     @State var checked: Bool = false            // 완료처리 check 변수
     @State var status: Int = 0                  // 완료 변수
+    @State var calendarAlert: Bool = false      // 달력 클릭했을 때 alert
     
     var body: some View {
         
@@ -54,51 +55,51 @@ struct CustomDatePicker: View {
         
         VStack(spacing: 35, content: {
             
-            //년도, 월 나타내기
             HStack(spacing: 20 ,content: {
-                VStack(alignment: .leading, spacing: 10 ,content: {
                 
-                    Text(extraDate()[0])
-                        .font(.caption)
-                        .fontWeight(.semibold)
+                // 이전 월 보기 버튼
+                Button(action: {
+                   withAnimation{
+                       currentMonth -= 1
+                       updateCurrentMonth()
+                   }
+               }, label: {
+                   Image(systemName: "chevron.left")
+                       .font(.title2)
+               })
+                
+                // 년, 월 Text
+                Text("\(extraDate()[0])년 \(extraDate()[1])월")
+                    .font(.title2.bold())
+                    .fontWeight(.semibold)
                     
-                    Text("\(extraDate()[1])월")
-                        .font(.title.bold())
-                })//VStack
                 
-                Spacer(minLength: 0)
+               //다음버튼 : month +1 처리
+               Button(action: {
+                   withAnimation{
+                       currentMonth += 1
+                       updateCurrentMonth()
+                   }
+               }, label: {
+                   Image(systemName: "chevron.right")
+                       .font(.title2)
+               })
                 
-                //이전버튼 : month -1 처리
-                Button(action: {
-                    withAnimation{
-                        currentMonth -= 1
-                        updateCurrentMonth()
-                    }
-                }, label: {
-                    Image(systemName: "chevron.left")
-                        .font(.title2)
-                })
+                Spacer()
                 
-                //다음버튼 : month +1 처리
-                Button(action: {
-                    withAnimation{
-                        currentMonth += 1
-                        updateCurrentMonth()
-                    }
-                }, label: {
-                    Image(systemName: "chevron.right")
-                        .font(.title2)
-                })
                 
             })//HStack
             .padding()
+            .padding(.bottom, 20)
+                
             
             // 요일 나타내기
             HStack(spacing: 0 ,content: {
                 ForEach(days, id: \.self) {day in
                     Text(day)
                         .font(.callout)
-                        .fontWeight(.semibold)
+                        .foregroundStyle(day == "일" ? Color(.red) : Color(.black))
+                        .fontWeight(day == currentDayOfWeek() ? .bold : .light)
                         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                 }
             })//HStack
@@ -120,39 +121,41 @@ struct CustomDatePicker: View {
                 }
             }) //LazyVGrid
             
-            VStack(spacing: 10) {
-                Text("일정")
-                    .font(.title2.bold())
-                    .frame(maxWidth: .infinity, alignment: .leading)
-//                    .padding(.vertical, 20)
-                
-                if !tasksForSelectedDate.isEmpty {
-                    ForEach(tasksForSelectedDate) { task in
-                            VStack(alignment: .leading, spacing: 10) {
-                                Text(task.time, style: .time)
-                                Text(task.title)
-                                    .font(.title2.bold())
-                            }
-                            .padding(.vertical, 10)
-                            .padding(.horizontal)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundStyle(task.status == 0 ? Color.black : Color.gray) // 완료처리 되었으면 gray
-                            .background(
-                                Color("color1")
-                                    .opacity(0.3)
-                                    .cornerRadius(10)
-                            )
-                            .onTapGesture {
-                                selectedTask = task
-                                isPresented = true
-                            }
-                    }// ForEach
-                    
-                } else {
-                    Text("일정이 없습니다.")
-                }
-            }
-            .padding()
+            
+            /* <!------- 일정 표시 라인 -------->*/
+//            VStack(spacing: 10) {
+//                Text("일정")
+//                    .font(.title2.bold())
+//                    .frame(maxWidth: .infinity, alignment: .leading)
+////                    .padding(.vertical, 20)
+//                
+//                if !tasksForSelectedDate.isEmpty {
+//                    ForEach(tasksForSelectedDate) { task in
+//                            VStack(alignment: .leading, spacing: 10) {
+//                                Text(task.time, style: .time)
+//                                Text(task.title)
+//                                    .font(.title2.bold())
+//                            }
+//                            .padding(.vertical, 10)
+//                            .padding(.horizontal)
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+//                            .foregroundStyle(task.status == 0 ? Color.black : Color.gray) // 완료처리 되었으면 gray
+//                            .background(
+//                                Color("color1")
+//                                    .opacity(0.3)
+//                                    .cornerRadius(10)
+//                            )
+//                            .onTapGesture {
+//                                selectedTask = task
+//                                isPresented = true
+//                            }
+//                    }// ForEach
+//                    
+//                } else {
+//                    Text("일정이 없습니다.")
+//                }
+//            }
+//            .padding()
             
         }) //제일 상위 VStack
         //월 update 처리하기
@@ -170,109 +173,109 @@ struct CustomDatePicker: View {
                 .presentationDetents([.medium])
                 .presentationDragIndicator(.visible)
         })
-        .safeAreaInset(edge: .bottom, content: {
-            HStack(content: {
-                Button(action: {
-                    isAlert = true
-                }, label: {
-                    Image(systemName: "plus")
-                        .foregroundStyle(.white)
-                        .fontWeight(.bold)
-                        .frame(width: 100)
-                        .padding(.vertical)
-                        .background(Color("myColor"), in: Circle())
-                })
-                .sheet(isPresented: $isAlert, onDismiss: {
-                    fetchTasksForSelectedDate()
-                }, content: { VStack(content: {
-                        
-                        //일정 textfield
-                        TextField("일정 제목", text: $task)
-                            .font(.title3.bold())
-                            .frame(width: 200)
-                            .padding()
-                            .cornerRadius(8)
-                            .focused($isTextFieldFocused)
-                        
-                        //요일 설정 picker
-                        DatePicker(
-                            "요일 설정 : ",
-                            selection: $date,
-                            displayedComponents: [.date]
-                        )
-                        .frame(width: 200)
-                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
-                        .tint(Color("color1"))
-                        
-                        //시간 설정 picker
-                        DatePicker(
-                            "시간 설정 : ",
-                            selection: $time,
-                            displayedComponents: [.hourAndMinute]
-                        )
-                        .frame(maxWidth: 200)
-                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
-                        .tint(Color("color1"))
-                    
-                        HStack(content: {
-                            Text("완료")
-                            Image(systemName: checked ? "checkmark.square.fill" : "square")
-                                .foregroundColor(checked ? Color(UIColor.systemBlue) : Color.secondary)
-                                .onTapGesture {
-                                    self.checked.toggle()
-                                    checked ? status = 1 : (status = 0)
-                                    print("checked : ", checked)
-                                    print("status : ", status)
-                                    
-                                }
-                        })//HStack
-                        .padding(.top, 10)
-                        .padding(.trailing, 140)
-                        
-                        //추가 버튼
-                        Button("추가하기", action: {
-                            if task != "" {
-                                let newTask = Task(id: UUID().uuidString, title: task, time: time, status: status)
-                                dbModel.insertDB(task: newTask, taskDate: date)
-                                isAlert = false //alert창 닫기
-                            } else {
-                                isSubAlert = true
-                            }
-                            
-                            //추가 후 초기화처리
-                            task = ""
-                            date = Date()
-                            time = Date()
-                        }) // Button
-                        .tint(.white)
-                        .buttonStyle(.bordered)
-                        .buttonBorderShape(.capsule)
-                        .background(Color("color1"))
-                        .cornerRadius(30)
-                        .controlSize(.large)
-                        .frame(width: 200, height: 50) // 버튼의 크기 조정
-                        .padding(.top, 40)
-                        
-                        // 일정 == empty일 때, alert처리
-                        .alert(isPresented: $isSubAlert) {
-                            Alert(
-                                title: Text("경고"),
-                                message: Text("일정을 작성해주세요."),
-                                dismissButton: .default(Text("확인"), action: {
-                                    isSubAlert = false
-                                })
-                            )
-                        }// alert
-                    })
-                    .presentationDetents([.medium])
-                    .presentationDragIndicator(.visible)
-                }) //sheet
-            })
-            .padding(.horizontal)
-            .background(.clear)
-            .padding(.bottom, 10)
-            
-        })//safeArea
+//        .safeAreaInset(edge: .bottom, content: {
+//            HStack(content: {
+//                Button(action: {
+//                    isAlert = true
+//                }, label: {
+//                    Image(systemName: "plus")
+//                        .foregroundStyle(.white)
+//                        .fontWeight(.bold)
+//                        .frame(width: 100)
+//                        .padding(.vertical)
+//                        .background(Color("myColor"), in: Circle())
+//                })
+//                .sheet(isPresented: $isAlert, onDismiss: {
+//                    fetchTasksForSelectedDate()
+//                }, content: { VStack(content: {
+//                        
+//                        //일정 textfield
+//                        TextField("일정 제목", text: $task)
+//                            .font(.title3.bold())
+//                            .frame(width: 200)
+//                            .padding()
+//                            .cornerRadius(8)
+//                            .focused($isTextFieldFocused)
+//                        
+//                        //요일 설정 picker
+//                        DatePicker(
+//                            "요일 설정 : ",
+//                            selection: $date,
+//                            displayedComponents: [.date]
+//                        )
+//                        .frame(width: 200)
+//                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
+//                        .tint(Color("color1"))
+//                        
+//                        //시간 설정 picker
+//                        DatePicker(
+//                            "시간 설정 : ",
+//                            selection: $time,
+//                            displayedComponents: [.hourAndMinute]
+//                        )
+//                        .frame(maxWidth: 200)
+//                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
+//                        .tint(Color("color1"))
+//                    
+//                        HStack(content: {
+//                            Text("완료")
+//                            Image(systemName: checked ? "checkmark.square.fill" : "square")
+//                                .foregroundColor(checked ? Color(UIColor.systemBlue) : Color.secondary)
+//                                .onTapGesture {
+//                                    self.checked.toggle()
+//                                    checked ? status = 1 : (status = 0)
+//                                    print("checked : ", checked)
+//                                    print("status : ", status)
+//                                    
+//                                }
+//                        })//HStack
+//                        .padding(.top, 10)
+//                        .padding(.trailing, 140)
+//                        
+//                        //추가 버튼
+//                        Button("추가하기", action: {
+//                            if task != "" {
+//                                let newTask = Task(id: UUID().uuidString, title: task, time: time, status: status)
+//                                dbModel.insertDB(task: newTask, taskDate: date)
+//                                isAlert = false //alert창 닫기
+//                            } else {
+//                                isSubAlert = true
+//                            }
+//                            
+//                            //추가 후 초기화처리
+//                            task = ""
+//                            date = Date()
+//                            time = Date()
+//                        }) // Button
+//                        .tint(.white)
+//                        .buttonStyle(.bordered)
+//                        .buttonBorderShape(.capsule)
+//                        .background(Color("color1"))
+//                        .cornerRadius(30)
+//                        .controlSize(.large)
+//                        .frame(width: 200, height: 50) // 버튼의 크기 조정
+//                        .padding(.top, 40)
+//                        
+//                        // 일정 == empty일 때, alert처리
+//                        .alert(isPresented: $isSubAlert) {
+//                            Alert(
+//                                title: Text("경고"),
+//                                message: Text("일정을 작성해주세요."),
+//                                dismissButton: .default(Text("확인"), action: {
+//                                    isSubAlert = false
+//                                })
+//                            )
+//                        }// alert
+//                    })
+//                    .presentationDetents([.medium])
+//                    .presentationDragIndicator(.visible)
+//                }) //sheet
+//            })
+//            .padding(.horizontal)
+//            .background(.clear)
+//            .padding(.bottom, 10)
+//            
+//        })//safeArea
         
     }// body
     
@@ -310,12 +313,20 @@ struct CustomDatePicker: View {
             }
         })
 //        .padding(.vertical, 9)
-        .frame(height: 50, alignment: .top)
+        .frame(height: 140, alignment: .top)
         .onTapGesture (perform: {
             currentDate = value.date
             self.dateValue = value.date
             fetchTasksForSelectedDate()
         })
+    }
+    
+    // MARK: 현재 요일을 가져오는 함수
+    func currentDayOfWeek() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR") 
+        dateFormatter.dateFormat = "E" // "E"는 요일의 짧은 형식 (e.g., "월", "화", "수")
+        return dateFormatter.string(from: Date())
     }
     
     /* MARK: month 변경 시 다시 조회되도록 */
