@@ -193,6 +193,26 @@ def subwayAlighting():
         return jsonify({'error': str(e)})
 
 
+@app.route('/chat-kakao', methods=['POST'])
+def chat_kakao():
+    print("request.json : ",request.json)
+    response_to_kakao = format_response("반가워!")
+    return response_to_kakao
+
+def format_response(resp):
+    data = {
+        "version": "2.0",
+        "template" : {
+            "outputs" : [
+                {
+                    "simpleText" : {
+                        "text" : resp
+                    }
+                }
+            ]
+        }
+    }
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True) # 서버구동
     
