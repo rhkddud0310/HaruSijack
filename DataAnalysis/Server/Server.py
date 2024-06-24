@@ -69,7 +69,7 @@ def subway():
     
     ## 해당일자의 배차 정보 조회 
     import pandas as pd 
-    배차_data_path = os.path.join(parent_dir, "Data", "지하철배차시간데이터", f"{stationLine}호선배차.csv")
+    배차_data_path = os.path.join(parent_dir, "Data2", "지하철배차시간데이터", f"{stationLine}호선배차.csv")
     table_배차 = pd.read_csv(배차_data_path)
     target_row = table_배차[table_배차['역사코드']==station_code]
     selected_index = 'SAT' if is주말 else 'DAY'
@@ -77,7 +77,7 @@ def subway():
     시간별배차정보 = list(target_row.iloc[:,3:].to_numpy())[0]
     
     ## 위도 경도 정보 뽑기 
-    위도경도_data_path = os.path.join(parent_dir, "Data", 'seoul_subway_latlon_zenzen.csv')
+    위도경도_data_path = os.path.join(parent_dir, "Data2", 'seoul_subway_latlon_zenzen.csv')
     latlng=pd.read_csv(위도경도_data_path)
     a= latlng[latlng['역사코드']==station_code].to_numpy()[0][-2:]#['latitude','longitude']
     위도, 경도 = a[0],a[1]
@@ -167,7 +167,7 @@ def subwayAlighting():
     
     ## 해당일자의 배차 정보 조회 
     import pandas as pd 
-    배차_data_path = os.path.join(parent_dir, "Data", "지하철배차시간데이터", f"{stationLine}호선배차.csv")
+    배차_data_path = os.path.join(parent_dir, "Data2", "지하철배차시간데이터", f"{stationLine}호선배차.csv")
     table_배차 = pd.read_csv(배차_data_path)
     
     target_row = table_배차[table_배차['역사코드']==station_code]
@@ -176,7 +176,7 @@ def subwayAlighting():
     시간별배차정보 = list(target_row.iloc[:,3:].to_numpy())[0]
     
     ## 위도 경도 정보 뽑기 
-    위도경도_data_path = os.path.join(parent_dir, "Data", 'seoul_subway_latlon_zenzen.csv')
+    위도경도_data_path = os.path.join(parent_dir, "Data2", 'seoul_subway_latlon_zenzen.csv')
     latlng=pd.read_csv(위도경도_data_path)
     a= latlng[latlng['역사코드']==station_code].to_numpy()[0][-2:]#['latitude','longitude']
     위도, 경도 = a[0],a[1]
