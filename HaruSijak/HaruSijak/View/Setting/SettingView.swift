@@ -37,7 +37,6 @@ struct SettingView: View {
     
     
     var body: some View {
-        NavigationView(content: {
             
             //NavigationView
             VStack(content: {
@@ -80,8 +79,6 @@ struct SettingView: View {
                 
             })//Vstack
             .padding(.top, 30)
-            .navigationTitle("설정")
-            .navigationBarTitleDisplayMode(.large)
             .font(.custom("Ownglyph_noocar-Rg", size: 20))
             
             
@@ -91,7 +88,6 @@ struct SettingView: View {
                     .presentationDragIndicator(.visible)
                     .presentationDetents([.medium])
             })//sheet
-        }) //NavigationView
         
     }
 }
