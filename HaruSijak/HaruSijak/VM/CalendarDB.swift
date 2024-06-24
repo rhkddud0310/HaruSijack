@@ -171,8 +171,6 @@ class CalendarDB: ObservableObject {
         
         if sqlite3_step(stmt) == SQLITE_DONE {
             
-        } else {
-            _ = String(cString: sqlite3_errmsg(db)!)
         }
         
     }
