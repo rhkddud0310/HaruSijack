@@ -162,11 +162,11 @@ struct CustomDatePicker: View {
                     //달력에 날짜 표시
                         Divider()
                         
-                        //오늘 날짜일 때
+                        // 일정이 있는 날짜 표시
                         Text("\(value.day)")
-                            .frame(maxWidth: .infinity, minHeight: 120, maxHeight: .infinity, alignment: .top)
+                            .frame(maxWidth: .infinity, minHeight: 80, maxHeight: .infinity, alignment: .top)
                             .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
-                    
+                            .background(.clear)
                         Spacer()
                     
                     // 일정이 있을 때 표시되는 Circle()
@@ -180,7 +180,7 @@ struct CustomDatePicker: View {
                     Text("\(value.day)")
                         .frame(maxWidth: .infinity, minHeight: 120, maxHeight: .infinity, alignment: .top)
                         .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
-
+                        .background(.white)
                     Spacer()
                 }
             }
