@@ -251,6 +251,9 @@ def format_response(resp):
             ]
         }
     }
+@app.route("/test")
+def test():
+    return "하루 시작1!"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True) # 서버구동
