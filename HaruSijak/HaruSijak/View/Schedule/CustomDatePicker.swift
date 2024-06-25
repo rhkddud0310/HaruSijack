@@ -144,6 +144,7 @@ struct CustomDatePicker: View {
         )) {
             if let selectedDate = selectedDate {
                 CalendarListView(currentDate: selectedDate, tasksForSelectedDate: tasksForSelectedDate)
+                    .presentationDragIndicator(.visible)
             }
         }
         

@@ -17,6 +17,7 @@ struct CalendarListView: View {
     @State var isAlert: Bool = false
     @Environment(\.dismiss) var dismiss         // 화면 이동을 위한 변수
     @State var updateAlert: Bool = false        // 수정 sheet
+    @State private var selectedTaskID: String? = nil
     
     let dbModel = CalendarDB()
     
@@ -89,23 +90,17 @@ struct CalendarListView: View {
                     .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
             })
-            
-            // 수정 sheet
-            .sheet(isPresented: $updateAlert, onDismiss: {
-                fetchTasksForSelectedDate()
-            }, content: {
-                if let selectedTask = selectedTask {
-                    CalendarDetailView(task: selectedTask)
-                        .presentationDetents([.medium])
-                        .presentationDragIndicator(.visible)
-                } else {
-                    
-                }
-            })
-            
         }
         .onAppear(perform: fetchTasksForSelectedDate)
-//        .padding(.top, 40)
+        
+        // 수정 sheet
+        .sheet(item: $selectedTask, onDismiss: {
+            fetchTasksForSelectedDate()
+        }, content: { task in
+            CalendarDetailView(task: task)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+        })
     }
     
     /* MARK: 함수시작 */
