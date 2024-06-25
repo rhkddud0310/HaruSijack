@@ -19,6 +19,7 @@ struct CalendarAddView: View {
     @State var isSubAlert = false               // subAlert 실행
     let dbModel = CalendarDB()
     @Environment(\.dismiss) var dismiss         // 화면 이동을 위한 변수
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         
@@ -68,9 +69,9 @@ struct CalendarAddView: View {
             //추가 버튼
             Button("추가하기", action: {
                 if task != "" {
-                    let newTask = Task(id: UUID().uuidString, title: task, time: time, status: status)
-                    dbModel.insertDB(task: newTask, taskDate: date)
-                    dismiss()
+                    let newTask = Task(id: UUID().uuidString, title: task, time: currentDate, status: status)
+                    dbModel.insertDB(task: newTask, taskDate: currentDate)
+                    presentationMode.wrappedValue.dismiss()
                 } else {
                     isSubAlert = true
                 }

@@ -552,6 +552,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				GENERATE_PKGINFO_FILE = NO;
 				INFOPLIST_FILE = HaruSijak/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "하루시작";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
@@ -590,6 +592,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				GENERATE_PKGINFO_FILE = NO;
 				INFOPLIST_FILE = HaruSijak/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "하루시작";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";

@@ -115,9 +115,10 @@ struct CustomDatePicker: View {
                         .background(
                             Circle()
                                 .fill(Color("color2"))
-                                .padding(.horizontal, 2)
+                                .padding(.top, 3)
+                                .padding(.horizontal, 10)
                                 .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
-                                .padding(.bottom, 90)
+                                .padding(.bottom, 80)
                         )
                 }
             }) //LazyVGrid
@@ -164,6 +165,7 @@ struct CustomDatePicker: View {
                     
                     Spacer()
                     
+                    // 일정이 있을 때 표시되는 Circle()
                     Circle()
                         .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("color2"))
                         .frame(width: 10, height: 10)
@@ -180,7 +182,7 @@ struct CustomDatePicker: View {
             }
         })
 //        .padding(.vertical, 9)
-        .frame(height: 120, alignment: .top)
+        .frame(height: 110, alignment: .top)
         .onTapGesture {
             selectedDate = value.date
         }

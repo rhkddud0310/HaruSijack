@@ -37,20 +37,29 @@ struct CalendarListView: View {
                         
                         // ScrollView 추가!!!
                         VStack(content: {
-                            Text(task.time, style: .time)
-                            Text(task.title)
-                                .font(.title2.bold())
+                            HStack(content: {
+                                Text(task.time, style: .time)
+                                Spacer()
+                            })
+                            HStack(content: {
+                                Text(task.title)
+                                    .font(.title2.bold())
+                                Spacer()
+                            })
                         })
+                        .frame(width: 300)
                         .padding(.vertical, 10)
                         .padding(.horizontal)
                         .foregroundStyle(task.status == 0 ? Color.black : Color.gray)
                         .background(
                             Color("color2")
+                                .opacity(0.1)
                                 .cornerRadius(10)
                         )
                     }
                 } else {
                     Text("이 날의 일정이 없습니다.")
+                        .foregroundStyle(.gray)
                 }
             })//VStack
             .onAppear(perform: {
