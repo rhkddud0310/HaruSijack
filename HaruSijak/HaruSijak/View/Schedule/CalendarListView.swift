@@ -11,10 +11,12 @@ struct CalendarListView: View {
     
     @State var currentDate: Date = Date()
     @State var tasksForSelectedDate: [Task] = []
+    @State var task: [Task] = []
     @State var isPresented: Bool = false
     @State var selectedTask: Task? = nil // ForEach로 생성된 리스트의 task 값을 담을 변수
     @State var isAlert: Bool = false
     @Environment(\.dismiss) var dismiss         // 화면 이동을 위한 변수
+    @State var updateAlert: Bool = false        // 수정 sheet
     
     let dbModel = CalendarDB()
     
@@ -55,8 +57,12 @@ struct CalendarListView: View {
                                Label("삭제", systemImage: "trash")
                             }
                         }
+                        .onTapGesture {
+                            selectedTask = task
+                            updateAlert = true
+                        }
                     }
-                }
+                }//List
                 .listStyle(PlainListStyle()) // 기본 스타일을 제거하여 List를 VStack처럼 보이게 설정
             } else {
                 Text("이 날의 일정이 없습니다.")
@@ -75,6 +81,7 @@ struct CalendarListView: View {
                     .padding(.vertical)
                     .background(Color(.blue), in: Circle())
             })
+            // 추가 sheet
             .sheet(isPresented: $isAlert, onDismiss: {
                 fetchTasksForSelectedDate()
             }, content: {
@@ -82,6 +89,20 @@ struct CalendarListView: View {
                     .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
             })
+            
+            // 수정 sheet
+            .sheet(isPresented: $updateAlert, onDismiss: {
+                fetchTasksForSelectedDate()
+            }, content: {
+                if let selectedTask = selectedTask {
+                    CalendarDetailView(task: selectedTask)
+                        .presentationDetents([.medium])
+                        .presentationDragIndicator(.visible)
+                } else {
+                    
+                }
+            })
+            
         }
         .onAppear(perform: fetchTasksForSelectedDate)
 //        .padding(.top, 40)

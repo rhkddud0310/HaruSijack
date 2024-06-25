@@ -83,7 +83,7 @@ struct CalendarAddView: View {
             }) // Button
             .buttonStyle(.bordered)
             .buttonBorderShape(.capsule)
-            .background(Color("myColor"))
+            .background(Color("color2"))
             .foregroundStyle(.white)
             .cornerRadius(30)
             .controlSize(.large)

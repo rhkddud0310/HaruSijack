@@ -26,34 +26,11 @@ struct CalendarDetailView: View {
     let dbModel = CalendarDB()                  // CalendarDB instance 생성
     @State var alertType: AlertType?            // AlertType 지정하기
     @State var isDelete = false                 // 삭제여부 alert
-    @State var status:Int = 0              // 완료(status) 변수
+    @State var status:Int = 0                   // 완료(status) 변수
     
     var body: some View {
         
         VStack(content: {
-            
-            Spacer()
-            
-            Button(action: {
-                isDelete = true
-            }, label: {
-                Image(systemName: "trash")
-                    .font(.system(size: 20))
-                    .foregroundStyle(.gray)
-            })
-            .alert(isPresented: $isDelete, content: {
-                Alert(
-                    title: Text("알림"),
-                    message: Text("일정을 삭제하시겠습니까?"),
-                    primaryButton: .destructive(Text("확인"), action: {
-                        dbModel.deleteDB(id: task.id)
-                        dismiss()
-                    }),
-                    secondaryButton: .cancel(Text("취소"), action: {
-                        isDelete = false
-                    })
-                )
-            })
             
             Spacer()
             
@@ -94,8 +71,6 @@ struct CalendarDetailView: View {
                         // checked 값을 토글하면서 상태 업데이트
                         let newChecked = task.status == 0
                         task.status = newChecked ? 1 : 0
-                        print("checked: ", newChecked)
-                        print("status: ", task.status)
                     }
             })//HStack
             .padding(.top, 10)
@@ -115,7 +90,7 @@ struct CalendarDetailView: View {
             .tint(.white)
             .buttonStyle(.bordered)
             .buttonBorderShape(.capsule)
-            .background(Color("color1"))
+            .background(Color("myColor"))
             .cornerRadius(30)
             .controlSize(.large)
             .frame(width: 200, height: 50) // 버튼의 크기 조정
