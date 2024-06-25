@@ -19,6 +19,7 @@
  
     - 2024. 06. 17 snr - 추가 후에 달력에 바로 반영되기 위해서 onDismiss 처리
     - 2024.06.21 snr - 완료 처리 기능 추가
+    - 2024.06.25 snr - 달력 수정
                          
  */
 
@@ -46,6 +47,8 @@ struct CustomDatePicker: View {
     @State var task: String = ""
     @State var checked: Bool = false            // 완료처리 check 변수
     @State var status: Int = 0                  // 완료 변수
+    @State var calendarAlert: Bool = false      // 달력 클릭했을 때 alert
+    @State var selectedDate: Date? = nil
     
     var body: some View {
         
@@ -54,51 +57,51 @@ struct CustomDatePicker: View {
         
         VStack(spacing: 35, content: {
             
-            //년도, 월 나타내기
             HStack(spacing: 20 ,content: {
-                VStack(alignment: .leading, spacing: 10 ,content: {
                 
-                    Text(extraDate()[0])
-                        .font(.caption)
-                        .fontWeight(.semibold)
+                // 이전 월 보기 버튼
+                Button(action: {
+                   withAnimation{
+                       currentMonth -= 1
+                       updateCurrentMonth()
+                   }
+               }, label: {
+                   Image(systemName: "chevron.left")
+                       .font(.title2)
+               })
+                
+                // 년, 월 Text
+                Text("\(extraDate()[0])년 \(extraDate()[1])월")
+                    .font(.title2.bold())
+                    .fontWeight(.semibold)
                     
-                    Text("\(extraDate()[1])월")
-                        .font(.title.bold())
-                })//VStack
                 
-                Spacer(minLength: 0)
+               //다음버튼 : month +1 처리
+               Button(action: {
+                   withAnimation{
+                       currentMonth += 1
+                       updateCurrentMonth()
+                   }
+               }, label: {
+                   Image(systemName: "chevron.right")
+                       .font(.title2)
+               })
                 
-                //이전버튼 : month -1 처리
-                Button(action: {
-                    withAnimation{
-                        currentMonth -= 1
-                        updateCurrentMonth()
-                    }
-                }, label: {
-                    Image(systemName: "chevron.left")
-                        .font(.title2)
-                })
+                Spacer()
                 
-                //다음버튼 : month +1 처리
-                Button(action: {
-                    withAnimation{
-                        currentMonth += 1
-                        updateCurrentMonth()
-                    }
-                }, label: {
-                    Image(systemName: "chevron.right")
-                        .font(.title2)
-                })
                 
             })//HStack
             .padding()
+            .padding(.bottom, 20)
+                
             
             // 요일 나타내기
             HStack(spacing: 0 ,content: {
                 ForEach(days, id: \.self) {day in
                     Text(day)
                         .font(.callout)
-                        .fontWeight(.semibold)
+                        .foregroundStyle(day == "일" ? Color(.red) : Color(.black))
+                        .fontWeight(day == currentDayOfWeek() ? .bold : .light)
                         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                 }
             })//HStack
@@ -113,54 +116,19 @@ struct CustomDatePicker: View {
                         .background(
                             Circle()
                                 .fill(Color("color2"))
-                                .padding(.horizontal, 2)
+                                .padding(.top, 3)
+                                .padding(.horizontal, 10)
                                 .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
-                                .padding(.bottom, 20)
+                                .padding(.bottom, 80)
                         )
                 }
             }) //LazyVGrid
-            
-            VStack(spacing: 10) {
-                Text("일정")
-                    .font(.title2.bold())
-                    .frame(maxWidth: .infinity, alignment: .leading)
-//                    .padding(.vertical, 20)
-                
-                if !tasksForSelectedDate.isEmpty {
-                    ForEach(tasksForSelectedDate) { task in
-                            VStack(alignment: .leading, spacing: 10) {
-                                Text(task.time, style: .time)
-                                Text(task.title)
-                                    .font(.title2.bold())
-                            }
-                            .padding(.vertical, 10)
-                            .padding(.horizontal)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundStyle(task.status == 0 ? Color.black : Color.gray) // 완료처리 되었으면 gray
-                            .background(
-                                Color("color1")
-                                    .opacity(0.3)
-                                    .cornerRadius(10)
-                            )
-                            .onTapGesture {
-                                selectedTask = task
-                                isPresented = true
-                            }
-                    }// ForEach
-                    
-                } else {
-                    Text("일정이 없습니다.")
-                }
-            }
-            .padding()
-            
         }) //제일 상위 VStack
         //월 update 처리하기
         .onChange(of: currentMonth) {
             updateCurrentMonth()
         }
         .onAppear {
-            print("onAppear 실행")
             fetchTasksForSelectedDate()
         }
         .sheet(item: $selectedTask, onDismiss:  {
@@ -170,109 +138,14 @@ struct CustomDatePicker: View {
                 .presentationDetents([.medium])
                 .presentationDragIndicator(.visible)
         })
-        .safeAreaInset(edge: .bottom, content: {
-            HStack(content: {
-                Button(action: {
-                    isAlert = true
-                }, label: {
-                    Image(systemName: "plus")
-                        .foregroundStyle(.white)
-                        .fontWeight(.bold)
-                        .frame(width: 100)
-                        .padding(.vertical)
-                        .background(Color("myColor"), in: Circle())
-                })
-                .sheet(isPresented: $isAlert, onDismiss: {
-                    fetchTasksForSelectedDate()
-                }, content: { VStack(content: {
-                        
-                        //일정 textfield
-                        TextField("일정 제목", text: $task)
-                            .font(.title3.bold())
-                            .frame(width: 200)
-                            .padding()
-                            .cornerRadius(8)
-                            .focused($isTextFieldFocused)
-                        
-                        //요일 설정 picker
-                        DatePicker(
-                            "요일 설정 : ",
-                            selection: $date,
-                            displayedComponents: [.date]
-                        )
-                        .frame(width: 200)
-                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
-                        .tint(Color("color1"))
-                        
-                        //시간 설정 picker
-                        DatePicker(
-                            "시간 설정 : ",
-                            selection: $time,
-                            displayedComponents: [.hourAndMinute]
-                        )
-                        .frame(maxWidth: 200)
-                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국어로 설정
-                        .tint(Color("color1"))
-                    
-                        HStack(content: {
-                            Text("완료")
-                            Image(systemName: checked ? "checkmark.square.fill" : "square")
-                                .foregroundColor(checked ? Color(UIColor.systemBlue) : Color.secondary)
-                                .onTapGesture {
-                                    self.checked.toggle()
-                                    checked ? status = 1 : (status = 0)
-                                    print("checked : ", checked)
-                                    print("status : ", status)
-                                    
-                                }
-                        })//HStack
-                        .padding(.top, 10)
-                        .padding(.trailing, 140)
-                        
-                        //추가 버튼
-                        Button("추가하기", action: {
-                            if task != "" {
-                                let newTask = Task(id: UUID().uuidString, title: task, time: time, status: status)
-                                dbModel.insertDB(task: newTask, taskDate: date)
-                                isAlert = false //alert창 닫기
-                            } else {
-                                isSubAlert = true
-                            }
-                            
-                            //추가 후 초기화처리
-                            task = ""
-                            date = Date()
-                            time = Date()
-                        }) // Button
-                        .tint(.white)
-                        .buttonStyle(.bordered)
-                        .buttonBorderShape(.capsule)
-                        .background(Color("color1"))
-                        .cornerRadius(30)
-                        .controlSize(.large)
-                        .frame(width: 200, height: 50) // 버튼의 크기 조정
-                        .padding(.top, 40)
-                        
-                        // 일정 == empty일 때, alert처리
-                        .alert(isPresented: $isSubAlert) {
-                            Alert(
-                                title: Text("경고"),
-                                message: Text("일정을 작성해주세요."),
-                                dismissButton: .default(Text("확인"), action: {
-                                    isSubAlert = false
-                                })
-                            )
-                        }// alert
-                    })
-                    .presentationDetents([.medium])
-                    .presentationDragIndicator(.visible)
-                }) //sheet
-            })
-            .padding(.horizontal)
-            .background(.clear)
-            .padding(.bottom, 10)
-            
-        })//safeArea
+        .sheet(isPresented: Binding(        // Binding은 isPresented 파라미터에 전달된다.
+            get: { selectedDate != nil },   // selectedDate가 nil이 아니면 시트를 표시하기 위해 true 반환, nil이면 시트를 숨기기 위해서 false 반환한다.
+            set: { if !$0 { selectedDate = nil } } // 시트가 닫힐 때 호출된다. 시트가 닫힐 때 selectedDate를 nil로 설정ㄹ
+        )) {
+            if let selectedDate = selectedDate {
+                CalendarListView(currentDate: selectedDate, tasksForSelectedDate: tasksForSelectedDate)
+            }
+        }
         
     }// body
     
@@ -283,39 +156,47 @@ struct CustomDatePicker: View {
         VStack(content: {
             if value.day != -1 {
                 // value.day 와 taskDate가 같으면 색 표시하기
-                if let task = dbModel.queryDB().first(where: { task in
+                if dbModel.queryDB().first(where: { task in
                     return isSameDay(date1: task.taskDate, date2: value.date)
-                }){
+                }) != nil{
                     //달력에 날짜 표시
-                    Text("\(value.day)")
-                        .font(.title3.bold())
-                        .foregroundStyle(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : .primary )
-                        .frame(maxWidth: .infinity)
+                        Divider()
+                        
+                        // 일정이 있는 날짜 표시
+                        Text("\(value.day)")
+                            .frame(maxWidth: .infinity, minHeight: 80, maxHeight: .infinity, alignment: .top)
+                            .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
+                            .background(.clear)
+                        Spacer()
                     
-                    Spacer()
-                    
-                    Circle()
-                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("color2"))
-                        .frame(width: 10, height: 10)
-                        .padding(.bottom, 10)
+                    // 일정이 있을 때 표시되는 Circle()
+//                    Circle()
+//                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("color2"))
+//                        .frame(width: 10, height: 10)
+//                        .padding(.bottom, 10)
                 }
                 else {
+                    Divider()
                     Text("\(value.day)")
-                        .font(.title3.bold())
+                        .frame(maxWidth: .infinity, minHeight: 120, maxHeight: .infinity, alignment: .top)
                         .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
-                        .frame(maxWidth: .infinity)
-
+                        .background(.white)
                     Spacer()
                 }
             }
         })
-//        .padding(.vertical, 9)
-        .frame(height: 50, alignment: .top)
-        .onTapGesture (perform: {
-            currentDate = value.date
-            self.dateValue = value.date
-            fetchTasksForSelectedDate()
-        })
+        .frame(height: 110, alignment: .top)
+        .onTapGesture {
+            selectedDate = value.date
+        }
+    }
+    
+    // MARK: 현재 요일을 가져오는 함수
+    func currentDayOfWeek() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR") 
+        dateFormatter.dateFormat = "E" // "E"는 요일의 짧은 형식 (e.g., "월", "화", "수")
+        return dateFormatter.string(from: Date())
     }
     
     /* MARK: month 변경 시 다시 조회되도록 */

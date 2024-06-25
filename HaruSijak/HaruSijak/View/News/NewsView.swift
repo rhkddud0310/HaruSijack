@@ -28,7 +28,6 @@ struct NewsView: View {
   ]
   
   var body: some View {
-    NavigationView {
       
       ScrollView {
         
@@ -41,10 +40,8 @@ struct NewsView: View {
         .padding()
         
       } // end of ScrollView
-      .navigationTitle("🍇 Today News")
-      .navigationBarTitleDisplayMode(.automatic)
       
-    } // end of NavitagionView
+      
     .onAppear {
       
       let newsVM = NewsVM()
