@@ -24,43 +24,6 @@ struct ContentView: View {
     
     // MARK: -- body
     var body: some View {
-        
-        
-//            VStack {
-//                Spacer()
-//                // TabBarview
-//                TabView(selection: $selection,content:  {
-//                    PredictView()
-//                        .tabItem {
-//                            Image(systemName: "tram")
-//                            Text("혼잡도")
-//                        }
-//                        .tag(0)
-//                    NewsView()
-//                        .tabItem {
-//                            Image(systemName: "newspaper")
-//                            Text("뉴스")
-//                        }
-//                        .tag(1)
-//                    CalendarView()
-//                        .tabItem {
-//                            Image(systemName: "calendar")
-//                            Text("할일")
-//                        }
-//                        .tag(2)
-//                    SettingView()
-//                        .tabItem {
-//                            Image(systemName: "gearshape")
-//                            Text("설정")
-//                        }
-//                        
-//
-//                })//TV
-//                
-//                .tint(Color("color1"))
-//                Spacer()
-//            }// VS
-        
         NavigationView {
             VStack {
                 TabView(selection: $selection) {
@@ -85,10 +48,7 @@ struct ContentView: View {
                         .navigationTitle("설정")
                         .navigationBarTitleDisplayMode(.large)
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-                .onAppear {
-                    //setupPageControlColors()
-                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // 페이지 인디케이터 숨기기
                 
                 // Custom TabBar
                 HStack {
@@ -101,8 +61,6 @@ struct ContentView: View {
                     TabBarButton(icon: "gearshape", text: "설정", selection: $selection, tag: 3)
                 }
                 .padding()
-                .background(Color.white)
-                .tint(Color("color1"))
             }
         }
     }// Body
