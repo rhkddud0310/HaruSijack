@@ -19,6 +19,7 @@
  
     - 2024. 06. 17 snr - 추가 후에 달력에 바로 반영되기 위해서 onDismiss 처리
     - 2024.06.21 snr - 완료 처리 기능 추가
+    - 2024.06.25 snr - 달력 수정
                          
  */
 
@@ -155,33 +156,35 @@ struct CustomDatePicker: View {
         VStack(content: {
             if value.day != -1 {
                 // value.day 와 taskDate가 같으면 색 표시하기
-                if let task = dbModel.queryDB().first(where: { task in
+                if dbModel.queryDB().first(where: { task in
                     return isSameDay(date1: task.taskDate, date2: value.date)
-                }){
+                }) != nil{
                     //달력에 날짜 표시
-                    Text("\(value.day)")
-                        .foregroundStyle(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : .primary )
-                        .frame(maxWidth: .infinity)
+                        Divider()
+                        
+                        //오늘 날짜일 때
+                        Text("\(value.day)")
+                            .frame(maxWidth: .infinity, minHeight: 120, maxHeight: .infinity, alignment: .top)
+                            .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
                     
-                    Spacer()
+                        Spacer()
                     
                     // 일정이 있을 때 표시되는 Circle()
-                    Circle()
-                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("color2"))
-                        .frame(width: 10, height: 10)
-                        .padding(.bottom, 10)
+//                    Circle()
+//                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("color2"))
+//                        .frame(width: 10, height: 10)
+//                        .padding(.bottom, 10)
                 }
                 else {
                     Divider()
                     Text("\(value.day)")
+                        .frame(maxWidth: .infinity, minHeight: 120, maxHeight: .infinity, alignment: .top)
                         .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
-                        .frame(maxWidth: .infinity)
 
                     Spacer()
                 }
             }
         })
-//        .padding(.vertical, 9)
         .frame(height: 110, alignment: .top)
         .onTapGesture {
             selectedDate = value.date
