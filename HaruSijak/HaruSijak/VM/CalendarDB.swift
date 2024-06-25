@@ -91,6 +91,11 @@ class CalendarDB: ObservableObject {
             // Model에 넣기
             let task = Task(id: id, title: title, time: time!, status: Int(status))
             
+            print(task.id)
+            print(task.title)
+            print(task.time)
+            print(task.status)
+            
             if let index = taskList.firstIndex(where: { $0.taskDate == taskDate }) {
                 taskList[index].task.append(task)
             } else {

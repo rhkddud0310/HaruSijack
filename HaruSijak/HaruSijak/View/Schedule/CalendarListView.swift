@@ -13,6 +13,8 @@ struct CalendarListView: View {
     @State var tasksForSelectedDate: [Task]
     @State var isPresented: Bool = false
     @State var selectedTask: Task? = nil // ForEach로 생성된 리스트의 task 값을 담을 변수
+    @State var isAlert: Bool = false
+    @Environment(\.dismiss) var dismiss         // 화면 이동을 위한 변수
     
     let dbModel = CalendarDB()
     
@@ -28,6 +30,7 @@ struct CalendarListView: View {
             }// HStack
             .padding(30)
             
+            //일정 리스트
             VStack(content: {
                 if !tasksForSelectedDate.isEmpty {
                     ForEach(tasksForSelectedDate) {task in
@@ -46,6 +49,8 @@ struct CalendarListView: View {
                                 .cornerRadius(10)
                         )
                     }
+                } else {
+                    Text("이 날의 일정이 없습니다.")
                 }
             })//VStack
             .onAppear(perform: {
@@ -53,6 +58,25 @@ struct CalendarListView: View {
             })
             
             Spacer()
+            
+            Button(action: {
+                isAlert = true
+            }, label: {
+                Image(systemName: "plus")
+                    .foregroundStyle(.white)
+                    .fontWeight(.bold)
+                    .frame(width: 100)
+                    .padding(.vertical)
+                    .background(Color(.blue), in: Circle())
+            })
+            .sheet(isPresented: $isAlert, onDismiss: {
+                fetchTasksForSelectedDate()
+                
+            }, content: {
+                CalendarAddView(currentDate: currentDate)
+                    .presentationDetents([.medium])
+                    .presentationDragIndicator(.visible)
+            }) //sheet
             
         })
         .padding(.top, 40)
