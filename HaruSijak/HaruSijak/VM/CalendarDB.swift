@@ -120,7 +120,6 @@ class CalendarDB: ObservableObject {
         sqlite3_bind_text(stmt, 3, timeString, -1, SQLITE_TRANSIENT)
         sqlite3_bind_text(stmt, 4, taskDateString, -1, SQLITE_TRANSIENT)
         sqlite3_bind_int(stmt, 5, Int32(task.status))
-        print("insertID : ", task.id)
         
         if sqlite3_step(stmt) == SQLITE_DONE {
             print("insert 성공!!!")
@@ -171,8 +170,6 @@ class CalendarDB: ObservableObject {
         
         if sqlite3_step(stmt) == SQLITE_DONE {
             
-        } else {
-            _ = String(cString: sqlite3_errmsg(db)!)
         }
         
     }
