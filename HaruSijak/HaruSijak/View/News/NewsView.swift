@@ -13,6 +13,9 @@
     Detail :
     Updates :
         * 2024.06.16. (Sun) by. G.Zen: 기초 Design 구상
+ 
+        - 2024.06.26 by pdg, zen : 중간 발표를 위한 review
+            * code review 
  */
 
 import SwiftUI
