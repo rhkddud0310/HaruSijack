@@ -15,7 +15,7 @@
         * 2024.06.16. (Sun) by. G.Zen: 기초 Design 구상
  
         - 2024.06.26 by pdg, zen : 중간 발표를 위한 review
-            * code review 
+            * code review
  */
 
 import SwiftUI
@@ -26,14 +26,15 @@ struct NewsView: View {
   @State var newsList: [NewsModel] = []
   
   let columns = [
-    GridItem(.flexible()),
-    GridItem(.flexible())
+    GridItem(),
+//    GridItem(.flexible()),
+//    GridItem(.flexible())
   ]
   
   var body: some View {
       
       ScrollView {
-        
+        Text("a")
         LazyVGrid(columns: columns, spacing: 10) {
           ForEach(newsList, id: \.self) { news in
             NewsCell(newsTitle: news.Title, newsPress: news.Press)
@@ -43,8 +44,6 @@ struct NewsView: View {
         .padding()
         
       } // end of ScrollView
-      
-      
     .onAppear {
       
       let newsVM = NewsVM()
@@ -66,6 +65,32 @@ struct NewsView: View {
   } // end of var body: some View
   
 } // end of struct NewsView: View
+
+
+struct newsCell : View {
+    
+    // MARK: * Property *
+    let newsTitle: String
+    let newsPress: String
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+          
+          Text(newsPress)
+            .font(.headline)
+            .padding([.top, .leading, .trailing])
+          
+          Text(newsTitle)
+            .font(.subheadline)
+            .padding([.leading, .bottom, .trailing])
+          
+        } // end of VStack
+        .background(Color.white)
+        .cornerRadius(8)
+        .shadow(radius: 4)
+        .padding([.top, .horizontal])
+    }
+}
 
 #Preview {
   NewsView()

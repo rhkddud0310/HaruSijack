@@ -8,13 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		5428DFF62C291C7B00B31F0E /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5428DFF52C291C7B00B31F0E /* TabBarButton.swift */; };
-		543337882C16C71E000809D9 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543337872C16C71E000809D9 /* CalendarView.swift */; };
-		5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543337892C16C751000809D9 /* CustomDatePicker.swift */; };
 		5433378C2C16C781000809D9 /* DateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378B2C16C781000809D9 /* DateModel.swift */; };
 		5433378E2C16C8CB000809D9 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378D2C16C8CB000809D9 /* Task.swift */; };
 		543337902C16FE09000809D9 /* CalendarDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378F2C16FE09000809D9 /* CalendarDB.swift */; };
 		546496562C18382000B1FF48 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496552C18382000B1FF48 /* SettingView.swift */; };
-		546496582C183F7000B1FF48 /* CalendarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496572C183F7000B1FF48 /* CalendarDetailView.swift */; };
 		5464965A2C197FCB00B1FF48 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496592C197FCB00B1FF48 /* Time.swift */; };
 		5464965C2C19813400B1FF48 /* TimeSettingDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5464965B2C19813400B1FF48 /* TimeSettingDB.swift */; };
 		5464965E2C1A810400B1FF48 /* TimeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5464965D2C1A810400B1FF48 /* TimeSettingView.swift */; };
@@ -23,8 +20,6 @@
 		5464966A2C1A98D900B1FF48 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496692C1A98D900B1FF48 /* Notification.swift */; };
 		5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */; };
 		5471ADBB2C0EDACD00D24E62 /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = 5471ADBA2C0EDACD00D24E62 /* Zoomable */; };
-		5489D1AB2C2A44E8001E53EE /* CalendarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5489D1AA2C2A44E8001E53EE /* CalendarListView.swift */; };
-		5489D1AD2C2A55D3001E53EE /* CalendarAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5489D1AC2C2A55D3001E53EE /* CalendarAddView.swift */; };
 		549045702C20387C00A9F342 /* train1.json in Resources */ = {isa = PBXBuildFile; fileRef = 5490456F2C20387C00A9F342 /* train1.json */; };
 		54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */; };
 		54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F072C0AF4EE00D83A08 /* ContentView.swift */; };
@@ -32,7 +27,6 @@
 		54F80F0D2C0AF4EF00D83A08 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F80F0C2C0AF4EF00D83A08 /* Preview Assets.xcassets */; };
 		54F80F172C0AF59300D83A08 /* TodoLists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F162C0AF59300D83A08 /* TodoLists.swift */; };
 		54F80F192C0AF67200D83A08 /* TodoListDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F182C0AF67200D83A08 /* TodoListDB.swift */; };
-		54F80F1B2C0B5D7B00D83A08 /* PredictView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1A2C0B5D7B00D83A08 /* PredictView.swift */; };
 		54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1C2C0B641200D83A08 /* NewsView.swift */; };
 		54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1E2C0B649500D83A08 /* TodoListView.swift */; };
 		54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */; };
@@ -48,21 +42,27 @@
 		AE7B76D92C202E0C0061E55D /* NewsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7B76D82C202E0C0061E55D /* NewsVM.swift */; };
 		AE7B76DB2C202E1F0061E55D /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7B76DA2C202E1F0061E55D /* NewsCell.swift */; };
 		FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE360DC42C16D79D007BA9AE /* JSONModel.swift */; };
-		FE5454CB2C28033500094EA0 /* magnification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5454CA2C28033500094EA0 /* magnification.swift */; };
 		FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6732C16BA24005DA54E /* Test_pdg.swift */; };
 		FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */; };
-		FEE55D502C26CC2C0007E8A7 /* PredictView_ver2.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE55D4F2C26CC2C0007E8A7 /* PredictView_ver2.swift */; };
+		FE87069D2C2BABF600CAB1A7 /* NewsKeyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE87069C2C2BABF600CAB1A7 /* NewsKeyword.swift */; };
+		FE8706B02C2BAE4F00CAB1A7 /* CalendarAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8706AA2C2BAE4F00CAB1A7 /* CalendarAddView.swift */; };
+		FE8706B12C2BAE4F00CAB1A7 /* Cal_test_pdg.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8706AB2C2BAE4F00CAB1A7 /* Cal_test_pdg.swift */; };
+		FE8706B22C2BAE4F00CAB1A7 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8706AC2C2BAE4F00CAB1A7 /* CalendarView.swift */; };
+		FE8706B32C2BAE4F00CAB1A7 /* CalendarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8706AD2C2BAE4F00CAB1A7 /* CalendarListView.swift */; };
+		FE8706B42C2BAE4F00CAB1A7 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8706AE2C2BAE4F00CAB1A7 /* CustomDatePicker.swift */; };
+		FE8706B52C2BAE4F00CAB1A7 /* CalendarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8706AF2C2BAE4F00CAB1A7 /* CalendarDetailView.swift */; };
+		FE8706BA2C2BAE8F00CAB1A7 /* SheetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8706B62C2BAE8F00CAB1A7 /* SheetContentView.swift */; };
+		FE8706BB2C2BAE8F00CAB1A7 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8706B72C2BAE8F00CAB1A7 /* test.swift */; };
+		FE8706BC2C2BAE8F00CAB1A7 /* PredictView03.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8706B82C2BAE8F00CAB1A7 /* PredictView03.swift */; };
+		FE8706BD2C2BAE8F00CAB1A7 /* requestTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8706B92C2BAE8F00CAB1A7 /* requestTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5428DFF52C291C7B00B31F0E /* TabBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
-		543337872C16C71E000809D9 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
-		543337892C16C751000809D9 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
 		5433378B2C16C781000809D9 /* DateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateModel.swift; sourceTree = "<group>"; };
 		5433378D2C16C8CB000809D9 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		5433378F2C16FE09000809D9 /* CalendarDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDB.swift; sourceTree = "<group>"; };
 		546496552C18382000B1FF48 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
-		546496572C183F7000B1FF48 /* CalendarDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailView.swift; sourceTree = "<group>"; };
 		546496592C197FCB00B1FF48 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		5464965B2C19813400B1FF48 /* TimeSettingDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSettingDB.swift; sourceTree = "<group>"; };
 		5464965D2C1A810400B1FF48 /* TimeSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSettingView.swift; sourceTree = "<group>"; };
@@ -72,8 +72,6 @@
 		546496692C1A98D900B1FF48 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		5464966B2C1AC32600B1FF48 /* HaruSijak.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HaruSijak.entitlements; sourceTree = "<group>"; };
 		5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = C_DatePicker.swift; sourceTree = "<group>"; };
-		5489D1AA2C2A44E8001E53EE /* CalendarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListView.swift; sourceTree = "<group>"; };
-		5489D1AC2C2A55D3001E53EE /* CalendarAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarAddView.swift; sourceTree = "<group>"; };
 		5490456F2C20387C00A9F342 /* train1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = train1.json; sourceTree = "<group>"; };
 		54F80F022C0AF4EE00D83A08 /* HaruSijak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HaruSijak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaruSijakApp.swift; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 		54F80F0C2C0AF4EF00D83A08 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		54F80F162C0AF59300D83A08 /* TodoLists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoLists.swift; sourceTree = "<group>"; };
 		54F80F182C0AF67200D83A08 /* TodoListDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListDB.swift; sourceTree = "<group>"; };
-		54F80F1A2C0B5D7B00D83A08 /* PredictView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictView.swift; sourceTree = "<group>"; };
 		54F80F1C2C0B641200D83A08 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
 		54F80F1E2C0B649500D83A08 /* TodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListView.swift; sourceTree = "<group>"; };
 		54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoListView.swift; sourceTree = "<group>"; };
@@ -97,10 +94,19 @@
 		AE7B76D82C202E0C0061E55D /* NewsVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsVM.swift; sourceTree = "<group>"; };
 		AE7B76DA2C202E1F0061E55D /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewsCell.swift; path = HaruSijak/View/News/NewsCell.swift; sourceTree = SOURCE_ROOT; };
 		FE360DC42C16D79D007BA9AE /* JSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONModel.swift; sourceTree = "<group>"; };
-		FE5454CA2C28033500094EA0 /* magnification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = magnification.swift; sourceTree = "<group>"; };
 		FE5CC6732C16BA24005DA54E /* Test_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_pdg.swift; sourceTree = "<group>"; };
 		FE5CC6752C16C0E6005DA54E /* test2_pdg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test2_pdg.swift; sourceTree = "<group>"; };
-		FEE55D4F2C26CC2C0007E8A7 /* PredictView_ver2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictView_ver2.swift; sourceTree = "<group>"; };
+		FE87069C2C2BABF600CAB1A7 /* NewsKeyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsKeyword.swift; sourceTree = "<group>"; };
+		FE8706AA2C2BAE4F00CAB1A7 /* CalendarAddView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarAddView.swift; sourceTree = "<group>"; };
+		FE8706AB2C2BAE4F00CAB1A7 /* Cal_test_pdg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cal_test_pdg.swift; sourceTree = "<group>"; };
+		FE8706AC2C2BAE4F00CAB1A7 /* CalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		FE8706AD2C2BAE4F00CAB1A7 /* CalendarListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarListView.swift; sourceTree = "<group>"; };
+		FE8706AE2C2BAE4F00CAB1A7 /* CustomDatePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
+		FE8706AF2C2BAE4F00CAB1A7 /* CalendarDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarDetailView.swift; sourceTree = "<group>"; };
+		FE8706B62C2BAE8F00CAB1A7 /* SheetContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetContentView.swift; sourceTree = "<group>"; };
+		FE8706B72C2BAE8F00CAB1A7 /* test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
+		FE8706B82C2BAE8F00CAB1A7 /* PredictView03.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PredictView03.swift; sourceTree = "<group>"; };
+		FE8706B92C2BAE8F00CAB1A7 /* requestTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = requestTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,11 +125,12 @@
 		543337862C16C659000809D9 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				543337872C16C71E000809D9 /* CalendarView.swift */,
-				543337892C16C751000809D9 /* CustomDatePicker.swift */,
-				546496572C183F7000B1FF48 /* CalendarDetailView.swift */,
-				5489D1AA2C2A44E8001E53EE /* CalendarListView.swift */,
-				5489D1AC2C2A55D3001E53EE /* CalendarAddView.swift */,
+				FE8706AB2C2BAE4F00CAB1A7 /* Cal_test_pdg.swift */,
+				FE8706AA2C2BAE4F00CAB1A7 /* CalendarAddView.swift */,
+				FE8706AF2C2BAE4F00CAB1A7 /* CalendarDetailView.swift */,
+				FE8706AD2C2BAE4F00CAB1A7 /* CalendarListView.swift */,
+				FE8706AC2C2BAE4F00CAB1A7 /* CalendarView.swift */,
+				FE8706AE2C2BAE4F00CAB1A7 /* CustomDatePicker.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -244,9 +251,10 @@
 		54F80F202C0BE52100D83A08 /* PredictSubway */ = {
 			isa = PBXGroup;
 			children = (
-				54F80F1A2C0B5D7B00D83A08 /* PredictView.swift */,
-				FEE55D4F2C26CC2C0007E8A7 /* PredictView_ver2.swift */,
-				FE5454CA2C28033500094EA0 /* magnification.swift */,
+				FE8706B82C2BAE8F00CAB1A7 /* PredictView03.swift */,
+				FE8706B92C2BAE8F00CAB1A7 /* requestTest.swift */,
+				FE8706B62C2BAE8F00CAB1A7 /* SheetContentView.swift */,
+				FE8706B72C2BAE8F00CAB1A7 /* test.swift */,
 			);
 			path = PredictSubway;
 			sourceTree = "<group>";
@@ -256,6 +264,7 @@
 			children = (
 				AE7B76DA2C202E1F0061E55D /* NewsCell.swift */,
 				54F80F1C2C0B641200D83A08 /* NewsView.swift */,
+				FE87069C2C2BABF600CAB1A7 /* NewsKeyword.swift */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -372,40 +381,43 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5489D1AB2C2A44E8001E53EE /* CalendarListView.swift in Sources */,
 				54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */,
-				54F80F1B2C0B5D7B00D83A08 /* PredictView.swift in Sources */,
+				FE87069D2C2BABF600CAB1A7 /* NewsKeyword.swift in Sources */,
+				FE8706BA2C2BAE8F00CAB1A7 /* SheetContentView.swift in Sources */,
 				A773B5ED2C1C9FC60071D7FF /* LottiView.swift in Sources */,
 				54F80F172C0AF59300D83A08 /* TodoLists.swift in Sources */,
 				AE7B76DB2C202E1F0061E55D /* NewsCell.swift in Sources */,
+				FE8706BC2C2BAE8F00CAB1A7 /* PredictView03.swift in Sources */,
 				543337902C16FE09000809D9 /* CalendarDB.swift in Sources */,
 				5428DFF62C291C7B00B31F0E /* TabBarButton.swift in Sources */,
+				FE8706BD2C2BAE8F00CAB1A7 /* requestTest.swift in Sources */,
+				FE8706B42C2BAE4F00CAB1A7 /* CustomDatePicker.swift in Sources */,
 				FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */,
-				FE5454CB2C28033500094EA0 /* magnification.swift in Sources */,
 				54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */,
 				54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */,
-				546496582C183F7000B1FF48 /* CalendarDetailView.swift in Sources */,
 				5433378C2C16C781000809D9 /* DateModel.swift in Sources */,
+				FE8706BB2C2BAE8F00CAB1A7 /* test.swift in Sources */,
 				5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */,
+				FE8706B02C2BAE4F00CAB1A7 /* CalendarAddView.swift in Sources */,
 				5464965A2C197FCB00B1FF48 /* Time.swift in Sources */,
-				543337882C16C71E000809D9 /* CalendarView.swift in Sources */,
 				546496562C18382000B1FF48 /* SettingView.swift in Sources */,
 				5433378E2C16C8CB000809D9 /* Task.swift in Sources */,
 				FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */,
 				5464965C2C19813400B1FF48 /* TimeSettingDB.swift in Sources */,
+				FE8706B22C2BAE4F00CAB1A7 /* CalendarView.swift in Sources */,
 				AE7B76D72C202DFE0061E55D /* NewsModel.swift in Sources */,
 				A7CA34682C27E67E00D197B5 /* SubwayList.swift in Sources */,
+				FE8706B52C2BAE4F00CAB1A7 /* CalendarDetailView.swift in Sources */,
 				54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */,
-				5489D1AD2C2A55D3001E53EE /* CalendarAddView.swift in Sources */,
+				FE8706B32C2BAE4F00CAB1A7 /* CalendarListView.swift in Sources */,
+				FE8706B12C2BAE4F00CAB1A7 /* Cal_test_pdg.swift in Sources */,
 				5464965E2C1A810400B1FF48 /* TimeSettingView.swift in Sources */,
 				54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */,
 				FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */,
 				A773B5EE2C1C9FC60071D7FF /* SplashView.swift in Sources */,
-				FEE55D502C26CC2C0007E8A7 /* PredictView_ver2.swift in Sources */,
 				5464966A2C1A98D900B1FF48 /* Notification.swift in Sources */,
 				AE7B76D92C202E0C0061E55D /* NewsVM.swift in Sources */,
 				54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */,
-				5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */,
 				54F80F192C0AF67200D83A08 /* TodoListDB.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
