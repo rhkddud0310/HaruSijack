@@ -7,13 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		543337882C16C71E000809D9 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543337872C16C71E000809D9 /* CalendarView.swift */; };
-		5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543337892C16C751000809D9 /* CustomDatePicker.swift */; };
 		5433378C2C16C781000809D9 /* DateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378B2C16C781000809D9 /* DateModel.swift */; };
 		5433378E2C16C8CB000809D9 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378D2C16C8CB000809D9 /* Task.swift */; };
 		543337902C16FE09000809D9 /* CalendarDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378F2C16FE09000809D9 /* CalendarDB.swift */; };
 		546496562C18382000B1FF48 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496552C18382000B1FF48 /* SettingView.swift */; };
-		546496582C183F7000B1FF48 /* CalendarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496572C183F7000B1FF48 /* CalendarDetailView.swift */; };
 		5464965A2C197FCB00B1FF48 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496592C197FCB00B1FF48 /* Time.swift */; };
 		5464965C2C19813400B1FF48 /* TimeSettingDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5464965B2C19813400B1FF48 /* TimeSettingDB.swift */; };
 		5464965E2C1A810400B1FF48 /* TimeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5464965D2C1A810400B1FF48 /* TimeSettingView.swift */; };
@@ -22,6 +19,11 @@
 		5464966A2C1A98D900B1FF48 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496692C1A98D900B1FF48 /* Notification.swift */; };
 		5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */; };
 		5471ADBB2C0EDACD00D24E62 /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = 5471ADBA2C0EDACD00D24E62 /* Zoomable */; };
+		5489D1C92C2BAA70001E53EE /* CalendarAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5489D1C42C2BAA70001E53EE /* CalendarAddView.swift */; };
+		5489D1CA2C2BAA70001E53EE /* CalendarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5489D1C52C2BAA70001E53EE /* CalendarDetailView.swift */; };
+		5489D1CB2C2BAA70001E53EE /* CalendarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5489D1C62C2BAA70001E53EE /* CalendarListView.swift */; };
+		5489D1CC2C2BAA70001E53EE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5489D1C72C2BAA70001E53EE /* CalendarView.swift */; };
+		5489D1CD2C2BAA70001E53EE /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5489D1C82C2BAA70001E53EE /* CustomDatePicker.swift */; };
 		549045702C20387C00A9F342 /* train1.json in Resources */ = {isa = PBXBuildFile; fileRef = 5490456F2C20387C00A9F342 /* train1.json */; };
 		54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */; };
 		54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F072C0AF4EE00D83A08 /* ContentView.swift */; };
@@ -58,13 +60,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		543337872C16C71E000809D9 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
-		543337892C16C751000809D9 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
 		5433378B2C16C781000809D9 /* DateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateModel.swift; sourceTree = "<group>"; };
 		5433378D2C16C8CB000809D9 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		5433378F2C16FE09000809D9 /* CalendarDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDB.swift; sourceTree = "<group>"; };
 		546496552C18382000B1FF48 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
-		546496572C183F7000B1FF48 /* CalendarDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailView.swift; sourceTree = "<group>"; };
 		546496592C197FCB00B1FF48 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		5464965B2C19813400B1FF48 /* TimeSettingDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSettingDB.swift; sourceTree = "<group>"; };
 		5464965D2C1A810400B1FF48 /* TimeSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSettingView.swift; sourceTree = "<group>"; };
@@ -74,6 +73,11 @@
 		546496692C1A98D900B1FF48 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		5464966B2C1AC32600B1FF48 /* HaruSijak.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HaruSijak.entitlements; sourceTree = "<group>"; };
 		5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = C_DatePicker.swift; sourceTree = "<group>"; };
+		5489D1C42C2BAA70001E53EE /* CalendarAddView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarAddView.swift; path = "무제 폴더/CalendarAddView.swift"; sourceTree = "<group>"; };
+		5489D1C52C2BAA70001E53EE /* CalendarDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarDetailView.swift; path = "무제 폴더/CalendarDetailView.swift"; sourceTree = "<group>"; };
+		5489D1C62C2BAA70001E53EE /* CalendarListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarListView.swift; path = "무제 폴더/CalendarListView.swift"; sourceTree = "<group>"; };
+		5489D1C72C2BAA70001E53EE /* CalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarView.swift; path = "무제 폴더/CalendarView.swift"; sourceTree = "<group>"; };
+		5489D1C82C2BAA70001E53EE /* CustomDatePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomDatePicker.swift; path = "무제 폴더/CustomDatePicker.swift"; sourceTree = "<group>"; };
 		5490456F2C20387C00A9F342 /* train1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = train1.json; sourceTree = "<group>"; };
 		54F80F022C0AF4EE00D83A08 /* HaruSijak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HaruSijak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaruSijakApp.swift; sourceTree = "<group>"; };
@@ -125,9 +129,11 @@
 		543337862C16C659000809D9 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				543337872C16C71E000809D9 /* CalendarView.swift */,
-				543337892C16C751000809D9 /* CustomDatePicker.swift */,
-				546496572C183F7000B1FF48 /* CalendarDetailView.swift */,
+				5489D1C42C2BAA70001E53EE /* CalendarAddView.swift */,
+				5489D1C52C2BAA70001E53EE /* CalendarDetailView.swift */,
+				5489D1C62C2BAA70001E53EE /* CalendarListView.swift */,
+				5489D1C72C2BAA70001E53EE /* CalendarView.swift */,
+				5489D1C82C2BAA70001E53EE /* CustomDatePicker.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -381,6 +387,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5489D1CD2C2BAA70001E53EE /* CustomDatePicker.swift in Sources */,
 				54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */,
 				54F80F1B2C0B5D7B00D83A08 /* PredictView.swift in Sources */,
 				A773B5ED2C1C9FC60071D7FF /* LottiView.swift in Sources */,
@@ -392,31 +399,32 @@
 				54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */,
 				54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */,
 				A77E9EB82C2902F70098B352 /* test.swift in Sources */,
-				546496582C183F7000B1FF48 /* CalendarDetailView.swift in Sources */,
 				5433378C2C16C781000809D9 /* DateModel.swift in Sources */,
 				A77E9EC02C294BD30098B352 /* requestTest.swift in Sources */,
 				A74902952C2951D30056D394 /* PredictResultJSON.swift in Sources */,
 				5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */,
 				5464965A2C197FCB00B1FF48 /* Time.swift in Sources */,
-				543337882C16C71E000809D9 /* CalendarView.swift in Sources */,
 				546496562C18382000B1FF48 /* SettingView.swift in Sources */,
 				5433378E2C16C8CB000809D9 /* Task.swift in Sources */,
 				FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */,
 				5464965C2C19813400B1FF48 /* TimeSettingDB.swift in Sources */,
 				AE7B76D72C202DFE0061E55D /* NewsModel.swift in Sources */,
 				A7CA34682C27E67E00D197B5 /* SubwayList.swift in Sources */,
+				5489D1C92C2BAA70001E53EE /* CalendarAddView.swift in Sources */,
 				A77E9EBC2C293D8B0098B352 /* PredictView03.swift in Sources */,
+				5489D1CA2C2BAA70001E53EE /* CalendarDetailView.swift in Sources */,
 				A74902932C2951310056D394 /* predictVM.swift in Sources */,
+				5489D1CB2C2BAA70001E53EE /* CalendarListView.swift in Sources */,
 				54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */,
 				5464965E2C1A810400B1FF48 /* TimeSettingView.swift in Sources */,
 				54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */,
 				FE5CC6742C16BA24005DA54E /* Test_pdg.swift in Sources */,
 				A773B5EE2C1C9FC60071D7FF /* SplashView.swift in Sources */,
+				5489D1CC2C2BAA70001E53EE /* CalendarView.swift in Sources */,
 				FEE55D502C26CC2C0007E8A7 /* PredictView_ver2.swift in Sources */,
 				5464966A2C1A98D900B1FF48 /* Notification.swift in Sources */,
 				AE7B76D92C202E0C0061E55D /* NewsVM.swift in Sources */,
 				54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */,
-				5433378A2C16C751000809D9 /* CustomDatePicker.swift in Sources */,
 				A77E9EBA2C2909920098B352 /* SheetContentView.swift in Sources */,
 				54F80F192C0AF67200D83A08 /* TodoListDB.swift in Sources */,
 			);
