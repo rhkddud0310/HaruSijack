@@ -143,7 +143,7 @@ class ImageProcessing:
 
                 if key == ord('n'):
                     df = pd.DataFrame(ImageProcessing.clicked_points, columns=['y', 'x'])
-                    csv_path = os.path.join(path, f'{os.path.splitext(image_name)[0]}_points_line5.csv')
+                    csv_path = os.path.join(path, f'{os.path.splitext(image_name)[0]}_points_line8.csv')
                     df.to_csv(csv_path, index=False)
                     break
 

@@ -26,53 +26,43 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Spacer()
-//                Text("하루시작")
-//                    .font(.system(.largeTitle, design: .rounded))
-//                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                Spacer()
-                // TabBarview
-                TabView(selection: $selection,content:  {
-                        Group(content: {
-                            PredictView03()
-                                .tabItem {
-                                    Image(systemName: "tram")
-                                    Text("혼잡도")
-                                }
-                                .tag(0)
-                            NewsView()
-                                .tabItem {
-                                    Image(systemName: "newspaper")
-                                    Text("뉴스")
-                                }
-                                .tag(1)
-                            CalendarView()
-                                .tabItem {
-                                    Image(systemName: "calendar")
-                                    Text("할일")
-                                }
-                                .tag(2)
-                            SettingView()
-                                .tabItem {
-                                    Image(systemName: "gearshape")
-                                    Text("설정")
-                                }
-                        })//G
-                        .toolbarBackground(.white, for: .tabBar)
-                        
-
-                })//TV
+                TabView(selection: $selection) {
+                    PredictView03()
+                        .tag(0)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    
+                    NewsView()
+                        .tag(1)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .navigationTitle("오늘의 뉴스")
+                        .navigationBarTitleDisplayMode(.large)
+                    
+                    CalendarView()
+                        .tag(2)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .navigationTitle("할 일")
+                    
+                    SettingView()
+                        .tag(3)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .navigationTitle("설정")
+                        .navigationBarTitleDisplayMode(.large)
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // 페이지 인디케이터 숨기기
                 
-                .tint(Color("color1"))
-                Spacer()
-            }// VS
-//            .padding()
-//            .background {
-//                    RoundedRectangle(cornerRadius: 24)
-//                        .shadow(color: .black.opacity(0.15), radius: 8, y: 2)
-//                }
-            
-        } //NV
+                // Custom TabBar
+                HStack {
+                    TabBarButton(icon: "tram", text: "혼잡도", selection: $selection, tag: 0)
+                    Spacer()
+                    TabBarButton(icon: "newspaper", text: "뉴스", selection: $selection, tag: 1)
+                    Spacer()
+                    TabBarButton(icon: "calendar", text: "할일", selection: $selection, tag: 2)
+                    Spacer()
+                    TabBarButton(icon: "gearshape", text: "설정", selection: $selection, tag: 3)
+                }
+                .padding()
+            }
+        }
     }// Body
     //MARK: FUNCTIONS
     
