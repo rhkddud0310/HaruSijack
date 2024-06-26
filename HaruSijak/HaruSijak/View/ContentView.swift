@@ -8,7 +8,7 @@
     Updates :
         * 2024.06.10 by pdg : 기존 페이지에서 tabbar view 추가 
             - 프로그램 코드 기본 주석, 포맷 작성
-            - tabbar 생성 
+            - tabbar 생성
         * 2024.06.11 by snr : Add tabbar icon for settingPage
  */
 

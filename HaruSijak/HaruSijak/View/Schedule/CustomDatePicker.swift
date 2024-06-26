@@ -114,14 +114,6 @@ struct CustomDatePicker: View {
                 ForEach(extraDate()) {value in
                     CardView(value: value)
                         .id(value.id)
-//                        .background(
-//                            Circle()
-//                                .fill(Color("color2"))
-//                                .padding(.top, 3)
-//                                .padding(.horizontal, 10)
-//                                .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
-//                                .padding(.bottom, 80)
-//                        )
                 }
             }) //LazyVGrid
         }) //제일 상위 VStack
@@ -155,81 +147,67 @@ struct CustomDatePicker: View {
     /* MARK: CardView() */
     @ViewBuilder
     func CardView(value: DateValue) -> some View {
-//        VStack(content: {
-//            if value.day != -1 {
-//                if let tasksForDate = dbModel.queryDB().first(where: { task in
-//                     isSameDay(date1: task.taskDate, date2: value.date)
-//                }) {
-//                    VStack {
-//                        Divider()
-//                        Text("\(value.day)")
-//                            .frame(maxWidth: .infinity, minHeight: 80, maxHeight: .infinity, alignment: .top)
-//                            .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
-//                            .background(.clear)
-//                        
-//                        
-//                        ForEach(tasksForDate.task.indices, id: \.self) { index in
-//                            let task = tasksForDate.task[index]
-//                            Text(truncatedText(task.title))
-//                                .font(.caption)
-//                        }
-//                        
-//                        Spacer()
-//                    
-//                }
-//                else {
-//                    Divider()
-//                    Text("\(value.day)")
-//                        .frame(maxWidth: .infinity, minHeight: 120, maxHeight: .infinity, alignment: .top)
-//                        .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
-//                        .background(.white)
-//                    Spacer()
-//                }
-//            }//if
-//        })//VStack
         VStack(content: {
-                if value.day != -1 {
-                    // Filter tasks for the selected date
-                    if let tasksForSelectedDate = dbModel.queryDB().first(where: { taskMetaData in
-                        isSameDay(date1: taskMetaData.taskDate, date2: value.date)
-                    }) {
-                        VStack {
-                            Divider()
-                            Text("\(value.day)")
-                                .frame(maxWidth: .infinity, minHeight: 80, maxHeight: .infinity, alignment: .top)
-                                .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary)
-                                .background(.clear)
-                            
-                            ForEach(tasksForSelectedDate.task.indices, id: \.self) { index in
-                                let task = tasksForSelectedDate.task[index]
+            if value.day != -1 {
+                
+                let tasksForSelectedDate = dbModel.queryDB().filter { taskMetaData in
+                    isSameDay(date1: taskMetaData.taskDate, date2: value.date)
+                }
+
+                Divider()
+                Text("\(value.day)")
+                    .frame(maxWidth: .infinity, minHeight: 15, maxHeight: .infinity, alignment: .top)
+                    .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary)
+                    .background(
+                        Circle()
+                            .fill(Color("color2"))
+                            .padding(.horizontal, 10)
+                            .padding(.bottom, tasksForSelectedDate.isEmpty ? 80 : 0)
+                            .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
+                    )
+                
+                VStack(spacing: 2) { // Add VStack to ensure equal spacing
+                    if let tasks = tasksForSelectedDate.first?.task {
+                        ForEach(tasks.prefix(3).indices, id: \.self) { index in
+                            let task = tasks[index]
+                            ZStack {
+                                Rectangle()
+                                    .fill(Color("myColor").opacity(0.2))
+                                    .frame(width: 50, height: 20)
                                 Text(truncatedText(task.title))
-                                    .font(.caption)
+                                    .foregroundStyle(.black)
+                                    .font(.system(size: 10))
+                                    .position(x: 25, y: 10)
                             }
-                            
-                            Spacer()
                         }
-                    } else {
-                        Divider()
-                        Text("\(value.day)")
-                            .frame(maxWidth: .infinity, minHeight: 120, maxHeight: .infinity, alignment: .top)
-                            .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary)
-                            .background(.white)
-                        Spacer()
+                        
+                        // Add empty ZStacks to maintain the same height
+                        if tasks.count < 3 {
+                            ForEach(0..<(3 - tasks.count), id: \.self) { _ in
+                                ZStack {
+                                    Rectangle()
+                                        .fill(Color.clear)
+                                        .frame(width: 50, height: 20)
+                                }
+                            }
+                        }
                     }
                 }
-            })
+            } else {
+                Divider()
+            }
+        })
         .frame(height: 110, alignment: .top)
         .onTapGesture {
             selectedDate = value.date
         }
     }
     
-    
     // MARK: 텍스트 자르는 함수
     func truncatedText(_ text: String) -> String {
-        if text.count > 3 {
-            let index = text.index(text.startIndex, offsetBy: 3)
-            return text[..<index] + ".."
+        if text.count > 4 {
+            let index = text.index(text.startIndex, offsetBy: 4)
+            return String(text[..<index])
         } else {
             return text
         }
@@ -238,7 +216,7 @@ struct CustomDatePicker: View {
     // MARK: 현재 요일을 가져오는 함수
     func currentDayOfWeek() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko_KR") 
+        dateFormatter.locale = Locale(identifier: "ko_KR")
         dateFormatter.dateFormat = "E" // "E"는 요일의 짧은 형식 (e.g., "월", "화", "수")
         return dateFormatter.string(from: Date())
     }
