@@ -65,6 +65,30 @@ struct ContentView: View {
         }
     }// Body
     //MARK: FUNCTIONS
+    struct TabBarButton: View {
+        let icon: String
+        let text: String
+        @Binding var selection: Int
+        let tag: Int
+        
+        var body: some View {
+            Button(action: {
+                selection = tag
+            }) {
+                VStack {
+                    Image(systemName: icon)
+                        .font(.system(size: 24))
+                        .foregroundColor(selection == tag ? .blue : .gray)
+                    
+                    Text(text)
+                        .font(.footnote)
+                        .foregroundColor(selection == tag ? .blue : .gray)
+                }
+                .padding(.vertical, 10)
+                .frame(maxWidth: .infinity)
+            }
+        }
+    }
     
 }// CV
 
