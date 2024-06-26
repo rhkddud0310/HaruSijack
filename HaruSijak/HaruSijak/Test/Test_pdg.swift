@@ -14,7 +14,7 @@ struct Test_pdg: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: PredictView()) {
+                NavigationLink(destination: PredictView_ver2()) {
                     ZStack(content: {
 
                         // 배경 이미지
