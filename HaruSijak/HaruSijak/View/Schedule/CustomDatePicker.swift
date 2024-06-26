@@ -165,18 +165,6 @@ struct CustomDatePicker: View {
                 if let tasksForDate = dbModel.queryDB().first(where: { task in
                      isSameDay(date1: task.taskDate, date2: value.date)
                 }) {
-                    //달력에 날짜 표시
-//                        Divider()
-                        
-                        // 일정이 있는 날짜 표시
-//                        Text("\(value.day)")
-//                            .frame(maxWidth: .infinity, minHeight: 80, maxHeight: .infinity, alignment: .top)
-//                            .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
-//                            .background(.clear)
-//                    
-//                        Spacer()
-                    
-                    
                     VStack {
                         Divider()
                         Text("\(value.day)")
@@ -186,11 +174,11 @@ struct CustomDatePicker: View {
                         
                         
                         
-//                        ForEach(tasksForSelectedDate.indices, id: \.self) { index in
-//                            let task = tasksForSelectedDate[index]
-//                            Text(truncatedText(task.title))
-//                                .font(.caption)
-//                        }
+                        ForEach(tasksForSelectedDate.indices, id: \.self) { index in
+                            let task = tasksForSelectedDate[index]
+                            Text(truncatedText(task.title))
+                                .font(.caption)
+                        }
                         
                         Spacer()
                         
