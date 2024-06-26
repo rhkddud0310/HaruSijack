@@ -45,7 +45,7 @@ struct PredictView_ver2: View {
 }
 
 struct scrollViewImage_01 : View {
-    let line5 = SubwayList().stations_line5
+    let line5 = SubwayList().testStation
     
     // 지하철 노선도 사이즈
     let image = UIImage(named: "subwayMap")

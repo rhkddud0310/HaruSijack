@@ -27,6 +27,7 @@ struct NewsView: View {
   
   let columns = [
     GridItem(),
+    GridItem()
 //    GridItem(.flexible()),
 //    GridItem(.flexible())
   ]
@@ -34,7 +35,6 @@ struct NewsView: View {
   var body: some View {
       
       ScrollView {
-        Text("a")
         LazyVGrid(columns: columns, spacing: 10) {
           ForEach(newsList, id: \.self) { news in
             NewsCell(newsTitle: news.Title, newsPress: news.Press)
@@ -44,6 +44,8 @@ struct NewsView: View {
         .padding()
         
       } // end of ScrollView
+      .navigationTitle("A")
+      .navigationBarTitleDisplayMode(/*@START_MENU_TOKEN@*/.automatic/*@END_MENU_TOKEN@*/)
     .onAppear {
       
       let newsVM = NewsVM()
