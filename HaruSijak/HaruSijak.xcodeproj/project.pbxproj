@@ -58,6 +58,7 @@
 		FEE61A4E2C2BB50500FCB3C1 /* CalendarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE61A4D2C2BB50500FCB3C1 /* CalendarListView.swift */; };
 		FEE61A502C2BB52000FCB3C1 /* CalendarAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE61A4F2C2BB52000FCB3C1 /* CalendarAddView.swift */; };
 		FEE61A522C2BB5A200FCB3C1 /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE61A512C2BB5A200FCB3C1 /* TabBarButton.swift */; };
+		FEE61A542C2BB8E000FCB3C1 /* NewsKeyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE61A532C2BB8E000FCB3C1 /* NewsKeyword.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +114,7 @@
 		FEE61A4D2C2BB50500FCB3C1 /* CalendarListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarListView.swift; sourceTree = "<group>"; };
 		FEE61A4F2C2BB52000FCB3C1 /* CalendarAddView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarAddView.swift; sourceTree = "<group>"; };
 		FEE61A512C2BB5A200FCB3C1 /* TabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabBarButton.swift; path = HaruSijak/TabBarButton.swift; sourceTree = SOURCE_ROOT; };
+		FEE61A532C2BB8E000FCB3C1 /* NewsKeyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsKeyword.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +276,7 @@
 			children = (
 				AE7B76DA2C202E1F0061E55D /* NewsCell.swift */,
 				54F80F1C2C0B641200D83A08 /* NewsView.swift */,
+				FEE61A532C2BB8E000FCB3C1 /* NewsKeyword.swift */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 				543337882C16C71E000809D9 /* CalendarView.swift in Sources */,
 				FEE61A422C2BB3E300FCB3C1 /* SheetContentView.swift in Sources */,
 				546496562C18382000B1FF48 /* SettingView.swift in Sources */,
+				FEE61A542C2BB8E000FCB3C1 /* NewsKeyword.swift in Sources */,
 				5433378E2C16C8CB000809D9 /* Task.swift in Sources */,
 				FE5CC6762C16C0E6005DA54E /* test2_pdg.swift in Sources */,
 				5464965C2C19813400B1FF48 /* TimeSettingDB.swift in Sources */,
