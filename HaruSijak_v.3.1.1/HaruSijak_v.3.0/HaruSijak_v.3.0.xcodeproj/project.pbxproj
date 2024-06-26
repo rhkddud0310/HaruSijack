@@ -1,0 +1,555 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		54A145062C2BE48E00E76891 /* HaruSijak_v_3_0App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145052C2BE48E00E76891 /* HaruSijak_v_3_0App.swift */; };
+		54A1450A2C2BE49000E76891 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54A145092C2BE49000E76891 /* Assets.xcassets */; };
+		54A1450D2C2BE49000E76891 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54A1450C2C2BE49000E76891 /* Preview Assets.xcassets */; };
+		54A145212C2BE66F00E76891 /* SplashLotti.json in Resources */ = {isa = PBXBuildFile; fileRef = 54A1451D2C2BE66F00E76891 /* SplashLotti.json */; };
+		54A145222C2BE66F00E76891 /* train1.json in Resources */ = {isa = PBXBuildFile; fileRef = 54A1451E2C2BE66F00E76891 /* train1.json */; };
+		54A145232C2BE66F00E76891 /* train2.json in Resources */ = {isa = PBXBuildFile; fileRef = 54A1451F2C2BE66F00E76891 /* train2.json */; };
+		54A145242C2BE66F00E76891 /* train3.json in Resources */ = {isa = PBXBuildFile; fileRef = 54A145202C2BE66F00E76891 /* train3.json */; };
+		54A145272C2BE68100E76891 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 54A145262C2BE68100E76891 /* Lottie */; };
+		54A1452A2C2BE68C00E76891 /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = 54A145292C2BE68C00E76891 /* Zoomable */; };
+		54A1452D2C2BE6CF00E76891 /* C_DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1452C2C2BE6CF00E76891 /* C_DatePicker.swift */; };
+		54A145332C2BE70E00E76891 /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1452E2C2BE70E00E76891 /* DateValue.swift */; };
+		54A145352C2BE70E00E76891 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145302C2BE70E00E76891 /* Notification.swift */; };
+		54A145362C2BE70E00E76891 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145312C2BE70E00E76891 /* Task.swift */; };
+		54A145372C2BE70E00E76891 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145322C2BE70E00E76891 /* Time.swift */; };
+		54A145392C2BE72700E76891 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145382C2BE72700E76891 /* ContentView.swift */; };
+		54A1453C2C2BE74700E76891 /* TimeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1453A2C2BE74700E76891 /* TimeSettingView.swift */; };
+		54A1453D2C2BE74700E76891 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1453B2C2BE74700E76891 /* SettingView.swift */; };
+		54A145432C2BE75200E76891 /* CalendarAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1453E2C2BE75200E76891 /* CalendarAddView.swift */; };
+		54A145442C2BE75200E76891 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1453F2C2BE75200E76891 /* CalendarView.swift */; };
+		54A145452C2BE75200E76891 /* CalendarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145402C2BE75200E76891 /* CalendarDetailView.swift */; };
+		54A145462C2BE75200E76891 /* CalendarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145412C2BE75200E76891 /* CalendarListView.swift */; };
+		54A145472C2BE75200E76891 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145422C2BE75200E76891 /* CustomDatePicker.swift */; };
+		54A145492C2BE76500E76891 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145482C2BE76500E76891 /* NewsView.swift */; };
+		54A1454B2C2BE77300E76891 /* PredictView03.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1454A2C2BE77300E76891 /* PredictView03.swift */; };
+		54A1454E2C2BE7BA00E76891 /* CalendarDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1454C2C2BE7BA00E76891 /* CalendarDB.swift */; };
+		54A1454F2C2BE7BA00E76891 /* TimeSettingDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1454D2C2BE7BA00E76891 /* TimeSettingDB.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		54A145022C2BE48E00E76891 /* HaruSijak_v.3.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HaruSijak_v.3.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		54A145052C2BE48E00E76891 /* HaruSijak_v_3_0App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaruSijak_v_3_0App.swift; sourceTree = "<group>"; };
+		54A145092C2BE49000E76891 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		54A1450C2C2BE49000E76891 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		54A1451C2C2BE5EC00E76891 /* HaruSijak-v-3-0-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "HaruSijak-v-3-0-Info.plist"; sourceTree = SOURCE_ROOT; };
+		54A1451D2C2BE66F00E76891 /* SplashLotti.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SplashLotti.json; path = "../../../../HaruSijak/HaruSijak/Preview Content/SplashLotti.json"; sourceTree = "<group>"; };
+		54A1451E2C2BE66F00E76891 /* train1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = train1.json; path = "../../../../HaruSijak/HaruSijak/Preview Content/train1.json"; sourceTree = "<group>"; };
+		54A1451F2C2BE66F00E76891 /* train2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = train2.json; path = "../../../../HaruSijak/HaruSijak/Preview Content/train2.json"; sourceTree = "<group>"; };
+		54A145202C2BE66F00E76891 /* train3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = train3.json; path = "../../../../HaruSijak/HaruSijak/Preview Content/train3.json"; sourceTree = "<group>"; };
+		54A1452C2C2BE6CF00E76891 /* C_DatePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = C_DatePicker.swift; path = ../../../../HaruSijak/HaruSijak/Component/C_DatePicker.swift; sourceTree = "<group>"; };
+		54A1452E2C2BE70E00E76891 /* DateValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateValue.swift; path = ../../../../HaruSijak/HaruSijak/Model/DateValue.swift; sourceTree = "<group>"; };
+		54A145302C2BE70E00E76891 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Notification.swift; path = ../../../../HaruSijak/HaruSijak/Model/Notification.swift; sourceTree = "<group>"; };
+		54A145312C2BE70E00E76891 /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Task.swift; path = ../../../../HaruSijak/HaruSijak/Model/Task.swift; sourceTree = "<group>"; };
+		54A145322C2BE70E00E76891 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Time.swift; path = ../../../../HaruSijak/HaruSijak/Model/Time.swift; sourceTree = "<group>"; };
+		54A145382C2BE72700E76891 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ../../../HaruSijak/HaruSijak/View/ContentView.swift; sourceTree = "<group>"; };
+		54A1453A2C2BE74700E76891 /* TimeSettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeSettingView.swift; path = ../../../../../HaruSijak/HaruSijak/View/Setting/TimeSettingView.swift; sourceTree = "<group>"; };
+		54A1453B2C2BE74700E76891 /* SettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingView.swift; path = ../../../../../HaruSijak/HaruSijak/View/Setting/SettingView.swift; sourceTree = "<group>"; };
+		54A1453E2C2BE75200E76891 /* CalendarAddView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarAddView.swift; path = ../../../../../HaruSijak/HaruSijak/View/Schedule/CalendarAddView.swift; sourceTree = "<group>"; };
+		54A1453F2C2BE75200E76891 /* CalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarView.swift; path = ../../../../../HaruSijak/HaruSijak/View/Schedule/CalendarView.swift; sourceTree = "<group>"; };
+		54A145402C2BE75200E76891 /* CalendarDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarDetailView.swift; path = ../../../../../HaruSijak/HaruSijak/View/Schedule/CalendarDetailView.swift; sourceTree = "<group>"; };
+		54A145412C2BE75200E76891 /* CalendarListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarListView.swift; path = ../../../../../HaruSijak/HaruSijak/View/Schedule/CalendarListView.swift; sourceTree = "<group>"; };
+		54A145422C2BE75200E76891 /* CustomDatePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomDatePicker.swift; path = ../../../../../HaruSijak/HaruSijak/View/Schedule/CustomDatePicker.swift; sourceTree = "<group>"; };
+		54A145482C2BE76500E76891 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
+		54A1454A2C2BE77300E76891 /* PredictView03.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictView03.swift; sourceTree = "<group>"; };
+		54A1454C2C2BE7BA00E76891 /* CalendarDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarDB.swift; path = ../../../../HaruSijak/HaruSijak/VM/CalendarDB.swift; sourceTree = "<group>"; };
+		54A1454D2C2BE7BA00E76891 /* TimeSettingDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeSettingDB.swift; path = ../../../../HaruSijak/HaruSijak/VM/TimeSettingDB.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		54A144FF2C2BE48E00E76891 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54A145272C2BE68100E76891 /* Lottie in Frameworks */,
+				54A1452A2C2BE68C00E76891 /* Zoomable in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		54A144F92C2BE48E00E76891 = {
+			isa = PBXGroup;
+			children = (
+				54A145042C2BE48E00E76891 /* HaruSijak_v.3.0 */,
+				54A145032C2BE48E00E76891 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		54A145032C2BE48E00E76891 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				54A145022C2BE48E00E76891 /* HaruSijak_v.3.0.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		54A145042C2BE48E00E76891 /* HaruSijak_v.3.0 */ = {
+			isa = PBXGroup;
+			children = (
+				54A1452B2C2BE6A200E76891 /* Component */,
+				54A1451C2C2BE5EC00E76891 /* HaruSijak-v-3-0-Info.plist */,
+				54A145162C2BE4CA00E76891 /* Font */,
+				54A145152C2BE4AC00E76891 /* Model */,
+				54A145142C2BE4A700E76891 /* View */,
+				54A145132C2BE49E00E76891 /* VM */,
+				54A145052C2BE48E00E76891 /* HaruSijak_v_3_0App.swift */,
+				54A145382C2BE72700E76891 /* ContentView.swift */,
+				54A145092C2BE49000E76891 /* Assets.xcassets */,
+				54A1450B2C2BE49000E76891 /* Preview Content */,
+			);
+			path = HaruSijak_v.3.0;
+			sourceTree = "<group>";
+		};
+		54A1450B2C2BE49000E76891 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				54A1451D2C2BE66F00E76891 /* SplashLotti.json */,
+				54A1451E2C2BE66F00E76891 /* train1.json */,
+				54A1451F2C2BE66F00E76891 /* train2.json */,
+				54A145202C2BE66F00E76891 /* train3.json */,
+				54A1450C2C2BE49000E76891 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		54A145132C2BE49E00E76891 /* VM */ = {
+			isa = PBXGroup;
+			children = (
+				54A1454C2C2BE7BA00E76891 /* CalendarDB.swift */,
+				54A1454D2C2BE7BA00E76891 /* TimeSettingDB.swift */,
+			);
+			path = VM;
+			sourceTree = "<group>";
+		};
+		54A145142C2BE4A700E76891 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54A1451B2C2BE51500E76891 /* PredictSubway */,
+				54A1451A2C2BE50D00E76891 /* News */,
+				54A145192C2BE50500E76891 /* Schedule */,
+				54A145182C2BE4FF00E76891 /* Setting */,
+				54A145172C2BE4F500E76891 /* Splash */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		54A145152C2BE4AC00E76891 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54A1452E2C2BE70E00E76891 /* DateValue.swift */,
+				54A145302C2BE70E00E76891 /* Notification.swift */,
+				54A145312C2BE70E00E76891 /* Task.swift */,
+				54A145322C2BE70E00E76891 /* Time.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		54A145162C2BE4CA00E76891 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		54A145172C2BE4F500E76891 /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		54A145182C2BE4FF00E76891 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				54A1453B2C2BE74700E76891 /* SettingView.swift */,
+				54A1453A2C2BE74700E76891 /* TimeSettingView.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		54A145192C2BE50500E76891 /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				54A1453E2C2BE75200E76891 /* CalendarAddView.swift */,
+				54A145402C2BE75200E76891 /* CalendarDetailView.swift */,
+				54A145412C2BE75200E76891 /* CalendarListView.swift */,
+				54A1453F2C2BE75200E76891 /* CalendarView.swift */,
+				54A145422C2BE75200E76891 /* CustomDatePicker.swift */,
+			);
+			path = Schedule;
+			sourceTree = "<group>";
+		};
+		54A1451A2C2BE50D00E76891 /* News */ = {
+			isa = PBXGroup;
+			children = (
+				54A145482C2BE76500E76891 /* NewsView.swift */,
+			);
+			path = News;
+			sourceTree = "<group>";
+		};
+		54A1451B2C2BE51500E76891 /* PredictSubway */ = {
+			isa = PBXGroup;
+			children = (
+				54A1454A2C2BE77300E76891 /* PredictView03.swift */,
+			);
+			path = PredictSubway;
+			sourceTree = "<group>";
+		};
+		54A1452B2C2BE6A200E76891 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				54A1452C2C2BE6CF00E76891 /* C_DatePicker.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		54A145012C2BE48E00E76891 /* HaruSijak_v.3.0 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54A145102C2BE49000E76891 /* Build configuration list for PBXNativeTarget "HaruSijak_v.3.0" */;
+			buildPhases = (
+				54A144FE2C2BE48E00E76891 /* Sources */,
+				54A144FF2C2BE48E00E76891 /* Frameworks */,
+				54A145002C2BE48E00E76891 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HaruSijak_v.3.0;
+			packageProductDependencies = (
+				54A145262C2BE68100E76891 /* Lottie */,
+				54A145292C2BE68C00E76891 /* Zoomable */,
+			);
+			productName = HaruSijak_v.3.0;
+			productReference = 54A145022C2BE48E00E76891 /* HaruSijak_v.3.0.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		54A144FA2C2BE48E00E76891 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					54A145012C2BE48E00E76891 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = 54A144FD2C2BE48E00E76891 /* Build configuration list for PBXProject "HaruSijak_v.3.0" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 54A144F92C2BE48E00E76891;
+			packageReferences = (
+				54A145252C2BE68100E76891 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				54A145282C2BE68C00E76891 /* XCRemoteSwiftPackageReference "Zoomable" */,
+			);
+			productRefGroup = 54A145032C2BE48E00E76891 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				54A145012C2BE48E00E76891 /* HaruSijak_v.3.0 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		54A145002C2BE48E00E76891 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54A145232C2BE66F00E76891 /* train2.json in Resources */,
+				54A1450D2C2BE49000E76891 /* Preview Assets.xcassets in Resources */,
+				54A1450A2C2BE49000E76891 /* Assets.xcassets in Resources */,
+				54A145222C2BE66F00E76891 /* train1.json in Resources */,
+				54A145242C2BE66F00E76891 /* train3.json in Resources */,
+				54A145212C2BE66F00E76891 /* SplashLotti.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		54A144FE2C2BE48E00E76891 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54A145492C2BE76500E76891 /* NewsView.swift in Sources */,
+				54A1453D2C2BE74700E76891 /* SettingView.swift in Sources */,
+				54A1454E2C2BE7BA00E76891 /* CalendarDB.swift in Sources */,
+				54A1454F2C2BE7BA00E76891 /* TimeSettingDB.swift in Sources */,
+				54A145442C2BE75200E76891 /* CalendarView.swift in Sources */,
+				54A1452D2C2BE6CF00E76891 /* C_DatePicker.swift in Sources */,
+				54A145432C2BE75200E76891 /* CalendarAddView.swift in Sources */,
+				54A145472C2BE75200E76891 /* CustomDatePicker.swift in Sources */,
+				54A145352C2BE70E00E76891 /* Notification.swift in Sources */,
+				54A145332C2BE70E00E76891 /* DateValue.swift in Sources */,
+				54A145372C2BE70E00E76891 /* Time.swift in Sources */,
+				54A145392C2BE72700E76891 /* ContentView.swift in Sources */,
+				54A145452C2BE75200E76891 /* CalendarDetailView.swift in Sources */,
+				54A145462C2BE75200E76891 /* CalendarListView.swift in Sources */,
+				54A145362C2BE70E00E76891 /* Task.swift in Sources */,
+				54A145062C2BE48E00E76891 /* HaruSijak_v_3_0App.swift in Sources */,
+				54A1453C2C2BE74700E76891 /* TimeSettingView.swift in Sources */,
+				54A1454B2C2BE77300E76891 /* PredictView03.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		54A1450E2C2BE49000E76891 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		54A1450F2C2BE49000E76891 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		54A145112C2BE49000E76891 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak_v.3.0/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "HaruSijak-v-3-0-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftlec.HaruSijak-v-3-0";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		54A145122C2BE49000E76891 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak_v.3.0/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "HaruSijak-v-3-0-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftlec.HaruSijak-v-3-0";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		54A144FD2C2BE48E00E76891 /* Build configuration list for PBXProject "HaruSijak_v.3.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54A1450E2C2BE49000E76891 /* Debug */,
+				54A1450F2C2BE49000E76891 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		54A145102C2BE49000E76891 /* Build configuration list for PBXNativeTarget "HaruSijak_v.3.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54A145112C2BE49000E76891 /* Debug */,
+				54A145122C2BE49000E76891 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		54A145252C2BE68100E76891 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.3;
+			};
+		};
+		54A145282C2BE68C00E76891 /* XCRemoteSwiftPackageReference "Zoomable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ryohey/Zoomable.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		54A145262C2BE68100E76891 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54A145252C2BE68100E76891 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		54A145292C2BE68C00E76891 /* Zoomable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54A145282C2BE68C00E76891 /* XCRemoteSwiftPackageReference "Zoomable" */;
+			productName = Zoomable;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 54A144FA2C2BE48E00E76891 /* Project object */;
+}

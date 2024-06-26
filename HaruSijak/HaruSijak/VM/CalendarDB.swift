@@ -70,7 +70,7 @@ class CalendarDB: ObservableObject {
     
     // 조회
     func queryDB() -> [TaskMetaData] {
-        taskList = []
+        var taskList: [TaskMetaData] = []
         var stmt: OpaquePointer?
         let queryString = "SELECT * FROM task"
         
@@ -91,7 +91,8 @@ class CalendarDB: ObservableObject {
             // Model에 넣기
             let task = Task(id: id, title: title, time: time!, status: Int(status))
             
-            if let index = taskList.firstIndex(where: { $0.taskDate == taskDate }) {
+//            if let index = taskList.firstIndex(where: { $0.taskDate == taskDate }) {
+            if let index = taskList.firstIndex(where: { isSameDay(date1: $0.taskDate, date2: taskDate ?? Date()) }) {
                 taskList[index].task.append(task)
             } else {
                 taskList.append(TaskMetaData(id: UUID().uuidString, task: [task], taskDate: taskDate!))
@@ -155,6 +156,12 @@ class CalendarDB: ObservableObject {
             print("update 실패: \(errmsg)")
             return false
         }
+    }
+    
+    /* MARK: 날짜 체크 */
+    func isSameDay(date1: Date, date2: Date) -> Bool {
+        let calendar = Calendar.current
+        return calendar.isDate(date1, inSameDayAs: date2)
     }
     
     

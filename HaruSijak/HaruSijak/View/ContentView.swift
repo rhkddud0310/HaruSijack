@@ -8,7 +8,7 @@
     Updates :
         * 2024.06.10 by pdg : 기존 페이지에서 tabbar view 추가 
             - 프로그램 코드 기본 주석, 포맷 작성
-            - tabbar 생성 
+            - tabbar 생성
         * 2024.06.11 by snr : Add tabbar icon for settingPage
  */
 
@@ -65,6 +65,30 @@ struct ContentView: View {
         }
     }// Body
     //MARK: FUNCTIONS
+    struct TabBarButton: View {
+        let icon: String
+        let text: String
+        @Binding var selection: Int
+        let tag: Int
+        
+        var body: some View {
+            Button(action: {
+                selection = tag
+            }) {
+                VStack {
+                    Image(systemName: icon)
+                        .font(.system(size: 24))
+                        .foregroundColor(selection == tag ? .blue : .gray)
+                    
+                    Text(text)
+                        .font(.footnote)
+                        .foregroundColor(selection == tag ? .blue : .gray)
+                }
+                .padding(.vertical, 10)
+                .frame(maxWidth: .infinity)
+            }
+        }
+    }
     
 }// CV
 
