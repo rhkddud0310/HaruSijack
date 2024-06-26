@@ -79,7 +79,8 @@ struct subwayImage : View {
     @State var previousScale: CGFloat = 1.0
     @State var currentOffset = CGSize.zero
     @State var previousOffset = CGSize.zero
-    let line23 = SubwayList().stations_line_23
+//    let line23 = SubwayList().totalStation
+    let line23 = SubwayList().testStation
     let imgWidth = UIImage(named: "subwayMap")!.size.width
     let imgHeight = UIImage(named: "subwayMap")!.size.height
     
@@ -101,8 +102,8 @@ struct subwayImage : View {
                         Text(".\(index) \(station.0)")
                             .font(.system(size: 10))
                             .bold()
-                            .frame(width: 100, height: 20)
-                            .background(Color.red)
+                            .frame(width: 20, height: 20)
+                            .background(Color.yellow)
                     }
                     .position(  x: (station.2 * self.currentScale),
                                 y: (station.1 * self.currentScale))

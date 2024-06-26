@@ -68,11 +68,11 @@ struct PredictView: View {
     //시간설정 db instance
     let dbModel = TimeSettingDB()
     @State var isShowSheet: Bool = false
-    let line5 = SubwayList().stations_line5_2
-    let line7 = SubwayList().stations_line7
-    let line3 = SubwayList().stations_line3
-    let line2 = SubwayList().stations_line2
-    let line23 = SubwayList().stations_line_23
+//    let line5 = SubwayList().stations_line5_2
+//    let line7 = SubwayList().stations_line7
+//    let line3 = SubwayList().stations_line3
+//    let line2 = SubwayList().stations_line2
+    let line23 = SubwayList().testStation
     
     
     //파일 병합중 오류를 막지위한 임시변수
