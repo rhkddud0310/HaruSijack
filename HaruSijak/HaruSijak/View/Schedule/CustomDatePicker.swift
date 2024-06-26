@@ -114,14 +114,14 @@ struct CustomDatePicker: View {
                 ForEach(extraDate()) {value in
                     CardView(value: value)
                         .id(value.id)
-                        .background(
-                            Circle()
-                                .fill(Color("color2"))
-                                .padding(.top, 3)
-                                .padding(.horizontal, 10)
-                                .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
-                                .padding(.bottom, 80)
-                        )
+//                        .background(
+//                            Circle()
+//                                .fill(Color("color2"))
+//                                .padding(.top, 3)
+//                                .padding(.horizontal, 10)
+//                                .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
+//                                .padding(.bottom, 80)
+//                        )
                 }
             }) //LazyVGrid
         }) //제일 상위 VStack
