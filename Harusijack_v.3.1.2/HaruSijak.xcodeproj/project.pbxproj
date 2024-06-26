@@ -26,13 +26,8 @@
 		54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F072C0AF4EE00D83A08 /* ContentView.swift */; };
 		54F80F0A2C0AF4EF00D83A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F80F092C0AF4EF00D83A08 /* Assets.xcassets */; };
 		54F80F0D2C0AF4EF00D83A08 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F80F0C2C0AF4EF00D83A08 /* Preview Assets.xcassets */; };
-		54F80F172C0AF59300D83A08 /* TodoLists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F162C0AF59300D83A08 /* TodoLists.swift */; };
-		54F80F192C0AF67200D83A08 /* TodoListDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F182C0AF67200D83A08 /* TodoListDB.swift */; };
 		54F80F1B2C0B5D7B00D83A08 /* PredictView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1A2C0B5D7B00D83A08 /* PredictView.swift */; };
 		54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1C2C0B641200D83A08 /* NewsView.swift */; };
-		54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F1E2C0B649500D83A08 /* TodoListView.swift */; };
-		54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */; };
-		54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */; };
 		A773B5ED2C1C9FC60071D7FF /* LottiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A773B5EA2C1C9FC60071D7FF /* LottiView.swift */; };
 		A773B5EE2C1C9FC60071D7FF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A773B5EB2C1C9FC60071D7FF /* SplashView.swift */; };
 		A773B5F12C1CA0B00071D7FF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = A773B5F02C1CA0B00071D7FF /* Lottie */; };
@@ -79,13 +74,8 @@
 		54F80F072C0AF4EE00D83A08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		54F80F092C0AF4EF00D83A08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54F80F0C2C0AF4EF00D83A08 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		54F80F162C0AF59300D83A08 /* TodoLists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoLists.swift; sourceTree = "<group>"; };
-		54F80F182C0AF67200D83A08 /* TodoListDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListDB.swift; sourceTree = "<group>"; };
 		54F80F1A2C0B5D7B00D83A08 /* PredictView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictView.swift; sourceTree = "<group>"; };
 		54F80F1C2C0B641200D83A08 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
-		54F80F1E2C0B649500D83A08 /* TodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListView.swift; sourceTree = "<group>"; };
-		54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoListView.swift; sourceTree = "<group>"; };
-		54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoListView.swift; sourceTree = "<group>"; };
 		A773B5EA2C1C9FC60071D7FF /* LottiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottiView.swift; sourceTree = "<group>"; };
 		A773B5EB2C1C9FC60071D7FF /* SplashView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		A773B6142C1FD49C0071D7FF /* train3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = train3.json; sourceTree = "<group>"; };
@@ -212,7 +202,6 @@
 				A773B5EC2C1C9FC60071D7FF /* Splash */,
 				546496542C18381200B1FF48 /* Setting */,
 				543337862C16C659000809D9 /* Schedule */,
-				54F80F222C0BE53900D83A08 /* TodoList */,
 				54F80F212C0BE52C00D83A08 /* News */,
 				54F80F202C0BE52100D83A08 /* PredictSubway */,
 				54F80F072C0AF4EE00D83A08 /* ContentView.swift */,
@@ -224,7 +213,6 @@
 			isa = PBXGroup;
 			children = (
 				AE7B76D82C202E0C0061E55D /* NewsVM.swift */,
-				54F80F182C0AF67200D83A08 /* TodoListDB.swift */,
 				5433378F2C16FE09000809D9 /* CalendarDB.swift */,
 				5464965B2C19813400B1FF48 /* TimeSettingDB.swift */,
 			);
@@ -235,7 +223,6 @@
 			isa = PBXGroup;
 			children = (
 				AE7B76D52C202DFE0061E55D /* NewsModel.swift */,
-				54F80F162C0AF59300D83A08 /* TodoLists.swift */,
 				5433378B2C16C781000809D9 /* DateModel.swift */,
 				5433378D2C16C8CB000809D9 /* Task.swift */,
 				FE360DC42C16D79D007BA9AE /* JSONModel.swift */,
@@ -268,16 +255,6 @@
 				54F80F1C2C0B641200D83A08 /* NewsView.swift */,
 			);
 			path = News;
-			sourceTree = "<group>";
-		};
-		54F80F222C0BE53900D83A08 /* TodoList */ = {
-			isa = PBXGroup;
-			children = (
-				54F80F1E2C0B649500D83A08 /* TodoListView.swift */,
-				54F80F242C0BE5EE00D83A08 /* AddTodoListView.swift */,
-				54F80F282C0C3A5700D83A08 /* DetailTodoListView.swift */,
-			);
-			path = TodoList;
 			sourceTree = "<group>";
 		};
 		A773B5EC2C1C9FC60071D7FF /* Splash */ = {
@@ -377,7 +354,6 @@
 				54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */,
 				54F80F1B2C0B5D7B00D83A08 /* PredictView.swift in Sources */,
 				A773B5ED2C1C9FC60071D7FF /* LottiView.swift in Sources */,
-				54F80F172C0AF59300D83A08 /* TodoLists.swift in Sources */,
 				AE7B76DB2C202E1F0061E55D /* NewsCell.swift in Sources */,
 				FE17E7F52C2BFE4100ACFCF0 /* TabBarButton.swift in Sources */,
 				FE17E8012C2C003000ACFCF0 /* PredictView03.swift in Sources */,
@@ -386,7 +362,6 @@
 				FE17E7FF2C2C001100ACFCF0 /* CustomDatePicker.swift in Sources */,
 				FE5454CB2C28033500094EA0 /* magnification.swift in Sources */,
 				54F80F1D2C0B641200D83A08 /* NewsView.swift in Sources */,
-				54F80F1F2C0B649500D83A08 /* TodoListView.swift in Sources */,
 				546496582C183F7000B1FF48 /* CalendarDetailView.swift in Sources */,
 				5433378C2C16C781000809D9 /* DateModel.swift in Sources */,
 				5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */,
@@ -403,14 +378,11 @@
 				A7CA34682C27E67E00D197B5 /* SubwayList.swift in Sources */,
 				54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */,
 				5464965E2C1A810400B1FF48 /* TimeSettingView.swift in Sources */,
-				54F80F252C0BE5EE00D83A08 /* AddTodoListView.swift in Sources */,
 				A773B5EE2C1C9FC60071D7FF /* SplashView.swift in Sources */,
 				FEE55D502C26CC2C0007E8A7 /* PredictView_ver2.swift in Sources */,
 				5464966A2C1A98D900B1FF48 /* Notification.swift in Sources */,
 				AE7B76D92C202E0C0061E55D /* NewsVM.swift in Sources */,
-				54F80F292C0C3A5700D83A08 /* DetailTodoListView.swift in Sources */,
 				FE17E7EA2C2BFD5700ACFCF0 /* NewsArticleView.swift in Sources */,
-				54F80F192C0AF67200D83A08 /* TodoListDB.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
