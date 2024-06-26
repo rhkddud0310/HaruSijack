@@ -49,6 +49,7 @@ struct CustomDatePicker: View {
     @State var status: Int = 0                  // 완료 변수
     @State var calendarAlert: Bool = false      // 달력 클릭했을 때 alert
     @State var selectedDate: Date? = nil
+    @State var tasksSelectedDate: [TaskMetaData] = []
     
     var body: some View {
         
@@ -158,7 +159,7 @@ struct CustomDatePicker: View {
             if value.day != -1 {
                 
                 
-                if let tasksForDate = tasksForSelectedDat
+//                if let tasksForDate = tasksForSelectedDat
                 
                 // value.day 와 taskDate가 같으면 색 표시하기
 //                if let tasksForDate = dbModel.queryDB().first(where: { task in
