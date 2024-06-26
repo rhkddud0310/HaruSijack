@@ -49,6 +49,7 @@ struct CustomDatePicker: View {
     @State var status: Int = 0                  // 완료 변수
     @State var calendarAlert: Bool = false      // 달력 클릭했을 때 alert
     @State var selectedDate: Date? = nil
+    @State var tasksSelectedDate: [TaskMetaData] = []
     
     var body: some View {
         
@@ -144,6 +145,7 @@ struct CustomDatePicker: View {
         )) {
             if let selectedDate = selectedDate {
                 CalendarListView(currentDate: selectedDate, tasksForSelectedDate: tasksForSelectedDate)
+                    .presentationDragIndicator(.visible)
             }
         }
         
@@ -155,25 +157,52 @@ struct CustomDatePicker: View {
     func CardView(value: DateValue) -> some View {
         VStack(content: {
             if value.day != -1 {
-                // value.day 와 taskDate가 같으면 색 표시하기
-                if dbModel.queryDB().first(where: { task in
-                    return isSameDay(date1: task.taskDate, date2: value.date)
-                }) != nil{
-                    //달력에 날짜 표시
+                
+                
+//                /if let tasksForDate = tasksForSelectedDat
+                
+//                 value.day 와 taskDate가 같으면 색 표시하기
+                if let tasksForDate = dbModel.queryDB().first(where: { task in
+                     isSameDay(date1: task.taskDate, date2: value.date)
+                }) {
+                    VStack {
                         Divider()
-                        
-                        // 일정이 있는 날짜 표시
                         Text("\(value.day)")
                             .frame(maxWidth: .infinity, minHeight: 80, maxHeight: .infinity, alignment: .top)
                             .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
                             .background(.clear)
+                        
+                        
+                        
+                        ForEach(tasksForSelectedDate.indices, id: \.self) { index in
+                            let task = tasksForSelectedDate[index]
+                            Text(truncatedText(task.title))
+                                .font(.caption)
+                        }
+                        
                         Spacer()
+                        
+//                        ForEach(tasksForSelectedDate.filter { _ in isSameDay(date1: task.taskDate, date2: value.date )}.indices, id: \.self) { index in
+//                            let task = tasksForSelectedDate.filter { _ in isSameDay(date1: task.taskDate, date2: value.date)}
+//                            Text(truncatedText(tasksForSelectedDate[index].title))
+//                                .font(.caption)
+//                        }
+                        
+//                        ForEach(tasksForSelectedDate.indices, id: \.self) { index in
+//                            Text(truncatedText(tasksForSelectedDate[index].title))
+//                                .font(.caption)
+//                        }
+                        
+                    }
+//                    .padding(.horizontal, 10)
                     
                     // 일정이 있을 때 표시되는 Circle()
 //                    Circle()
 //                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("color2"))
 //                        .frame(width: 10, height: 10)
 //                        .padding(.bottom, 10)
+                    
+                    
                 }
                 else {
                     Divider()
@@ -183,11 +212,22 @@ struct CustomDatePicker: View {
                         .background(.white)
                     Spacer()
                 }
-            }
+            }//if
         })
         .frame(height: 110, alignment: .top)
         .onTapGesture {
             selectedDate = value.date
+        }
+    }
+    
+    
+    // MARK: 텍스트 자르는 함수
+    func truncatedText(_ text: String) -> String {
+        if text.count > 3 {
+            let index = text.index(text.startIndex, offsetBy: 3)
+            return text[..<index] + ".."
+        } else {
+            return text
         }
     }
     

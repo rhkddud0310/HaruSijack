@@ -81,27 +81,21 @@ class NotificationManager {
                     
                     let ride = Int(self.getValueForCurrentTime(jsonString: response, currentTime: String(info.time))) // 승차인원수 가져오기
                     
-                    
                     self.fetchDataFromServerAlighting(stationName: info.station, date: todate, time: String(info.time), stationLine: "7") { response2 in
                         let down = Int(self.getValueForCurrentTime(jsonString: response2, currentTime: String(info.time))) //하차인원수 가져오기
                         
                         
-                        print("ride :", ride)
-                        print("down :", down)
                         let content = UNMutableNotificationContent()
                         content.title = "🔔\(String(info.time-1))시 \(info.station)역의 혼잡도 🔔"
                         content.sound = .default
                         content.subtitle = "승차인원 : \(ride)명, 하차인원 : \(down)명입니다."
-                        print("dddd : ",response)
 
                         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                         let request = UNNotificationRequest(identifier: notification.id, content: content, trigger: trigger)
-                        print("성공이 보인다.")
                         UNUserNotificationCenter.current().add(request) { error in
                             guard error == nil else {return}
                             print("scheduling notification with id:\(notification.id)")
                         }
-                        print("성공햤다 난..")
                     }
                     
                     
