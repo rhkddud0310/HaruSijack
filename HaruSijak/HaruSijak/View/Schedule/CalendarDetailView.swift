@@ -17,7 +17,7 @@ import SwiftUI
 struct CalendarDetailView: View {
     
     @State var task: Task                       //customDatePicker에서 선택한 task를 받아오는 변수
-    @State var currentDate = Date()             //customDatePicker에서 선택한 currentDate를 받아오는 변수
+    @State var currentDate: Date                //customDatePicker에서 선택한 currentDate를 받아오는 변수
     @FocusState var isTextFieldFocused: Bool    // 키보드 내리기 변수
     @State var isAlert = false                  // 확인 alert 변수
     @State var isAlarm = false                  // 경고 alert 변수

@@ -3,17 +3,19 @@
  Description: 각 지하철 역별 승,하차인원 에측 페이지
  
  
-    Update:
-             - 2024.06.11 j.park : 1. 버튼 구현
-                                   2. flask 서버에서 하차인원 Json통신
-             - 2024.06.12 j.park : 1. 현재시간, 특정역 기준 하차인원 추가
-             - 2024.06.13 snr : 출근시간대 설정 sheet 연결
-             - 2024.06.13 j.park : 1.승차인원 추가
-                                   2. actionsheet에서 sheet로 변경
-             - 2024.06.14 j.park : 1.특정역에 대한 전체 승하차인원 그래프 구현
-             - 2024.06.17 j.park : 1. 예측페이지 진입전 lotti를 활용한 대기화면 구현
-             - 2024.06.23 jdpark : 1. 지하철 노선 정보 중 5호선 추가 struct 파일로 만들고 거기서 불러오게 함.
-                                   
+ Update:
+ - 2024.06.11 j.park : 1. 버튼 구현
+ 2. flask 서버에서 하차인원 Json통신
+ - 2024.06.12 j.park : 1. 현재시간, 특정역 기준 하차인원 추가
+ - 2024.06.13 snr : 출근시간대 설정 sheet 연결
+ - 2024.06.13 j.park : 1.승차인원 추가
+ 2. actionsheet에서 sheet로 변경
+ - 2024.06.14 j.park : 1.특정역에 대한 전체 승하차인원 그래프 구현
+ - 2024.06.17 j.park : 1. 예측페이지 진입전 lotti를 활용한 대기화면 구현
+ - 2024.06.23 jdpark : 1. 지하철 노선 정보 중 5호선 추가 struct 파일로 만들고 거기서 불러오게 함.
+ - 2024.06.24 by j, d park :
+    * 1. sheet(예측페이지) 분리
+      2.
  */
 import SwiftUI
 import Zoomable
@@ -71,7 +73,17 @@ struct PredictView: View {
     let line3 = SubwayList().stations_line3
     let line2 = SubwayList().stations_line2
     let line23 = SubwayList().stations_line_23
-
+    
+    
+    //파일 병합중 오류를 막지위한 임시변수
+    let imgWidth: CGFloat = 6189
+    let imgHeight: CGFloat = 4465
+    @State var currentScale: CGFloat = 1.0
+    @State var previousScale: CGFloat = 1.0
+    @State var currentOffset = CGSize.zero
+    @State var previousOffset = CGSize.zero
+    
+    
     
     var body: some View {
         VStack {
@@ -79,10 +91,11 @@ struct PredictView: View {
                 .font(.system(size: 24, weight: .bold, design: .rounded))
             ZStack {
                 // 스크롤뷰 [노선도 사진]
-                ScrollView([.horizontal, .vertical], showsIndicators: false) {
+                //                ScrollView([.horizontal, .vertical], showsIndicators: false) {
+                GeometryReader { geometry in
                     Image("subwayMap")
                         .resizable()
-                        .frame( width:  CGFloat(6189), height: CGFloat(4465))
+                        .frame(width: imgWidth * self.currentScale, height: imgHeight * self.currentScale)
                     //                    .zoomable() // double click시 화면 확대
                         .overlay( GeometryReader { geometry in
                             ForEach(Array(line23.enumerated()), id: \.0) { index, station in
@@ -93,146 +106,82 @@ struct PredictView: View {
                                 }) {
                                     Text(".\(index) \(station.0)")
                                         .font(.system(size: 10))
-//                                        .font(.largeTitle)
                                         .bold()
                                         .frame(width: 100, height: 20)
                                         .background(Color.red)
                                 }
-                                .position(x: CGFloat(station.2), y: CGFloat(station.1))
+                                .position(  x: (station.2 * self.currentScale),
+                                            y: (station.1 * self.currentScale)
+                                )
                             }
+                            .edgesIgnoringSafeArea(.all)
+                            .aspectRatio(contentMode: .fit)
+                            .offset(x: self.currentOffset.width, y: self.currentOffset.height)
+                            .scaleEffect(max(self.currentScale, 1.0)) // the second question
+                            .gesture(DragGesture()
+                                .onChanged { value in
+                                    
+                                    let deltaX = value.translation.width - self.previousOffset.width
+                                    let deltaY = value.translation.height - self.previousOffset.height
+                                    self.previousOffset.width = value.translation.width
+                                    self.previousOffset.height = value.translation.height
+                                    
+                                    //                            let newOffsetWidth = self.currentOffset.width + deltaX / self.currentScale
+                                    
+                                    self.currentOffset.width = self.currentOffset.width + deltaX / self.currentScale
+                                    
+                                    
+                                    self.currentOffset.height = self.currentOffset.height + deltaY / self.currentScale
+                                }
+                                     
+                                .onEnded { value in self.previousOffset = CGSize.zero })
                             
-                            .sheet(isPresented: $showAlertForStation, content: {
-                                VStack(content: {
-                                    if isLoading {
-                                        ZStack {
-                                            LottieView(jsonName: "SplashLotti")
-                                                .onAppear {
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                                        withAnimation {
-                                                            isLoading = false
-                                                        }
-                                                    }
-                                                }
-                                            Spacer()
-                                            RoundedRectangle(cornerRadius: 10)
-                                                        .stroke(Color.white, lineWidth: 4)
-                                                        .background(Color.white)
-                                                        .frame(width: 250, height: 100)
-                                                        .offset(x: 0, y: 200)
-                                            Text("잠시만 기다려 주세요...")
-                                                .font(.system(size: 24, weight: .bold, design: .rounded))
-                                                .offset(y: 120)
-                                        }
-                                    }
-                                    else{
-                                        Text(stationName)
-                                            .font(.system(size: 24))
-                                            .bold()
-                                            .padding(30)
-                                        
-                                        Text("\(showingcurrentTime)시의 예상 승차인원은 \(Int(boardingPersonValue))명 입니다. ")
-                                        Text("\(showingcurrentTime)시의 예상 하차인원은 \(Int(AlightingPersonValue))명 입니다")
-                                        
-                                        ScrollView {
-                                            HStack {
-                                                Circle()
-                                                    .fill(Color.green.opacity(0.7))
-                                                    .frame(width: 20, height: 20)
-                                                Text("탑승 인원")
-                                                
-                                                Circle()
-                                                    .fill(Color(red: 0.9, green: 0.6, blue: 0.3))
-                                                    .frame(width: 20, height: 20)
-                                                Text("하차 인원")
-                                            }
-                                            .padding()
-                                            
-                                            Chart {
-                                                // 승차인원 차트
-                                                ForEach(Array(BoardingPersondictionary.keys.sorted()), id: \.self) { key in
-                                                    if let value = BoardingPersondictionary[key] {
-                                                        BarMark(
-                                                            x: .value("인원수", Int(value)),
-                                                            y: .value("시간", key),
-                                                            width: 25
-                                                        )
-                                                        .foregroundStyle(Color.green.opacity(0.8))
-                                                        .annotation(position: .top) {
-                                                            Text("\(Int(value))")
-                                                                .font(.caption)
-                                                                .foregroundColor(Color.green.opacity(0.7))
-                                                        }
-                                                    }
-                                                }
-                                                
-                                                // 하차인원 차트
-                                                ForEach(Array(AlightinggPersondictionary.keys.sorted()), id: \.self) { key in
-                                                    if let value = AlightinggPersondictionary[key] {
-                                                        BarMark(
-                                                            x: .value("인원수", Int(value)),
-                                                            y: .value("시간", key),
-                                                            width: 25
-                                                        )
-                                                        .foregroundStyle(Color.orange)
-                                                        .annotation(position: .top) {
-                                                            Text("\(Int(value))")
-                                                                .font(.caption)
-                                                                .foregroundColor(.red)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            .chartXAxis {
-                                                AxisMarks(position: .bottom)
-                                            }
-                                            .chartYAxis {
-                                                AxisMarks(position: .leading)
-                                            }
-                                            .frame(height: 400)
-                                            
-                                        }
-                                    }
-                                })
-                                .presentationDetents([.fraction(CGFloat(0.8))])
-                                .presentationDragIndicator(.visible)
-                            }) //sheet
+                            
+                            .gesture(MagnificationGesture()
+                                .onChanged { value in
+                                    let delta = value / self.previousScale
+                                    self.previousScale = value
+                                    self.currentScale = self.currentScale * delta
+                                }
+                                .onEnded { value in self.previousScale = 1.0 })
+                            //                            .sheet(isPresented: $showAlertForStation) {
+                            //                                SheetContentView(
+                            //                                    isLoading: $isLoading,
+                            //                                    stationName: $stationName,
+                            //                                    showingcurrentTime: $showingcurrentTime,
+                            //                                    boardingPersonValue: $boardingPersonValue,
+                            //                                    AlightingPersonValue: $AlightingPersonValue,
+                            //                                    BoardingPersondictionary: $BoardingPersondictionary,
+                            //                                    AlightinggPersondictionary: $AlightinggPersondictionary
+                            //                                )
+                            //                            }//sheet
+                            
+                            
                         }
                         )
-                    //                        .zoomable() // double click시 화면 확대 -> scrollView랑 충돌나서 버튼이 작동 안되는거같아서 주석처리
                 }
-//                .allowsHitTesting(true) // ScrollView가 터치 이벤트를 받도록 설정
-                .frame(maxWidth: .infinity)
-                .gesture(
-                    DragGesture()
-                        .onChanged { value in
-                            self.dragAmount = value.translation
-                        }
-                        .onEnded { _ in
-                            self.dragAmount = .zero
-                        }
-                )
-                .offset(x: dragAmount.width, y: dragAmount.height)
+                
+            }//zstack
+        }//vstack
+        .onAppear(perform: {
+            if dbModel.queryDB().isEmpty {
+                isShowSheet = true
             }
-        }
-                .onAppear(perform: {
-                    if dbModel.queryDB().isEmpty {
-                        isShowSheet = true
-                    }
-                                                setNotification()
-                })
-                .sheet(isPresented: $isShowSheet, content: {
-                    TimeSettingView(titleName: "출근 시간대, 출발역 설정")
-                        .presentationDetents([.medium])
-                        .presentationDragIndicator(.visible)
-                })//sheet
+            setNotification()
+        })
+        //                .sheet(isPresented: $isShowSheet, content: {
+        //                    TimeSettingView(titleName: "출근 시간대, 출발역 설정")
+        //                        .presentationDetents([.medium])
+        //                        .presentationDragIndicator(.visible)
+        //                })//sheet
+    }//body
+    
+    
+    func setNotification() {
+        let manager = NotificationManager()
+        manager.addNotification(title: "hellow")
+        manager.scheduleNotifications()
     }
-    
-    
-            func setNotification() {
-                let manager = NotificationManager()
-                manager.addNotification(title: "hellow")
-                manager.scheduleNotifications()
-            }
     
     
     //--------------Functions-----------------
