@@ -27,7 +27,7 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 TabView(selection: $selection) {
-                    PredictView()
+                    PredictView_ver2()
                         .tag(0)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     
