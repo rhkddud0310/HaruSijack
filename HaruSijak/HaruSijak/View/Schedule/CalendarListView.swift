@@ -97,7 +97,7 @@ struct CalendarListView: View {
         .sheet(item: $selectedTask, onDismiss: {
             fetchTasksForSelectedDate()
         }, content: { task in
-            CalendarDetailView(task: task)
+            CalendarDetailView(task: task, currentDate: currentDate)
                 .presentationDetents([.medium])
                 .presentationDragIndicator(.visible)
         })

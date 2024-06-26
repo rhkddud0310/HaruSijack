@@ -159,71 +159,71 @@ struct CustomDatePicker: View {
             if value.day != -1 {
                 
                 
-//                if let tasksForDate = tasksForSelectedDat
+//                /if let tasksForDate = tasksForSelectedDat
                 
-                // value.day 와 taskDate가 같으면 색 표시하기
-//                if let tasksForDate = dbModel.queryDB().first(where: { task in
-//                     isSameDay(date1: task.taskDate, date2: value.date)
-//                }) {
-//                    //달력에 날짜 표시
-////                        Divider()
-//                        
-//                        // 일정이 있는 날짜 표시
-////                        Text("\(value.day)")
-////                            .frame(maxWidth: .infinity, minHeight: 80, maxHeight: .infinity, alignment: .top)
-////                            .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
-////                            .background(.clear)
-////                    
-////                        Spacer()
-//                    
-//                    
-//                    VStack {
+//                 value.day 와 taskDate가 같으면 색 표시하기
+                if let tasksForDate = dbModel.queryDB().first(where: { task in
+                     isSameDay(date1: task.taskDate, date2: value.date)
+                }) {
+                    //달력에 날짜 표시
 //                        Divider()
+                        
+                        // 일정이 있는 날짜 표시
 //                        Text("\(value.day)")
 //                            .frame(maxWidth: .infinity, minHeight: 80, maxHeight: .infinity, alignment: .top)
 //                            .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
 //                            .background(.clear)
-//                        
-//                        
-//                        
-////                        ForEach(tasksForSelectedDate.indices, id: \.self) { index in
-////                            let task = tasksForSelectedDate[index]
-////                            Text(truncatedText(task.title))
-////                                .font(.caption)
-////                        }
-//                        
+//                    
 //                        Spacer()
-//                        
-////                        ForEach(tasksForSelectedDate.filter { _ in isSameDay(date1: task.taskDate, date2: value.date )}.indices, id: \.self) { index in
-////                            let task = tasksForSelectedDate.filter { _ in isSameDay(date1: task.taskDate, date2: value.date)}
-////                            Text(truncatedText(tasksForSelectedDate[index].title))
-////                                .font(.caption)
-////                        }
-//                        
-////                        ForEach(tasksForSelectedDate.indices, id: \.self) { index in
-////                            Text(truncatedText(tasksForSelectedDate[index].title))
-////                                .font(.caption)
-////                        }
-//                        
-//                    }
-////                    .padding(.horizontal, 10)
-//                    
-//                    // 일정이 있을 때 표시되는 Circle()
-////                    Circle()
-////                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("color2"))
-////                        .frame(width: 10, height: 10)
-////                        .padding(.bottom, 10)
-//                    
-//                    
-//                }
-//                else {
-//                    Divider()
-//                    Text("\(value.day)")
-//                        .frame(maxWidth: .infinity, minHeight: 120, maxHeight: .infinity, alignment: .top)
-//                        .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
-//                        .background(.white)
-//                    Spacer()
-//                }
+                    
+                    
+                    VStack {
+                        Divider()
+                        Text("\(value.day)")
+                            .frame(maxWidth: .infinity, minHeight: 80, maxHeight: .infinity, alignment: .top)
+                            .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
+                            .background(.clear)
+                        
+                        
+                        
+//                        ForEach(tasksForSelectedDate.indices, id: \.self) { index in
+//                            let task = tasksForSelectedDate[index]
+//                            Text(truncatedText(task.title))
+//                                .font(.caption)
+//                        }
+                        
+                        Spacer()
+                        
+//                        ForEach(tasksForSelectedDate.filter { _ in isSameDay(date1: task.taskDate, date2: value.date )}.indices, id: \.self) { index in
+//                            let task = tasksForSelectedDate.filter { _ in isSameDay(date1: task.taskDate, date2: value.date)}
+//                            Text(truncatedText(tasksForSelectedDate[index].title))
+//                                .font(.caption)
+//                        }
+                        
+//                        ForEach(tasksForSelectedDate.indices, id: \.self) { index in
+//                            Text(truncatedText(tasksForSelectedDate[index].title))
+//                                .font(.caption)
+//                        }
+                        
+                    }
+//                    .padding(.horizontal, 10)
+                    
+                    // 일정이 있을 때 표시되는 Circle()
+//                    Circle()
+//                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("color2"))
+//                        .frame(width: 10, height: 10)
+//                        .padding(.bottom, 10)
+                    
+                    
+                }
+                else {
+                    Divider()
+                    Text("\(value.day)")
+                        .frame(maxWidth: .infinity, minHeight: 120, maxHeight: .infinity, alignment: .top)
+                        .foregroundStyle(isSameDay(date1: value.date, date2: currentDate) ? .white : .primary )
+                        .background(.white)
+                    Spacer()
+                }
             }//if
         })
         .frame(height: 110, alignment: .top)
