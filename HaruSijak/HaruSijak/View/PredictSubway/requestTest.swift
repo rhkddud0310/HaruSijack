@@ -37,7 +37,7 @@ struct requestTest: View {
         Button(action: {
             print("Button Clicked")
             print("\(showingcurrentdate)")
-            let vm = predictVM()
+//            let vm = predictVM()
 //            vm.loadAlightData(stationName: stationName, date:showingcurrentdate, time: showingcurrentTime, stationLine: stationLine, completion: <#([PredictResultJSON]) -> Void#>)
             
             

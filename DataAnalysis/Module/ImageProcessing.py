@@ -168,7 +168,7 @@ class ImageProcessing:
                 if key == ord('n'):
                     # 클릭한 점들을 pandas 데이터프레임으로 저장
                     df = pd.DataFrame(clicked_points, columns=['y', 'x'])
-                    csv_path = os.path.join(path, f'{image_name.splite(".")[0]}_points.csv')
+                    csv_path = os.path.join(path, f'{image_name.splite(".")[0]}_points1.csv')
                     df.to_csv(csv_path, index=False)
                     
                     # 클릭한 점 초기화
