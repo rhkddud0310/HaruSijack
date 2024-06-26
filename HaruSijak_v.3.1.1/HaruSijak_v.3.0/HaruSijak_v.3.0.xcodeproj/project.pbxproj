@@ -30,9 +30,9 @@
 		54A145462C2BE75200E76891 /* CalendarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145412C2BE75200E76891 /* CalendarListView.swift */; };
 		54A145472C2BE75200E76891 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145422C2BE75200E76891 /* CustomDatePicker.swift */; };
 		54A145492C2BE76500E76891 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A145482C2BE76500E76891 /* NewsView.swift */; };
-		54A1454B2C2BE77300E76891 /* PredictView03.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1454A2C2BE77300E76891 /* PredictView03.swift */; };
 		54A1454E2C2BE7BA00E76891 /* CalendarDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1454C2C2BE7BA00E76891 /* CalendarDB.swift */; };
 		54A1454F2C2BE7BA00E76891 /* TimeSettingDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1454D2C2BE7BA00E76891 /* TimeSettingDB.swift */; };
+		FE214FFE2C2BF95600070744 /* PredictView03.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE214FFD2C2BF95600070744 /* PredictView03.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,9 +59,9 @@
 		54A145412C2BE75200E76891 /* CalendarListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarListView.swift; path = ../../../../../HaruSijak/HaruSijak/View/Schedule/CalendarListView.swift; sourceTree = "<group>"; };
 		54A145422C2BE75200E76891 /* CustomDatePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomDatePicker.swift; path = ../../../../../HaruSijak/HaruSijak/View/Schedule/CustomDatePicker.swift; sourceTree = "<group>"; };
 		54A145482C2BE76500E76891 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
-		54A1454A2C2BE77300E76891 /* PredictView03.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictView03.swift; sourceTree = "<group>"; };
 		54A1454C2C2BE7BA00E76891 /* CalendarDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarDB.swift; path = ../../../../HaruSijak/HaruSijak/VM/CalendarDB.swift; sourceTree = "<group>"; };
 		54A1454D2C2BE7BA00E76891 /* TimeSettingDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeSettingDB.swift; path = ../../../../HaruSijak/HaruSijak/VM/TimeSettingDB.swift; sourceTree = "<group>"; };
+		FE214FFD2C2BF95600070744 /* PredictView03.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PredictView03.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,7 +200,7 @@
 		54A1451B2C2BE51500E76891 /* PredictSubway */ = {
 			isa = PBXGroup;
 			children = (
-				54A1454A2C2BE77300E76891 /* PredictView03.swift */,
+				FE214FFD2C2BF95600070744 /* PredictView03.swift */,
 			);
 			path = PredictSubway;
 			sourceTree = "<group>";
@@ -312,7 +312,7 @@
 				54A145362C2BE70E00E76891 /* Task.swift in Sources */,
 				54A145062C2BE48E00E76891 /* HaruSijak_v_3_0App.swift in Sources */,
 				54A1453C2C2BE74700E76891 /* TimeSettingView.swift in Sources */,
-				54A1454B2C2BE77300E76891 /* PredictView03.swift in Sources */,
+				FE214FFE2C2BF95600070744 /* PredictView03.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +446,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak_v.3.0/Preview Content\"";
+				DEVELOPMENT_TEAM = ATM2B7QCY2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HaruSijak-v-3-0-Info.plist";
@@ -475,6 +476,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak_v.3.0/Preview Content\"";
+				DEVELOPMENT_TEAM = ATM2B7QCY2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HaruSijak-v-3-0-Info.plist";
