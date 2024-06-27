@@ -17,6 +17,7 @@
                               시간 선택 picker를 TimeSettingView로 view로 생성함 -> 다른페이지에서도 사용하기 위해
  
         * 2024.06.17 by snr : 시간설정 + 출발역 지정 기능 추가하기
+        * 2024.06.27 by pdg : 시간 설정 칸 이랑 버전 정보랑 구분이 안감. -> 시간 설정은 버튼화 했으면 좋겠음.
  
  */
 
@@ -43,11 +44,17 @@ struct SettingView: View {
                 
                 //출근 시간대 설정하기
                 HStack(content: {
-                    Image(systemName: "clock")
-                        .font(.system(size: 25))
-                        .padding()
+                    Button(action: {
+                        isShowSheet = true
+                    },
+                           label: {
+                        Image(systemName: "slider.horizontal.2.square")
+                            .font(.system(size: 25))
+                            .padding()
+                        
+                        Text("출발역, 시간대 설정하기")
+                    })
                     
-                    Text("출발역, 시간대 설정하기")
                 })
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
                 .padding(.leading, 20)
