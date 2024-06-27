@@ -44,11 +44,17 @@ struct SettingView: View {
                 
                 //출근 시간대 설정하기
                 HStack(content: {
-                    Image(systemName: "clock")
-                        .font(.system(size: 25))
-                        .padding()
+                    Button(action: {
+                        isShowSheet = true
+                    },
+                           label: {
+                        Image(systemName: "slider.horizontal.2.square")
+                            .font(.system(size: 25))
+                            .padding()
+                        
+                        Text("출발역, 시간대 설정하기")
+                    })
                     
-                    Text("출발역, 시간대 설정하기")
                 })
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
                 .padding(.leading, 20)
