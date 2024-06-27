@@ -6,6 +6,7 @@
     Updates :
         * 2024.06.13 by snr : class for notification
         * 2024.06.17 by snr : 설정대 시간대에서 한시간 일찍 알림 뜨도록 설정
+        * 2024.06.27 by snr : 지하철 혼잡도 예측 알림 1개만 뜨도록 minute 설정
  */
 
 import SwiftUI
@@ -61,7 +62,7 @@ class NotificationManager {
             print("시간 : ",dbModel.queryDB().first?.time ?? 0)
             dateComponents.hour = (dbModel.queryDB().first?.time ?? 0) - 1 //db에서 저장한 시간에서 한시간 먼저 알려주기*/
             print("dddhour : ", dateComponents.hour!)
-            dateComponents.minute = 05
+            dateComponents.minute = 45
             
             // 현재날짜와 calendar 날짜가 같은지 비교해서 알림표시
 //            let currentDate = Date() //오늘날짜에서

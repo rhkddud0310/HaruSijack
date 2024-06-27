@@ -213,7 +213,9 @@ def format_response(resp):
         }
     }
 
-
+@app.route("/news")
+def news():
+    return "news crawling"
 
 
 
