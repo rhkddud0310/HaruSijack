@@ -33,12 +33,16 @@ struct ContentView: View {
                     NewsView()
                         .tag(1)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .navigationTitle("뉴스")
+
+                        .navigationTitle("오늘의 뉴스")
+
                     CalendarView()
                         .tag(2)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .navigationTitle("할 일")
+
                     SettingView(stationName: "가디", time: 0)
+
                         .tag(3)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .navigationTitle("설정")
