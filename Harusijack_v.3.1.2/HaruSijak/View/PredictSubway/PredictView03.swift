@@ -79,8 +79,8 @@ struct subwayImage : View {
     @State var previousScale: CGFloat = 1.0
     @State var currentOffset = CGSize.zero
     @State var previousOffset = CGSize.zero
-//    let line23 = SubwayList().totalStation
-    let line23 = SubwayList().testStation
+    let line23 = SubwayList().totalStation
+//    let line23 = SubwayList().testStation
     let imgWidth = UIImage(named: "subwayMap")!.size.width
     let imgHeight = UIImage(named: "subwayMap")!.size.height
     
