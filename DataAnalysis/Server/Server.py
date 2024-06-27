@@ -85,27 +85,7 @@ def subway():
     print('입력정보:',*rows,sep='\t')
 
     try:
-        ### machine learning model case 
-        match stationLine: 
-            case stationLine if stationLine == 1:
-                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_1호선_승차.h5")        
-            case stationLine if stationLine == 2:
-                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_2호선_승차.h5")        
-            case stationLine if stationLine == 3:
-                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_3호선_승차.h5")        
-            case stationLine if stationLine == 4:
-                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_4호선_승차.h5")        
-            case stationLine if stationLine == 5:
-                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_5호선_승차.h5")        
-            case stationLine if stationLine == 6:
-                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_6호선_승차.h5")        
-            case stationLine if stationLine == 7:
-                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_line7_승차.h5")        
-            case stationLine if stationLine == 8:
-                model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_8호선_승차.h5")        
-        #지하철 승하차 모델 path 
-        
-        # model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_line7_승차.h5")
+        model_path = os.path.join(parent_dir, "MLModels", f"knn_regressor_subway23_0_{stationLine}호선_승차.h5")
 
         knn_regressor_승차 = joblib.load(model_path)
         
@@ -185,27 +165,7 @@ def subwayAlighting():
     print('입력정보:',*rows,sep='\t')
 
     try:
-        # match stationLine: 
-        #     case stationLine if stationLine == 1:
-        #         model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_1호선_하차.h5")        
-        #     case stationLine if stationLine == 2:
-        #         model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_2호선_하차.h5")        
-        #     case stationLine if stationLine == 3:
-        #         model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_3호선_하차.h5")        
-        #     case stationLine if stationLine == 4:
-        #         model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_4호선_하차.h5")        
-        #     case stationLine if stationLine == 5:
-        #         model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_5호선_하차.h5")        
-        #     case stationLine if stationLine == 6:
-        #         model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_6호선_하차.h5")        
-        #     case stationLine if stationLine == 7:
-        #         model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_line7_하차.h5")        
-        #     case stationLine if stationLine == 8:
-        #         model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_subway23_0_8호선_하차.h5")    
-        
-        #지하철 승하차 모델 path 
-        # model_path = os.path.join(parent_dir, "MLModels", "knn_regressor_line7_하차.h5")
-        model_path = os.path.join(parent_dir, "MLModels", f"knn_regressor_subway23_0_{stationLine}호선_승차.h5")
+        model_path = os.path.join(parent_dir, "MLModels", f"knn_regressor_subway23_0_{stationLine}호선_하차.h5")
 
         knn_regressor_하차 = joblib.load(model_path)
         

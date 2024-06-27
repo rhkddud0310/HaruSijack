@@ -79,8 +79,8 @@ struct subwayImage : View {
     @State var previousScale: CGFloat = 1.0
     @State var currentOffset = CGSize.zero
     @State var previousOffset = CGSize.zero
-//    let line23 = SubwayList().totalStation
-    let line23 = SubwayList().testStation
+    let line23 = SubwayList().totalStation
+//    let line23 = SubwayList().testStation
     let imgWidth = UIImage(named: "subwayMap")!.size.width
     let imgHeight = UIImage(named: "subwayMap")!.size.height
     
@@ -96,7 +96,12 @@ struct subwayImage : View {
                 ForEach(Array(line23.enumerated()), id: \.0) { index, station in
                     Button(action: {
                         isLoading = true
+                        print("--------------------------")
                         print("line5 station \(station.0)")
+                        print("line5 station \(station.3)")
+                        print("line5 station \(station.4)")
+                        print("line5 station \(station.5)")
+                        print("--------------------------")
                         handleStationClick(stationName: station.0, stationLine: String(station.3))
                     }) {
                         Text(".\(index) \(station.0)")
@@ -138,7 +143,15 @@ struct subwayImage : View {
                 }
                 .onEnded { value in self.previousScale = 1.0 }
             )
-            .sheet(isPresented: $showAlertForStation) {
+            .sheet(isPresented: $showAlertForStation, onDismiss: {
+               // 변수 초기화
+               isLoading = false
+               stationName = ""
+               boardingPersonValue = 0
+               AlightingPersonValue = 0
+               BoardingPersondictionary = [:]
+               AlightinggPersondictionary = [:]
+            }) {
                 SheetContentView(
                     isLoading: $isLoading,
                     stationName: $stationName,
