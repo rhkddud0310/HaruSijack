@@ -30,31 +30,26 @@ struct ContentView: View {
                     PredictView03()
                         .tag(0)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    
                     NewsView()
                         .tag(1)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .navigationTitle("오늘의 뉴스")
-                        .navigationBarTitleDisplayMode(.large)
-                    
+                        .navigationTitle("할 일")
                     CalendarView()
-                        .tag(2)
+                        .tag(1)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .navigationTitle("할 일")
-                    
                     SettingView()
-                        .tag(3)
+                        .tag(2)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .navigationTitle("설정")
                         .navigationBarTitleDisplayMode(.large)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // 페이지 인디케이터 숨기기
-                
                 // Custom TabBar
                 HStack {
                     TabBarButton(icon: "tram", text: "혼잡도", selection: $selection, tag: 0)
                     Spacer()
-                    TabBarButton(icon: "newspaper", text: "뉴스", selection: $selection, tag: 1)
+                    TabBarButton(icon: "newspaper", text: "할일", selection: $selection, tag: 1)
                     Spacer()
                     TabBarButton(icon: "calendar", text: "할일", selection: $selection, tag: 2)
                     Spacer()
