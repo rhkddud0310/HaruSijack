@@ -526,7 +526,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
-				DEVELOPMENT_TEAM = 449GDZ2X3Q;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_CODE_COVERAGE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				ENABLE_PREVIEWS = YES;
@@ -536,6 +536,7 @@
 				INFOPLIST_FILE = HaruSijak/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
@@ -564,7 +565,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
-				DEVELOPMENT_TEAM = 449GDZ2X3Q;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_CODE_COVERAGE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				ENABLE_PREVIEWS = YES;
@@ -574,6 +575,7 @@
 				INFOPLIST_FILE = HaruSijak/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
