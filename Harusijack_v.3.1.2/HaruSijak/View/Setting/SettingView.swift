@@ -20,13 +20,8 @@
         * 2024.06.27 by pdg : 시간 설정 칸 이랑 버전 정보랑 구분이 안감. -> 시간 설정은 버튼화 했으면 좋겠음.
  
  */
-
-
 import SwiftUI
-
 struct SettingView: View {
-    
-    
     @State var isShowSheet: Bool = false    // 시간 변경 sheet alert
     let timeList = [Int](5..<25)            // 5~24까지 리스트
     @State var selectedTime = 0             // picker뷰 선택 value
@@ -34,14 +29,9 @@ struct SettingView: View {
     @State var infoList: [Time] = []        // 조회된 시간정보 담을 리스트
     @Environment(\.dismiss) var dismiss         // 화면 이동을 위한 변수
     @State var alertType: SettingAlertType?        // 추가, 수정 alert
-    
-    
-    
     var body: some View {
-            
             //NavigationView
             VStack(content: {
-                
                 //출근 시간대 설정하기
                 HStack(content: {
                     Button(action: {
