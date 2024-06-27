@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5426A62D2C2CEC5F000D970D /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5426A62C2C2CEC5F000D970D /* TabBarButton.swift */; };
 		543337882C16C71E000809D9 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543337872C16C71E000809D9 /* CalendarView.swift */; };
 		5433378C2C16C781000809D9 /* DateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378B2C16C781000809D9 /* DateModel.swift */; };
 		5433378E2C16C8CB000809D9 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5433378D2C16C8CB000809D9 /* Task.swift */; };
@@ -113,14 +112,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5426A62B2C2CE86E000D970D /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				54F80F1C2C0B641200D83A08 /* NewsView.swift */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		543337862C16C659000809D9 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
@@ -392,7 +383,6 @@
 				AE7B76D72C202DFE0061E55D /* NewsModel.swift in Sources */,
 				FE22C5632C2D007F00267096 /* NewsKeyword.swift in Sources */,
 				FE17E7FD2C2BFF2C00ACFCF0 /* CalendarAddView.swift in Sources */,
-				5426A62D2C2CEC5F000D970D /* TabBarButton.swift in Sources */,
 				FE17E7F72C2BFE6900ACFCF0 /* CalendarListView.swift in Sources */,
 				A7CA34682C27E67E00D197B5 /* SubwayList.swift in Sources */,
 				54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */,
