@@ -75,9 +75,11 @@ struct subwayImage : View {
     @State private var isLoading = false
     
     // MARK: 화면조작 변수
-    @State var currentScale: CGFloat = 1.0
+    // 초기화면 위치 지정
+    
+    @State var currentScale: CGFloat = 0.5
     @State var previousScale: CGFloat = 1.0
-    @State var currentOffset = CGSize.zero
+    @State var currentOffset = CGSize(width: -1500, height: -800)
     @State var previousOffset = CGSize.zero
     let line23 = SubwayList().totalStation
 //    let line23 = SubwayList().testStation
@@ -96,7 +98,14 @@ struct subwayImage : View {
                 ForEach(Array(line23.enumerated()), id: \.0) { index, station in
                     Button(action: {
                         isLoading = true
+                        print("변수값 확인-----------------------")
+                        
                         print("line5 station \(station.0)")
+                        print("line5 station \(station.3)")
+                        print("line5 station \(station.4)")
+                        print("line5 station \(station.5)")
+                        
+                        print("변수값 확인-----------------------")
                         handleStationClick(stationName: station.0, stationLine: String(station.3))
                     }) {
                         Text(".\(index) \(station.0)")
@@ -133,12 +142,22 @@ struct subwayImage : View {
             .gesture(MagnificationGesture()
                 .onChanged { value in
                     let delta = value / self.previousScale
+                    print(delta)
                     self.previousScale = value
                     self.currentScale = self.currentScale * delta
                 }
                 .onEnded { value in self.previousScale = 1.0 }
+                
             )
-            .sheet(isPresented: $showAlertForStation) {
+            .sheet(isPresented: $showAlertForStation, onDismiss: {
+                // 변수 초기화
+                isLoading = false
+                stationName = ""
+                boardingPersonValue = 0
+                AlightingPersonValue = 0
+                BoardingPersondictionary = [:]
+                AlightinggPersondictionary = [:]
+             })  {
                 SheetContentView(
                     isLoading: $isLoading,
                     stationName: $stationName,
