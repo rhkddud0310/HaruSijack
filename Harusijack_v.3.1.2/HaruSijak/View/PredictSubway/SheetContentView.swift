@@ -4,13 +4,21 @@ import Charts
 struct SheetContentView: View {
     @Binding var isLoading: Bool
     @Binding var stationName: String
+    @Binding var stationLine: String
     @Binding var showingcurrentTime: String
     @Binding var boardingPersonValue: Double
     @Binding var AlightingPersonValue: Double
     @Binding var BoardingPersondictionary: [String: Double]
     @Binding var AlightinggPersondictionary: [String: Double]
+    @Binding var serverResponseBoardingPerson: String
+    @Binding var serverResponseAlightingPerson: String
+    @Binding var showingcurrentdate: String
+    @Binding var totaLlineArray: [String]
+    @State private var selectedSegment = 0
+    let segments = ["1", "2", "3"]
+    @State private var displayText = "1"
+    var pdview = PredictView03()
     
-
     var body: some View {
         VStack(content: {
             if isLoading {
@@ -25,10 +33,10 @@ struct SheetContentView: View {
                         }
                     Spacer()
                     RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.white, lineWidth: 4)
-                                .background(Color.white)
-                                .frame(width: 250, height: 100)
-                                .offset(x: 0, y: 200)
+                        .stroke(Color.white, lineWidth: 4)
+                        .background(Color.white)
+                        .frame(width: 250, height: 100)
+                        .offset(x: 0, y: 200)
                     Text("잠시만 기다려 주세요...")
                         .font(.system(size: 24, weight: .bold, design: .rounded))
                         .offset(y: 120)
@@ -38,9 +46,28 @@ struct SheetContentView: View {
                     .font(.system(size: 24))
                     .bold()
                     .padding(30)
+                Picker("Select a segment", selection: $selectedSegment) {
+                    ForEach(Array(segments.enumerated()), id: \.element) { index, segment in
+                        
+                        Text(segment + "호선")
+                            .tag(index)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                
+                .onChange(of: selectedSegment) {
+                    
+                    displayText = String(selectedSegment)
+                    print("Selected segment: \(selectedSegment)")
+                }
+                Text(displayText) // 업데이트된 텍스트를 표시
+                                .font(.system(size: 18))
+                                .padding(20)
                 
                 Text("\(showingcurrentTime)시의 예상 승차인원은 \(Int(boardingPersonValue))명 입니다. ")
                 Text("\(showingcurrentTime)시의 예상 하차인원은 \(Int(AlightingPersonValue))명 입니다")
+                Text(stationLine)
+                Text(stationName)
                 
                 ScrollView {
                     HStack {
@@ -105,3 +132,5 @@ struct SheetContentView: View {
         .presentationDragIndicator(.visible)
     }
 }
+
+

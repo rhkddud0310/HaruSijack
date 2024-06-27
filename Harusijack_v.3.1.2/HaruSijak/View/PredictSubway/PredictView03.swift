@@ -74,9 +74,11 @@ struct subwayImage : View {
     //로딩중 화면
     @State private var isLoading = false
     
-    // MARK: 화면조작 변수
-    // 초기화면 위치 지정
+    // MARK: sheetview 통신 변수 (sheetview에서 보내온 호선으로 다시 계산후에 새로운 sheetview를 최신화함)
+    @State var totaLlineArray: [String] = []
     
+    
+    // MARK: 화면조작 변수
     @State var currentScale: CGFloat = 0.5
     @State var previousScale: CGFloat = 1.0
     @State var currentOffset = CGSize(width: -1500, height: -800)
@@ -108,11 +110,11 @@ struct subwayImage : View {
                         print("변수값 확인-----------------------")
                         handleStationClick(stationName: station.0, stationLine: String(station.3))
                     }) {
-                        Text(".\(index) \(station.0)")
+                        Text("")
                             .font(.system(size: 10))
                             .bold()
                             .frame(width: 20, height: 20)
-                            .background(Color.yellow)
+                            .background(Color.clear)
                     }
                     .position(  x: (station.2 * self.currentScale),
                                 y: (station.1 * self.currentScale))
@@ -161,14 +163,36 @@ struct subwayImage : View {
                 SheetContentView(
                     isLoading: $isLoading,
                     stationName: $stationName,
+                    stationLine: $stationLine,
                     showingcurrentTime: $showingcurrentTime,
                     boardingPersonValue: $boardingPersonValue,
                     AlightingPersonValue: $AlightingPersonValue,
                     BoardingPersondictionary: $BoardingPersondictionary,
-                    AlightinggPersondictionary: $AlightinggPersondictionary
+                    AlightinggPersondictionary: $AlightinggPersondictionary,
+                    serverResponseBoardingPerson: $serverResponseBoardingPerson,
+                    serverResponseAlightingPerson:$serverResponseAlightingPerson,
+                    showingcurrentdate: $showingcurrentdate,
+                    totaLlineArray: $totaLlineArray
                 )
         }//sheet
-                
+//        @State private var showAlertForStation = false
+//        // 승차인원 JSON 받아오는 변수(승차)
+//        @State var serverResponseBoardingPerson: String = ""
+//        // 승차인원 JSON 받아오는 변수(하차)
+//        @State var serverResponseAlightingPerson: String = ""
+//        // 현재시간 열차의 승차인원 변수
+//        @State var boardingPersonValue: Double = 0.0
+//        // 현재시간 열차의 하차인원 변수
+//        @State var AlightingPersonValue: Double = 0.0
+//        // 현재 날짜 저장
+//        @State var showingcurrentdate = ""
+//        // 현재 시간 저장
+//        @State var showingcurrentTime = ""
+//        //차트 테스트
+//        // 승차인원 JSON 값을 dictionary로 변환 변수
+//        @State private var BoardingPersondictionary: [String: Double] = [:]
+//        //하차인원
+//        @State private var AlightinggPersondictionary: [String: Double] = [:]
     }// View
     
     // MARK: Functions
