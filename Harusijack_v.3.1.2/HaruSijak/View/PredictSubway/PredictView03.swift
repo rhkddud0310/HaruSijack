@@ -254,7 +254,7 @@ struct subwayImage : View {
     
     // Flask 통신을 위한 함수(승차인원)
     func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
-        let url = URL(string: "http://127.0.0.1:5000/subway")!
+        let url = URL(string: "http://54.180.247.41:5000/subway")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -280,7 +280,7 @@ struct subwayImage : View {
     // Flask 통신을 위한 함수(하차인원)
     func fetchDataFromServerAlighting(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
         print(stationName,date,time,stationLine)
-        let url = URL(string: "http://127.0.0.1:5000/subwayAlighting")!
+        let url = URL(string: "http://54.180.247.41:5000/subwayAlighting")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
