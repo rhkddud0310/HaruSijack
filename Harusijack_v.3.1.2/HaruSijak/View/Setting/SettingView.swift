@@ -29,6 +29,11 @@ struct SettingView: View {
     @State var infoList: [Time] = []        // 조회된 시간정보 담을 리스트
     @Environment(\.dismiss) var dismiss         // 화면 이동을 위한 변수
     @State var alertType: SettingAlertType?        // 추가, 수정 alert
+    @State var stationName: String
+    @State var time: Int
+    
+    
+
     var body: some View {
             //NavigationView
             VStack(content: {
@@ -54,9 +59,7 @@ struct SettingView: View {
                 
                 VStack(content: {
                     if !dbModel.queryDB().isEmpty {
-                        let result = dbModel.queryDB()[0]
-                        
-                        Text("[출발역 : \(result.station)역, 설정시간 : \(result.time)시]") //저장되어있는 설정시간 보여주기
+                        Text("[출발역 : \(stationName)역, 설정시간 : \(time)시]") //저장되어있는 설정시간 보여주기
                             .foregroundStyle(.gray)
                     }
                 })
@@ -80,15 +83,33 @@ struct SettingView: View {
             
             
             // 시간설정 sheet
+////            .sheet(isPresented: $isAlert, onDismiss: {
+//                    fetchTasksForSelectedDate()
+//                }, content: {
+//                    CalendarAddView(currentDate: currentDate)
+//                        .presentationDetents([.medium])
+//                        .presentationDragIndicator(.visible)
+//                })
             .sheet(isPresented: $isShowSheet, content: {
                 TimeSettingView(titleName: "출발역, 시간대 설정하기")
+                    .onDisappear{
+                        fetchTasksForSelectedDate()
+                    }
                     .presentationDragIndicator(.visible)
                     .presentationDetents([.medium])
             })//sheet
         
     }
+    
+    
+    /* MARK: 설정 값 reload 함수*/
+    func fetchTasksForSelectedDate(){
+        guard let result = dbModel.queryDB().first else { return }
+        stationName = result.station
+        time = result.time
+    }
 }
 
 #Preview {
-    SettingView()
+    SettingView(stationName: "가디", time: 1)
 }
