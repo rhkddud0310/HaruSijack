@@ -16,6 +16,8 @@
  
         - 2024.06.26 by pdg, zen : 중간 발표를 위한 review
             * code review
+    * 뉴스기사 안나옴.
+ 
  */
 
 import SwiftUI
@@ -58,7 +60,7 @@ struct NewsView: View {
       })//NV
       .onAppear {
           let newsVM = NewsVM()
-          newsVM.loadData(url: URL(string: "http://127.0.0.1:5000/news")!) { result in
+          newsVM.loadData(url: URL(string: "http://54.180.247.41:5000/news")!) { result in
               switch result {
               case .success(let news):DispatchQueue.main.async {
                   newsList = news

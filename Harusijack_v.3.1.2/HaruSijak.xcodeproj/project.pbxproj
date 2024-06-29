@@ -44,6 +44,7 @@
 		FE22C5632C2D007F00267096 /* NewsKeyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE22C5602C2D007F00267096 /* NewsKeyword.swift */; };
 		FE22C5642C2D007F00267096 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE22C5612C2D007F00267096 /* NewsCell.swift */; };
 		FE22C5662C2D008D00267096 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE22C5652C2D008D00267096 /* NewsView.swift */; };
+		FE2D7ADA2C2FE769006FD988 /* PredictView04.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2D7AD92C2FE769006FD988 /* PredictView04.swift */; };
 		FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE360DC42C16D79D007BA9AE /* JSONModel.swift */; };
 		FED251602C2CFDA10091D301 /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED2515F2C2CFDA10091D301 /* TabBarButton.swift */; };
 /* End PBXBuildFile section */
@@ -89,6 +90,7 @@
 		FE22C5602C2D007F00267096 /* NewsKeyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsKeyword.swift; sourceTree = "<group>"; };
 		FE22C5612C2D007F00267096 /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		FE22C5652C2D008D00267096 /* NewsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
+		FE2D7AD92C2FE769006FD988 /* PredictView04.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictView04.swift; sourceTree = "<group>"; };
 		FE360DC42C16D79D007BA9AE /* JSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONModel.swift; sourceTree = "<group>"; };
 		FED2515F2C2CFDA10091D301 /* TabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -234,6 +236,7 @@
 			children = (
 				FE17E8002C2C003000ACFCF0 /* PredictView03.swift */,
 				FE17E8022C2C006D00ACFCF0 /* SheetContentView.swift */,
+				FE2D7AD92C2FE769006FD988 /* PredictView04.swift */,
 			);
 			path = PredictSubway;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				FE22C5622C2D007F00267096 /* NewsArticleView.swift in Sources */,
 				5433378C2C16C781000809D9 /* DateModel.swift in Sources */,
 				5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */,
+				FE2D7ADA2C2FE769006FD988 /* PredictView04.swift in Sources */,
 				5464965A2C197FCB00B1FF48 /* Time.swift in Sources */,
 				543337882C16C71E000809D9 /* CalendarView.swift in Sources */,
 				546496562C18382000B1FF48 /* SettingView.swift in Sources */,
@@ -516,7 +520,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ATM2B7QCY2;
 				ENABLE_CODE_COVERAGE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				ENABLE_PREVIEWS = YES;
@@ -559,7 +563,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ATM2B7QCY2;
 				ENABLE_CODE_COVERAGE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				ENABLE_PREVIEWS = YES;
