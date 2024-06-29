@@ -27,7 +27,7 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 TabView(selection: $selection) {
-                    PredictView03()
+                    PredictView04()
                         .tag(0)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     NewsView()
