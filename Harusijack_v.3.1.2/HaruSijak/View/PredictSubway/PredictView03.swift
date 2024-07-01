@@ -246,7 +246,7 @@ struct subwayImage : View {
                     }
                     self.BoardingPersondictionary.append(tempBoardingPersondictionary)
                     print("----------------------")
-                    print(BoardingPersondictionary)
+                    print(BoardingPersondictionary[0])
                     print("----------------------")
                 } else {
                     print("인덱스 범위 오류")
@@ -297,7 +297,7 @@ struct subwayImage : View {
         // Date Formatter for Time
         let dateFormatterTime = DateFormatter()
         dateFormatterTime.dateFormat = "HH"
-        let timeString = String(Int(dateFormatterTime.string(from: currentDate))!+10)
+        let timeString = String(Int(dateFormatterTime.string(from: currentDate))!)
         
         return (dateString, timeString)
     }
@@ -305,7 +305,8 @@ struct subwayImage : View {
     // Flask 통신을 위한 함수(승차인원)
     func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
         // 127.0.0.1
-        let url = URL(string: "http://127.0.0.1:5000/subway")!
+        let url = URL(string: "http://127.0.0.1:8000/subway/subwayRide")!
+//        let url = URL(string: "http://127.0.0.1:5000/subwayRide")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -323,6 +324,8 @@ struct subwayImage : View {
             }
             if let responseString = String(data: data, encoding: .utf8) {
                 completion(responseString)
+                print("승차인원 ::******************")
+                print(responseString)
             }
         }
         task.resume()
@@ -332,7 +335,8 @@ struct subwayImage : View {
     func fetchDataFromServerAlighting(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
         print(stationName,date,time,stationLine)
         //127.0.0.1 54.180.247.41:
-        let url = URL(string: "http://127.0.0.1:5000/subwayAlighting")!
+        let url = URL(string: "http://127.0.0.1:8000/subway/subwayAlighting")!
+//        let url = URL(string: "http://127.0.0.1:5000/subwayAlighting")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -351,6 +355,8 @@ struct subwayImage : View {
             }
             if let responseString = String(data: data, encoding: .utf8) {
                 completion(responseString)
+                print("하차인원 ::******************")
+                print(responseString)
             }
         }
         task.resume()
