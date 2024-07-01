@@ -49,7 +49,7 @@ app.config['JSON_AS_ASCII'] = False
 
 # CORS(app)  # 모든 출처에서 접근할 수 있도록 설정
 ## 해당일의 승차인원 정보
-@app.route("/subway", methods=['POST'])
+@app.route("/subwayRide", methods=['POST'])
 def subway():
     
     data = request.get_json() # JSON 데이터 받기

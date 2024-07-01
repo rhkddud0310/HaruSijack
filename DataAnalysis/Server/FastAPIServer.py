@@ -9,8 +9,12 @@ Detail : port number 8000
 Updates:
     * 2024.06.29 by pdg :
         - server 개설, 뉴스크롤링 서버 와 연동 작업
-        - 기존의 flask server 를 라우트로 나누는 작업. 
+        - 기존의 flask server 를 라우트로 나누는 작업.
+
+    * 2024.07.01 by J.park :
+        - subway 라우트 구성         
 """
+
 def CrawlInstalls():
     import subprocess,sys
     # pip가 없으면 pip를 설치한다.
@@ -119,19 +123,36 @@ ServerInstalls()
 
 from fastapi import FastAPI
 import pymysql
-from items import router as items_router
 from Module.Functions import Service
 from chatbot import chatbot
 from news_api import news
 from predict_api import predict
+import sys
+import os
 
+# 현재 스크립트의 디렉토리
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# DataAnalysis 디렉토리
+data_analysis_dir = os.path.dirname(current_dir)
+
+# 시스템 경로에 추가
+# sys.path.append(current_dir)
+sys.path.append(data_analysis_dir)
+
+from routers import subway
 
 app = FastAPI()
 app.include_router(chatbot,prefix='/chatbot', tags=['chatbot'])
 app.include_router(news,prefix='/news', tags=['news'])
-app.include_router(predict,prefix='/predict', tags=['predict'])
+# subway의 router 사용 
+app.include_router(subway.router, prefix="/subway", tags=["subway"])
 
 
+#서버실행 test
+@app.get("/")
+async def root():
+    return {"message": "서버가 실행 중입니다!"}
 
 if __name__ == "__main__":
     import uvicorn

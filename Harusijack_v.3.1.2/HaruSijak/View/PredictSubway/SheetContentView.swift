@@ -11,7 +11,7 @@ struct SheetContentView: View {
     @Binding var BoardingPersondictionary: [[String: Double]]
     @Binding var AlightinggPersondictionary: [[String: Double]]
     @Binding var serverResponseBoardingPerson: [String]
-    @Binding var serverResponseAlightingPerson: [String]  
+    @Binding var serverResponseAlightingPerson: [String]
     @State private var selectedSegment = 0
     var body: some View {
         VStack(content: {
