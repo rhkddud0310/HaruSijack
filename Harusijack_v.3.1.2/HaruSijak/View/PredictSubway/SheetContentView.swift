@@ -4,21 +4,15 @@ import Charts
 struct SheetContentView: View {
     @Binding var isLoading: Bool
     @Binding var stationName: String
-    @Binding var stationLine: String
+    @Binding var stationLine: [String]
     @Binding var showingcurrentTime: String
-    @Binding var boardingPersonValue: Double
-    @Binding var AlightingPersonValue: Double
-    @Binding var BoardingPersondictionary: [String: Double]
-    @Binding var AlightinggPersondictionary: [String: Double]
-    @Binding var serverResponseBoardingPerson: String
-    @Binding var serverResponseAlightingPerson: String
-    @Binding var showingcurrentdate: String
-    @Binding var totaLlineArray: [String]
+    @Binding var boardingPersonValue: [Double]
+    @Binding var AlightingPersonValue: [Double]
+    @Binding var BoardingPersondictionary: [[String: Double]]
+    @Binding var AlightinggPersondictionary: [[String: Double]]
+    @Binding var serverResponseBoardingPerson: [String]
+    @Binding var serverResponseAlightingPerson: [String]  
     @State private var selectedSegment = 0
-    let segments = ["1", "2", "3"]
-    @State private var displayText = "1"
-    var pdview = PredictView03()
-    
     var body: some View {
         VStack(content: {
             if isLoading {
@@ -46,28 +40,17 @@ struct SheetContentView: View {
                     .font(.system(size: 24))
                     .bold()
                     .padding(30)
-                Picker("Select a segment", selection: $selectedSegment) {
-                    ForEach(Array(segments.enumerated()), id: \.element) { index, segment in
-                        
-                        Text(segment + "호선")
+                Picker("Select a line", selection: $selectedSegment) {
+                    ForEach(0..<stationLine.count, id: \.self) { index in
+                        Text(stationLine[index] + "호선")
                             .tag(index)
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle())
+                .padding()
                 
-                .onChange(of: selectedSegment) {
-                    
-                    displayText = String(selectedSegment)
-                    print("Selected segment: \(selectedSegment)")
-                }
-                Text(displayText) // 업데이트된 텍스트를 표시
-                                .font(.system(size: 18))
-                                .padding(20)
-                
-                Text("\(showingcurrentTime)시의 예상 승차인원은 \(Int(boardingPersonValue))명 입니다. ")
-                Text("\(showingcurrentTime)시의 예상 하차인원은 \(Int(AlightingPersonValue))명 입니다")
-                Text(stationLine)
-                Text(stationName)
+                Text("\(showingcurrentTime)시의 예상 승차인원은 \(Int(boardingPersonValue[selectedSegment]))명 입니다. ")
+                Text("\(showingcurrentTime)시의 예상 하차인원은 \(Int(AlightingPersonValue[selectedSegment]))명 입니다")
                 
                 ScrollView {
                     HStack {
@@ -85,8 +68,8 @@ struct SheetContentView: View {
                     
                     Chart {
                         // 승차인원 차트
-                        ForEach(Array(BoardingPersondictionary.keys.sorted()), id: \.self) { key in
-                            if let value = BoardingPersondictionary[key] {
+                        ForEach(Array(BoardingPersondictionary[selectedSegment].keys.sorted()), id: \.self) { key in
+                            if let value = BoardingPersondictionary[selectedSegment][key] {
                                 BarMark(
                                     x: .value("인원수", Int(value)),
                                     y: .value("시간", key),
@@ -102,8 +85,8 @@ struct SheetContentView: View {
                         }
                         
                         // 하차인원 차트
-                        ForEach(Array(AlightinggPersondictionary.keys.sorted()), id: \.self) { key in
-                            if let value = AlightinggPersondictionary[key] {
+                        ForEach(Array(AlightinggPersondictionary[selectedSegment].keys.sorted()), id: \.self) { key in
+                            if let value = AlightinggPersondictionary[selectedSegment][key] {
                                 BarMark(
                                     x: .value("인원수", Int(value)),
                                     y: .value("시간", key),
