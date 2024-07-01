@@ -1,82 +1,49 @@
 // MARK: -- Description
 /*
-    Description: 각 지하철 역별 승,하차인원 에측 페이지
-    Date : 2024.6.11
-    Author : Shin  + pdg + pjh
-    Dtail :
-    Updates :
-         - 2024.06.11 j.park :
-            * 1. 버튼 구현
-            * 2. flask 서버에서 하차인원 Json통신
-         - 2024.06.12 j.park :
-            * 1. 현재시간, 특정역 기준 하차인원 추가
-         - 2024.06.13 snr : 
-            출근시간대 설정 sheet 연결
-         - 2024.06.13 j.park : 
-            1.승차인원 추가
-            2. actionsheet에서 sheet로 변경
-         - 2024.06.14 j.park : 
-            1.특정역에 대한 전체 승하차인원 그래프 구현
-         - 2024.06.17 j.park : 
-            1. 예측페이지 진입전 lotti를 활용한 대기화면 구현
-         - 2024.06.23 jdpark : 
-            1. 지하철 노선 정보 중 5호선 추가 struct 파일로 만들고 거기서 불러오게 함.
-         - 2024.06.24 by j, d park :
-            * 1. sheet(예측페이지) 분리
-              2.
+Description:  version 04 는 내가 지환씨 코드를 이해하려고 이것저것 건드리는 테스트 코드임.
+Date : 2024.6.29
+Author : pdg
+Dtail :
+Updates :
+    - 2024.06.29 by pdg :
+        * abuttom 색 지움
+ * 종로 5가역 은 없음
+ * zoom 하고 scroll 이 이상함.
+ * 이미지가 갑자기 사라져 버림. 
  */
 
-//
-
-
 import SwiftUI
-
-struct PredictView03: View {
-    
-//    let imgWidth: CGFloat = 6189
-//    let imgHeight: CGFloat = 4465
+struct PredictView04: View {
     var body: some View {
         VStack(content: {
             ZStack(content: {
                 GeometryReader { geometry in
-                    subwayImage()
-                } // GR
+                    subwayImage01()
+                }// GR
             })//ZS
-        }) // VS
+        })//VS
     }
 }
 
-// MARK: 지하철 이미지
-struct subwayImage : View {
-    
-    // MARK: Server request 변수
+
+struct subwayImage01 : View {
+
+    // MARK: --- Server request 변수
     @State var stationName: String = ""
     @State var stationLine: String = "5"
-    
     @State private var showAlertForStation = false
-    // 승차인원 JSON 받아오는 변수(승차)
     @State var serverResponseBoardingPerson: String = ""
-    // 승차인원 JSON 받아오는 변수(하차)
     @State var serverResponseAlightingPerson: String = ""
-    // 현재시간 열차의 승차인원 변수
     @State var boardingPersonValue: Double = 0.0
-    // 현재시간 열차의 하차인원 변수
     @State var AlightingPersonValue: Double = 0.0
-    // 현재 날짜 저장
     @State var showingcurrentdate = ""
-    // 현재 시간 저장
     @State var showingcurrentTime = ""
-    //차트 테스트
-    // 승차인원 JSON 값을 dictionary로 변환 변수
     @State private var BoardingPersondictionary: [String: Double] = [:]
-    //하차인원
     @State private var AlightinggPersondictionary: [String: Double] = [:]
-    //로딩중 화면
     @State private var isLoading = false
     
-    // MARK: 화면조작 변수
+    // MARK: ---- 화면조작 변수
     // 초기화면 위치 지정
-    
     @State var currentScale: CGFloat = 0.5
     @State var previousScale: CGFloat = 1.0
     @State var currentOffset = CGSize(width: -1500, height: -800)
@@ -88,31 +55,33 @@ struct subwayImage : View {
     
     
     
+    // MARK: Image Body
     var body: some View {
         Image("subwayMap")
             .resizable()
+            // MARK: Image size
             .frame(
                 width: imgWidth * self.currentScale,
                 height: imgHeight * self.currentScale)
+        
             .overlay( GeometryReader { geometry in
                 ForEach(Array(line23.enumerated()), id: \.0) { index, station in
+                    // MARK: Image Buttom
                     Button(action: {
                         isLoading = true
                         print("변수값 확인-----------------------")
-                        
                         print("line5 station \(station.0)")
                         print("line5 station \(station.3)")
                         print("line5 station \(station.4)")
                         print("line5 station \(station.5)")
-                        
                         print("변수값 확인-----------------------")
                         handleStationClick(stationName: station.0, stationLine: String(station.3))
                     }) {
-                        Text(".\(index) \(station.0)")
+                        Text("\(station.0)")
                             .font(.system(size: 10))
                             .bold()
-                            .frame(width: 20, height: 20)
-                            .background(Color.yellow)
+                            .frame(width: 60, height: 20)
+//                            .background(Color.yellow)
                     }
                     .position(  x: (station.2 * self.currentScale),
                                 y: (station.1 * self.currentScale))
@@ -168,40 +137,31 @@ struct subwayImage : View {
                     AlightinggPersondictionary: $AlightinggPersondictionary
                 )
         }//sheet
-                
     }// View
     
     // MARK: Functions
     func handleStationClick(stationName: String, stationLine: String) {
-        
-        
         self.stationName = stationName
         self.stationLine = stationLine
-        
         let (dateString, timeString) = getCurrentDateTime()
         showingcurrentTime =  timeString
         showingcurrentdate =  dateString
-        
         //승차인원
         fetchDataFromServerBoarding(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
             self.serverResponseBoardingPerson = responseString
             self.boardingPersonValue = getValueForCurrentTime(jsonString: responseString, currentTime: timeString)
             // 받아온 JSON데이터를 dictionary로 변경
             if let dictionary = convertJSONStringToDictionary(responseString) {
-                
                 //현재시간에서 범위에 있는 값들을 임시저장하기위한 딕셔너리
                 var tempBoardingPersondictionary: [String: Double] = [:]
                 // 정렬해서 배열로 가져오기(index번호로 데이터 가져오기 위해서)
                 let sortedKeys = dictionary.keys.sorted()
-                
                 //lowerBound: 현재시시간에서 -7값이 0보다 작으면 0으로 고정(-7한 이유:배차시작이5기 때문)
                 //upperBound: 키값에 인덱스를 초과한 값 방지
                 let lowerBound = max(0, Int(showingcurrentTime)! - 7)
                 let upperBound = min(sortedKeys.count - 1, Int(showingcurrentTime)! - 3)
-                //
                 if lowerBound <= upperBound && sortedKeys.indices.contains(upperBound) {
                     for index in lowerBound...upperBound {
-                        
                         let key = sortedKeys[index]
                         if let value = dictionary[key] {
                             tempBoardingPersondictionary[key] = value
@@ -210,20 +170,17 @@ struct subwayImage : View {
                 }
                 //전역변수에 저장
                 self.BoardingPersondictionary = tempBoardingPersondictionary
-//                
             } else {
                 print("인덱스 범위 오류")
             }
             showAlertForStation = true
         } // fetchDataFromServerBoarding
-        
         //하차인원
         fetchDataFromServerAlighting(stationName: stationName, date: dateString, time: timeString, stationLine: stationLine) { responseString in
             self.serverResponseAlightingPerson = responseString
             self.AlightingPersonValue = getValueForCurrentTime(jsonString: responseString, currentTime: timeString)
             //            let alightingTime=showingcurrentTime
             if let dictionary = convertJSONStringToDictionary(responseString) {
-                
                 //현재시간에서 범위에 있는 값들을 임시저장하기위한 딕셔너리
                 var tempAlightingPersondictionary: [String: Double] = [:]
                 // 정렬해서 배열로 가져오기(index번호로 데이터 가져오기 위해서)
@@ -233,10 +190,8 @@ struct subwayImage : View {
                 //upperBound: 키값에 인덱스를 초과한 값 방지
                 let lowerBound = max(0, Int(showingcurrentTime)! - 7)
                 let upperBound = min(sortedKeys.count - 1, Int(showingcurrentTime)! - 3)
-                
                 if lowerBound <= upperBound && sortedKeys.indices.contains(upperBound) {
                     for index in lowerBound...upperBound {
-                        
                         let key = sortedKeys[index]
                         if let value = dictionary[key] {
                             tempAlightingPersondictionary[key] = value
@@ -245,32 +200,25 @@ struct subwayImage : View {
                 }
                 //전역변수에 저장
                 self.AlightinggPersondictionary = tempAlightingPersondictionary
-                
             } else {
                 print("인덱스 범위에 해당하는 요소가 없습니다.")
             }
             showAlertForStation = true
         } //fetchDataFromServerAlighting
-        
     } //handleStationClick
-
     // 현재시간 가져오는 함수
     func getCurrentDateTime() -> (String, String) {
         let currentDate = Date()
-        
         // Date Formatter for Date
         let dateFormatterDate = DateFormatter()
         dateFormatterDate.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatterDate.string(from: currentDate)
-        
         // Date Formatter for Time
         let dateFormatterTime = DateFormatter()
         dateFormatterTime.dateFormat = "HH"
         let timeString = String(Int(dateFormatterTime.string(from: currentDate))!)
-        
         return (dateString, timeString)
     }
-    
     // Flask 통신을 위한 함수(승차인원)
     func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
         let url = URL(string: "http://54.180.247.41:5000/subway")!
@@ -354,14 +302,8 @@ struct subwayImage : View {
             return nil
         }
     }
-
 }
-
-
-
 // MARK: Preview
-
-
 #Preview {
-    PredictView03()
+    PredictView04()
 }
