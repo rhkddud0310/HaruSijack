@@ -31,6 +31,7 @@ server_dir = os.path.dirname(current_dir)
 # DataAnalysis 디렉토리 (parent_dir로 사용)
 parent_dir = os.path.dirname(server_dir)
 
+
 # 시스템 경로에 추가
 sys.path.append(parent_dir)
 
@@ -94,7 +95,8 @@ async def predict_subway(request: SubwayRequest):
 
         result = pre.tolist()[0]
         response = {column: value for column, value in zip(target_column, result)}
-        return  JSONResponse(content=response)#SubwayResponse(시인원=result)
+        
+        return  response#SubwayResponse(시인원=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -150,6 +152,6 @@ async def predict_subway_alighting(request: SubwayRequest):
         result = pre.tolist()
         print("예측결과: ", result)
         response = {column: value for column, value in zip(target_column, result[0])}
-        return JSONResponse(content=response)
+        return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
