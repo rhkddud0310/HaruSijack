@@ -123,12 +123,9 @@ ServerInstalls()
 
 from fastapi import FastAPI
 import pymysql
-from Module.Functions import Service
-from chatbot import chatbot
-from news_api import news
-from predict_api import predict
 import sys
 import os
+
 
 # 현재 스크립트의 디렉토리
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -136,18 +133,24 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 # DataAnalysis 디렉토리
 data_analysis_dir = os.path.dirname(current_dir)
 
-# 시스템 경로에 추가
-# sys.path.append(current_dir)
-sys.path.append(data_analysis_dir)
+# HaruSijack 디렉토리 (프로젝트 루트)
+project_root = os.path.dirname(data_analysis_dir)
 
+
+# 시스템 경로에 추가
+sys.path.append(data_analysis_dir)
+# sys.path.append(project_root)
 from routers import subway
+from routers import chatbot
+# from routers import news
+# from DataAnalysis.Module.Functions import Service
 
 app = FastAPI()
-app.include_router(chatbot,prefix='/chatbot', tags=['chatbot'])
-app.include_router(news,prefix='/news', tags=['news'])
-# subway의 router 사용 
-app.include_router(subway.router, prefix="/subway", tags=["subway"])
 
+# router 사용 
+app.include_router(subway.router, prefix="/subway", tags=["subway"])
+# app.include_router(news.router, prefix="/news", tags=["news"])
+app.include_router(chatbot.router, prefix="/chat-kakao", tags=["chat-kakao"])
 
 #서버실행 test
 @app.get("/")
