@@ -143,7 +143,7 @@ sys.path.append(data_analysis_dir)
 from routers import subway
 from routers import chatbot
 # from routers import news
-# from DataAnalysis.Module.Functions import Service
+
 
 app = FastAPI()
 

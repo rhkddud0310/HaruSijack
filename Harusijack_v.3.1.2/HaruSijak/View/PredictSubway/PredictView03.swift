@@ -138,7 +138,7 @@ struct subwayImage : View {
                 .scaleEffect(scaleState)
                 .gesture(DragGesture()
                     .onChanged { value in
-                                let dragSpeed: CGFloat = 0.1
+                        let dragSpeed: CGFloat = 0.05
                                 let newOffsetX = self.currentOffset.width + value.translation.width / self.currentScale * dragSpeed
                                 let newOffsetY = self.currentOffset.height + value.translation.height / self.currentScale * dragSpeed
                                 
