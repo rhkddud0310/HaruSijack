@@ -95,15 +95,7 @@ def ServerInstalls():
         print("Install pip for python3")
         subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
     finally:import tweepy 
-    
-    ##  items 설치
-    try:import items
-    except ModuleNotFoundError:
-        print("Install pip for items")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'items'])
-        
-    finally:import tweepy 
-    
+
     ##  fasapi 설치
     try:import fastapi
     except ModuleNotFoundError:
@@ -117,7 +109,14 @@ def ServerInstalls():
     except ModuleNotFoundError:
         print("Install pymysql")
         subprocess.call([sys.executable, "-m", "pip", "install", 'pymysql'])
-    finally:import tweepy 
+    finally:import pymysql 
+    
+    # uvicorn 없으면 uvicorn 설치
+    try:import uvicorn        
+    except ModuleNotFoundError:
+        print("Install uvicorn")
+        subprocess.call([sys.executable, "-m", "pip", "install", 'uvicorn'])
+    finally:import uvicorn 
 ServerInstalls()
 
 
