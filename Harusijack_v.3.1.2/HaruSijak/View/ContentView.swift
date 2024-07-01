@@ -27,7 +27,7 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 TabView(selection: $selection) {
-                    PredictView03()
+                    PredictView04()
                         .tag(0)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     NewsView()
@@ -51,13 +51,16 @@ struct ContentView: View {
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // 페이지 인디케이터 숨기기
                 // Custom TabBar
                 HStack {
+                    
                     TabBarButton(icon: "tram", text: "혼잡도", selection: $selection, tag: 0)
-                    Spacer()
+                        .padding(.leading)
+                    Spacer(minLength: 10)
                     TabBarButton(icon: "newspaper", text: "뉴스", selection: $selection, tag: 1)
                     Spacer()
                     TabBarButton(icon: "calendar", text: "할일", selection: $selection, tag: 2)
                     Spacer()
                     TabBarButton(icon: "gearshape", text: "설정", selection: $selection, tag: 3)
+                        .padding(.trailing)
                 }
                 .padding()
             }
