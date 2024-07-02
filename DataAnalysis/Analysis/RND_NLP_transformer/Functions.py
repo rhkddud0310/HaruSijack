@@ -70,7 +70,10 @@ class Service:
     
     def __init__(self) -> None:
         pass
-    
+    def imd(image_address):
+        print(f"""
+            <img src = "{image_address}" width="400" height="300"/><br>
+            """)
 #### 기본 Setting 함수
     def colored_text(text, color='default', bold=False):
         '''
