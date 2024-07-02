@@ -21,6 +21,7 @@
 		5464966A2C1A98D900B1FF48 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546496692C1A98D900B1FF48 /* Notification.swift */; };
 		5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */; };
 		5471ADBB2C0EDACD00D24E62 /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = 5471ADBA2C0EDACD00D24E62 /* Zoomable */; };
+		548934FF2C338CC300EEE89A /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548934FE2C338CC300EEE89A /* ChatView.swift */; };
 		549045702C20387C00A9F342 /* train1.json in Resources */ = {isa = PBXBuildFile; fileRef = 5490456F2C20387C00A9F342 /* train1.json */; };
 		54F80F062C0AF4EE00D83A08 /* HaruSijakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */; };
 		54F80F082C0AF4EE00D83A08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F80F072C0AF4EE00D83A08 /* ContentView.swift */; };
@@ -66,6 +67,7 @@
 		546496692C1A98D900B1FF48 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		5464966B2C1AC32600B1FF48 /* HaruSijak.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HaruSijak.entitlements; sourceTree = "<group>"; };
 		5471ADB72C0D7A1B00D24E62 /* C_DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = C_DatePicker.swift; sourceTree = "<group>"; };
+		548934FE2C338CC300EEE89A /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		5490456F2C20387C00A9F342 /* train1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = train1.json; sourceTree = "<group>"; };
 		54F80F022C0AF4EE00D83A08 /* HaruSijak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HaruSijak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F80F052C0AF4EE00D83A08 /* HaruSijakApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaruSijakApp.swift; sourceTree = "<group>"; };
@@ -146,6 +148,14 @@
 			path = Component;
 			sourceTree = "<group>";
 		};
+		548934FD2C338CB800EEE89A /* Bot */ = {
+			isa = PBXGroup;
+			children = (
+				548934FE2C338CC300EEE89A /* ChatView.swift */,
+			);
+			path = Bot;
+			sourceTree = "<group>";
+		};
 		54F80EF92C0AF4EE00D83A08 = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +206,7 @@
 		54F80F132C0AF56900D83A08 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				548934FD2C338CB800EEE89A /* Bot */,
 				FE22C55E2C2D005E00267096 /* News */,
 				FED2515F2C2CFDA10091D301 /* TabBarButton.swift */,
 				A773B5EC2C1C9FC60071D7FF /* Splash */,
@@ -373,6 +384,7 @@
 				546496562C18382000B1FF48 /* SettingView.swift in Sources */,
 				5433378E2C16C8CB000809D9 /* Task.swift in Sources */,
 				5464965C2C19813400B1FF48 /* TimeSettingDB.swift in Sources */,
+				548934FF2C338CC300EEE89A /* ChatView.swift in Sources */,
 				AE7B76D72C202DFE0061E55D /* NewsModel.swift in Sources */,
 				FE22C5632C2D007F00267096 /* NewsKeyword.swift in Sources */,
 				FE17E7FD2C2BFF2C00ACFCF0 /* CalendarAddView.swift in Sources */,
