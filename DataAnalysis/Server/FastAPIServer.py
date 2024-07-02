@@ -94,15 +94,14 @@ def ServerInstalls():
     except ImportError:
         print("Install pip for python3")
         subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
-    finally:import tweepy 
+    finally:import pip 
 
     ##  fasapi 설치
-    try:import fastapi
+    try:from fastapi import FastAPI
     except ModuleNotFoundError:
         print("Install pip for fastapi")
-
         subprocess.call([sys.executable, "-m", "pip", "install", 'fastapi'])
-    finally:import tweepy 
+    finally:from fastapi import FastAPI
     
     # pymysql 없으면 pymysql 설치
     try:import pymysql        
