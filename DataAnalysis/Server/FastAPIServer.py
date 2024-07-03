@@ -15,108 +15,108 @@ Updates:
         - subway 라우트 구성         
 """
 
-def CrawlInstalls():
-    import subprocess,sys
-    # pip가 없으면 pip를 설치한다.
-    try:import pip
-    except ImportError:
-        print("Install pip for python3")
-        subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
-    try:import selenium        
-    except ModuleNotFoundError:
-        print("Install Selenium in python3")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'selenium'])
-    finally:import selenium 
+# def CrawlInstalls():
+#     import subprocess,sys
+#     # pip가 없으면 pip를 설치한다.
+#     try:import pip
+#     except ImportError:
+#         print("Install pip for python3")
+#         subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
+#     try:import selenium        
+#     except ModuleNotFoundError:
+#         print("Install Selenium in python3")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'selenium'])
+#     finally:import selenium 
 
-    try:import webdriver_manager
-    except ModuleNotFoundError: 
-        print("Install webdriver_manager")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'webdriver_manager'])
-    finally:import webdriver_manager
-# CrawlInstalls()
+#     try:import webdriver_manager
+#     except ModuleNotFoundError: 
+#         print("Install webdriver_manager")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'webdriver_manager'])
+#     finally:import webdriver_manager
+# # CrawlInstalls()
 
-def NLPInstalls():
-    import subprocess,sys
+# def NLPInstalls():
+#     import subprocess,sys
     
-    # pip가 없으면 pip를 설치
-    try:import pip
-    except ImportError:
-        print("Install pip for python3")
-        subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
+#     # pip가 없으면 pip를 설치
+#     try:import pip
+#     except ImportError:
+#         print("Install pip for python3")
+#         subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
     
-    # tweepy 없으면 tweepy 설치
-    try:import tweepy        
-    except ModuleNotFoundError:
-        print("Install tweepy")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'tweepy==3.10.0'])
-    finally:import tweepy 
+#     # tweepy 없으면 tweepy 설치
+#     try:import tweepy        
+#     except ModuleNotFoundError:
+#         print("Install tweepy")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'tweepy==3.10.0'])
+#     finally:import tweepy 
     
-    # konlpy 없으면 konlpy 설치
-    try:import konlpy
-    except ModuleNotFoundError: 
-        print("Install konlpy")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'konlpy'])
-    finally:import konlpy
+#     # konlpy 없으면 konlpy 설치
+#     try:import konlpy
+#     except ModuleNotFoundError: 
+#         print("Install konlpy")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'konlpy'])
+#     finally:import konlpy
     
-    # eunjeon 없으면 eunjeon 설치
-    try:import eunjeon
-    except ModuleNotFoundError: 
-        print("Install eunjeon : eunjeon")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'eunjeon'])
-    finally:import konlpy
+#     # eunjeon 없으면 eunjeon 설치
+#     try:import eunjeon
+#     except ModuleNotFoundError: 
+#         print("Install eunjeon : eunjeon")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'eunjeon'])
+#     finally:import konlpy
     
-    # datasets 없으면 datasets를 설치
-    try:import datasets
-    except ModuleNotFoundError: 
-        print("Install eunjeon : datasets")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'datasets'])
-    finally:import datasets
+#     # datasets 없으면 datasets를 설치
+#     try:import datasets
+#     except ModuleNotFoundError: 
+#         print("Install eunjeon : datasets")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'datasets'])
+#     finally:import datasets
     
-    # pytorch 없으면 pytorch 설치
-    try:import torch
-    except ModuleNotFoundError: 
-        print("Install eunjeon : pytorch")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'pytorch'])
-    finally:import torch
+#     # pytorch 없으면 pytorch 설치
+#     try:import torch
+#     except ModuleNotFoundError: 
+#         print("Install eunjeon : pytorch")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'pytorch'])
+#     finally:import torch
     
-    # transformers 없으면 transformers 설치
-    try:import transformers
-    except ModuleNotFoundError: 
-        print("Install eunjeon : transformers")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'transformers'])
-    finally:import transformers
-# NLPInstalls()
+#     # transformers 없으면 transformers 설치
+#     try:import transformers
+#     except ModuleNotFoundError: 
+#         print("Install eunjeon : transformers")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'transformers'])
+#     finally:import transformers
+# # NLPInstalls()
 
 
-def ServerInstalls():
-    import subprocess,sys
-    try:import pip
-    except ImportError:
-        print("Install pip for python3")
-        subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
-    finally:import pip 
+# def ServerInstalls():
+#     import subprocess,sys
+#     try:import pip
+#     except ImportError:
+#         print("Install pip for python3")
+#         subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
+#     finally:import pip 
 
-    ##  fasapi 설치
-    try:from fastapi import FastAPI
-    except ModuleNotFoundError:
-        print("Install pip for fastapi")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'fastapi'])
-    finally:from fastapi import FastAPI
+#     ##  fasapi 설치
+#     try:from fastapi import FastAPI
+#     except ModuleNotFoundError:
+#         print("Install pip for fastapi")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'fastapi'])
+#     finally:from fastapi import FastAPI
     
-    # pymysql 없으면 pymysql 설치
-    try:import pymysql        
-    except ModuleNotFoundError:
-        print("Install pymysql")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'pymysql'])
-    finally:import pymysql 
+#     # pymysql 없으면 pymysql 설치
+#     try:import pymysql        
+#     except ModuleNotFoundError:
+#         print("Install pymysql")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'pymysql'])
+#     finally:import pymysql 
     
-    # uvicorn 없으면 uvicorn 설치
-    try:import uvicorn        
-    except ModuleNotFoundError:
-        print("Install uvicorn")
-        subprocess.call([sys.executable, "-m", "pip", "install", 'uvicorn'])
-    finally:import uvicorn 
-ServerInstalls()
+#     # uvicorn 없으면 uvicorn 설치
+#     try:import uvicorn        
+#     except ModuleNotFoundError:
+#         print("Install uvicorn")
+#         subprocess.call([sys.executable, "-m", "pip", "install", 'uvicorn'])
+#     finally:import uvicorn 
+# # ServerInstalls()
 
 
 from fastapi import FastAPI
@@ -139,7 +139,7 @@ project_root = os.path.dirname(data_analysis_dir)
 sys.path.append(data_analysis_dir)
 # sys.path.append(project_root)
 from routers import subway
-from routers import chatbot
+# from routers import chatbot
 # from routers import news
 
 
@@ -148,7 +148,7 @@ app = FastAPI()
 # router 사용 
 app.include_router(subway.router, prefix="/subway", tags=["subway"])
 # app.include_router(news.router, prefix="/news", tags=["news"])
-app.include_router(chatbot.router, prefix="/chat-kakao", tags=["chat-kakao"])
+# app.include_router(chatbot.router, prefix="/chat-kakao", tags=["chat-kakao"])
 
 #서버실행 test
 @app.get("/")
