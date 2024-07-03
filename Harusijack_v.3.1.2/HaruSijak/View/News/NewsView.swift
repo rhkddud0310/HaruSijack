@@ -29,7 +29,7 @@ struct NewsView: View {
   
   var body: some View {
       
-      NavigationView(content: {
+      
           ScrollView(content: {
               VStack(alignment:.leading,content: {
                   ForEach(newsList, id: \.self) { news in
@@ -55,9 +55,7 @@ struct NewsView: View {
                   }//FE
               })//VS
           })//SV
-          .navigationTitle("오늘의 뉴스")
-          .navigationBarTitleDisplayMode(/*@START_MENU_TOKEN@*/.automatic/*@END_MENU_TOKEN@*/)
-      })//NV
+      
       .onAppear {
           let newsVM = NewsVM()
           newsVM.loadData(url: URL(string: "http://54.180.247.41:5000/news")!) { result in
