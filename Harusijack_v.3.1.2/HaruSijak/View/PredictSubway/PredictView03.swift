@@ -23,7 +23,12 @@
             1. 지하철 노선 정보 중 5호선 추가 struct 파일로 만들고 거기서 불러오게 함.
          - 2024.06.24 by j, d park :
             * 1. sheet(예측페이지) 분리
-              2.
+         - 2024.07.01 by J.Park :
+            * 1. 지하철 환승역 구현완료
+              2. 지하철 초기화면 위치,zoom scale 지정(이미지 좌측상단 -> 중앙)
+         - 2024.07.01 by J.Park :
+            * 1. Zoom,Drag시 기준 좌표 변경되는 오류 수정
+ 
  */
 
 //
@@ -72,10 +77,6 @@ struct subwayImage : View {
 
 
 
-
-    
-//    @State private var BoardingPersondictionary: [[String: Double]] = []
-//    @State private var AlightinggPersondictionary: [[String: Double]] = []
     
     //
     //로딩중 화면
@@ -93,15 +94,6 @@ struct subwayImage : View {
     //드레그 우선순위 주기
     @GestureState private var dragState = CGSize.zero
     @GestureState private var scaleState: CGFloat = 1.0
-    
-//    @State private var screenW: CGFloat = 0.0
-//    @State private var scale: CGFloat = 1.0
-//    @State private var lastScale: CGFloat = 1.0
-//    @State private var offset: CGSize = .zero
-//    @State private var lastOffset: CGSize = .zero
-    
-
-
     
     
     @State var currentOffset = CGSize(width: -1500, height: -800)
@@ -228,21 +220,6 @@ struct subwayImage : View {
 //        }// GeometryReader
     }// View
     // MARK: Functions
-    //드레그 스피드 조정 함수
-    func limitSpeed(_ speed: CGFloat, min: CGFloat, max: CGFloat) -> CGFloat {
-        return Swift.max(min, Swift.min(speed, max))
-    }
-//    private func handleScaleChange(zoom: CGFloat) -> CGFloat {
-//        let newScale = previousScale * zoom
-//        return min(max(newScale, minScale), maxScale)
-//    }
-//
-//    private func handleOffsetChange(translation: CGSize) -> CGSize {
-//        let newOffsetX = currentOffset.width + translation.width / currentScale
-//        let newOffsetY = currentOffset.height + translation.height / currentScale
-//        return CGSize(width: newOffsetX, height: newOffsetY)
-//    }
-        
     
     func handleStationClick(stationName: String, stationLines: [String]) {
         self.stationName = stationName
@@ -334,11 +311,11 @@ struct subwayImage : View {
     func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
         // 127.0.0.1
         //개인 faskapi
-//        let url = URL(string: "http://127.0.0.1:8000/subway/subwayRide")!
+        let url = URL(string: "http://54.180.247.41:8000/subway/subwayRide")!
         // 개인 flask
 //        let url = URL(string: "http://127.0.0.1:5000/subwayRide")!
         // aws flask
-        let url = URL(string: "http://54.180.247.41:5000/subwayRide")!
+//        let url = URL(string: "http://54.180.247.41:5000/subwayRide")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -368,11 +345,11 @@ struct subwayImage : View {
         print(stationName,date,time,stationLine)
         //127.0.0.1 54.180.247.41:
         //개인 fasdtapi
-//        let url = URL(string: "http://127.0.0.1:8000/subway/subwayAlighting")!
+        let url = URL(string: "http://54.180.247.41:8000/subway/subwayAlighting")!
         //개인 flask
 //        let url = URL(string: "http://127.0.0.1:5000/subwayAlighting")!
         //aws flask
-        let url = URL(string: "http://54.180.247.41:5000/subwayAlighting")!
+//        let url = URL(string: "http://54.180.247.41:5000/subwayAlighting")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
