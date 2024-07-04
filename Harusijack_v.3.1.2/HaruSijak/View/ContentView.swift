@@ -20,50 +20,74 @@ struct ContentView: View {
     // MARK: -- properties
     @State private var isPressed = false
     @State var selection = 0
-    
+    @State var showAlertForFloatingButton: Bool = false
     
     // MARK: -- body
     var body: some View {
         NavigationView {
-            VStack {
-                TabView(selection: $selection) {
-                    PredictView03()
-                        .tag(0)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    NewsView()
-                        .tag(1)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+            ZStack(alignment: .bottomTrailing ,content: {
+                VStack {
+                    TabView(selection: $selection) {
+                        PredictView03()
+                            .tag(0)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        NewsView()
+                            .tag(1)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                        .navigationTitle("오늘의 뉴스")
+                            .navigationTitle("오늘의 뉴스")
 
-                    CalendarView()
-                        .tag(2)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .navigationTitle("할 일")
+                        CalendarView()
+                            .tag(2)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .navigationTitle("할 일")
 
-                    SettingView(stationName: "가디", time: 0)
+                        SettingView(stationName: "가디", time: 0)
 
-                        .tag(3)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .navigationTitle("설정")
-                        .navigationBarTitleDisplayMode(.large)
+                            .tag(3)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .navigationTitle("설정")
+                            .navigationBarTitleDisplayMode(.large)
+                    }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // 페이지 인디케이터 숨기기
+                    // Custom TabBar
+                    HStack {
+                        TabBarButton(icon: "tram", text: "혼잡도", selection: $selection, tag: 0)
+                        Spacer()
+                        TabBarButton(icon: "newspaper", text: "뉴스", selection: $selection, tag: 1)
+                        Spacer()
+                        TabBarButton(icon: "calendar", text: "할일", selection: $selection, tag: 2)
+                        Spacer()
+                        TabBarButton(icon: "gearshape", text: "설정", selection: $selection, tag: 3)
+                    }
+                    .padding()
+                }//Vstack
+                
+            
+                Button(action: {
+                    showAlertForFloatingButton.toggle()
+                }) {
+                    ZStack {
+                        Circle()
+                            .frame(width: 70, height: 70)
+                            .foregroundColor(.blue) // foregroundStyle -> foregroundColor로 수정
+                        
+                        Image("chatImage")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                    }
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // 페이지 인디케이터 숨기기
-                // Custom TabBar
-                HStack {
-                    
-                    TabBarButton(icon: "tram", text: "혼잡도", selection: $selection, tag: 0)
-                        .padding(.leading)
-                    Spacer(minLength: 10)
-                    TabBarButton(icon: "newspaper", text: "뉴스", selection: $selection, tag: 1)
-                    Spacer()
-                    TabBarButton(icon: "calendar", text: "할일", selection: $selection, tag: 2)
-                    Spacer()
-                    TabBarButton(icon: "gearshape", text: "설정", selection: $selection, tag: 3)
-                        .padding(.trailing)
-                }
-                .padding()
-            }
+                .padding(.bottom, 90)
+                .padding(.trailing, 10)
+                .sheet(isPresented: $showAlertForFloatingButton, content: {
+                    NavigationView {
+                        ChatView()
+                    }
+                })
+                
+                
+            }) //Zstack
+            
         }
     }// Body
 }// CV

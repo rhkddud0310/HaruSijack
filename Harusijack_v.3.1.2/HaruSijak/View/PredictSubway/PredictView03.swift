@@ -23,7 +23,13 @@
             1. 지하철 노선 정보 중 5호선 추가 struct 파일로 만들고 거기서 불러오게 함.
          - 2024.06.24 by j, d park :
             * 1. sheet(예측페이지) 분리
-              2.
+         - 2024.07.01 by J.Park :
+            * 1. 지하철 환승역 구현완료
+              2. 지하철 초기화면 위치,zoom scale 지정(이미지 좌측상단 -> 중앙)
+         - 2024.07.01 by J.Park :
+            * 1. Zoom,Drag시 기준 좌표 변경되는 오류 수정
+              2. sheet 호출시 async 삭제
+ 
  */
 
 //
@@ -50,7 +56,7 @@ struct subwayImage : View {
     // MARK: Server request 변수
     @State var stationName: String = ""
     @State var stationLine: [String] = []
-
+    
     @State private var showAlertForStation = false
     // 승차인원 JSON 받아오는 변수(승차)
     @State var serverResponseBoardingPerson: [String] = []
@@ -69,21 +75,8 @@ struct subwayImage : View {
     //하차인원
     @State private var AlightinggPersondictionary: [[String: Double]] = []
     
-
-
-
-
-    
-//    @State private var BoardingPersondictionary: [[String: Double]] = []
-//    @State private var AlightinggPersondictionary: [[String: Double]] = []
-    
-    //
     //로딩중 화면
     @State private var isLoading = false
-    
-    // MARK: sheetview 통신 변수 (sheetview에서 보내온 호선으로 다시 계산후에 새로운 sheetview를 최신화함)
-    
-    
     
     // MARK: 화면조작 변수
     @State var currentScale: CGFloat = 0.5
@@ -94,13 +87,14 @@ struct subwayImage : View {
     @GestureState private var dragState = CGSize.zero
     @GestureState private var scaleState: CGFloat = 1.0
     
+    
     @State var currentOffset = CGSize(width: -1500, height: -800)
     @State var previousOffset = CGSize.zero
     let line23 = SubwayList().totalStation
-//    let line23 = SubwayList().testStation
+    //    let line23 = SubwayList().testStation
     let imgWidth = UIImage(named: "subwayMap")!.size.width
     let imgHeight = UIImage(named: "subwayMap")!.size.height
-    
+    //이미지 크기 차이때문은 아닌거같음
     
     
     var body: some View {
@@ -118,12 +112,13 @@ struct subwayImage : View {
                             let stationLines = [station.3, station.4, station.5]
                                 .filter { $0 != 0 }// 호선값이 0이 아닐때만 반환
                                 .map { String($0) }// string으로 변환
-                                handleStationClick(stationName: station.0, stationLines: stationLines)
+                            handleStationClick(stationName: station.0, stationLines: stationLines)
+                            //                            $showAlertForStation
                         }) {
                             Text("")
                                 .font(.system(size: 10))
                                 .bold()
-                                .frame(width: 10, height: 10)
+                                .frame(width: 15, height: 15)
                                 .background(Color.clear)
                         }
                         .position(  x: (station.2 * self.currentScale),
@@ -131,138 +126,90 @@ struct subwayImage : View {
                     }//button
                 })// OverLay
                 .edgesIgnoringSafeArea(.all)
-                .aspectRatio(contentMode: .fit)
+                .aspectRatio(contentMode: .fill)
                 .offset(x: self.currentOffset.width, y: self.currentOffset.height)
-                .scaleEffect(max(self.currentScale, 1.0), anchor: UnitPoint(x: CGFloat(1), y: CGFloat(1))) // the second question
                 .offset(dragState)
-                .scaleEffect(scaleState)
-                .gesture(DragGesture()
+            //                .scaleEffect(scaleState)
+                .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                     .onChanged { value in
                         let dragSpeed: CGFloat = 0.05
-                                let newOffsetX = self.currentOffset.width + value.translation.width / self.currentScale * dragSpeed
-                                let newOffsetY = self.currentOffset.height + value.translation.height / self.currentScale * dragSpeed
-                                
-                                // 이미지 크기 계산
-                                let scaledWidth = self.imgWidth * self.currentScale
-                                let scaledHeight = self.imgHeight * self.currentScale
-                                
-                                // 드래그 제한 계산
-                                let minX = min(0, geometry.size.width - scaledWidth)
-                                let maxX = max(0, geometry.size.width - scaledWidth)
+                        let newOffsetX = self.currentOffset.width + value.translation.width / self.currentScale * dragSpeed
+                        let newOffsetY = self.currentOffset.height + value.translation.height / self.currentScale * dragSpeed
                         
-                                let minY = min(0, geometry.size.height - scaledHeight )
-                                let maxY = max(0, geometry.size.height - scaledHeight )
-                                
-                                // 오프셋 제한 적용
-                                self.currentOffset = CGSize(
-                                    width: min(maxX, max(minX, newOffsetX)),
-                                    height: min(maxY, max(minY, newOffsetY)))
+                        // 이미지 크기 계산
+                        let scaledWidth = self.imgWidth * self.currentScale
+                        let scaledHeight = self.imgHeight * self.currentScale
+                        
+                        // 드래그 제한 계산
+                        let minX = min(0, geometry.size.width - scaledWidth)
+                        let maxX = max(0, geometry.size.width - scaledWidth)
+                        
+                        let minY = min(0, geometry.size.height - scaledHeight )
+                        let maxY = max(0, geometry.size.height - scaledHeight )
+                        
+                        // 오프셋 제한 적용
+                        self.currentOffset = CGSize(
+                            width: min(maxX, max(minX, newOffsetX)),
+                            height: min(maxY, max(minY, newOffsetY)))
                     }
                          
                     .onEnded { value in self.previousOffset = CGSize.zero })
             
-                .gesture(MagnificationGesture()
+                .gesture(MagnificationGesture(minimumScaleDelta: 0)
                     .onChanged { value in
                         let delta = value / self.previousScale
                         self.previousScale = value
                         
-                        // 확대/축소 속도 조절
-                        let scaleFactor: CGFloat = 0.5 // 0.0 ~ 1.0 사이의 값으로 조절
-                        let adjustedDelta = 1.0 + (delta - 1.0) * scaleFactor
-                        
-                        // 새로운 스케일 계산 및 제한 적용
-                        var newScale = self.currentScale * adjustedDelta
+                        var newScale = self.currentScale * delta
                         newScale = min(max(newScale, self.minScale), self.maxScale)
                         
-                        let deltaScale = newScale - self.currentScale
+                        let deltaScale = newScale / self.currentScale
                         
-                        // 확대/축소 중심점 계산
-                        let midX = geometry.size.width / 2
-                        let midY = geometry.size.height / 2
-                        
-                        // offset 조정 (부드러운 애니메이션 적용)
+                        // 현재 터치 위치를 기준으로 확대/축소
+                        let touchPoint = CGPoint(
+                            x: geometry.frame(in: .local).midX,
+                            y: geometry.frame(in: .local).midY
+                        )
+                        print(imgWidth)
+                        print(imgHeight)
                         withAnimation(.interpolatingSpring(stiffness: 300, damping: 30)) {
-                            self.currentOffset.width -= (midX - self.currentOffset.width) * deltaScale / newScale
-                            self.currentOffset.height -= (midY - self.currentOffset.height) * deltaScale / newScale
-                            
+                            self.currentOffset.width = (self.currentOffset.width - touchPoint.x) * deltaScale + touchPoint.x
+                            self.currentOffset.height = (self.currentOffset.height - touchPoint.y) * deltaScale + touchPoint.y
                             self.currentScale = newScale
                         }
                     }
                     .onEnded { value in
-                        // 관성 효과 추가
-                        let finalDelta = value / self.previousScale
-                        let inertiaFactor: CGFloat = 0.1 // 관성 강도 조절 (0.0 ~ 1.0)
-                        
-                        withAnimation(.interpolatingSpring(stiffness: 300, damping: 30)) {
-                            let projectedScale = self.currentScale * (1 + (finalDelta - 1) * inertiaFactor)
-                            self.currentScale = min(max(projectedScale, self.minScale), self.maxScale)
-                            
-                            // 관성에 따른 offset 추가 조정
-                            let midX = geometry.size.width / 2
-                            let midY = geometry.size.height / 2
-                            self.currentOffset.width -= (midX - self.currentOffset.width) * (projectedScale - self.currentScale) / projectedScale
-                            self.currentOffset.height -= (midY - self.currentOffset.height) * (projectedScale - self.currentScale) / projectedScale
-                        }
-                        
                         self.previousScale = 1.0
                     }
-                )
-//                .gesture(MagnificationGesture()
-//                    .onChanged { value in
-//                        let delta = value / self.previousScale
-//                                self.previousScale = value
-//                                
-//                                // 새로운 스케일 계산 및 제한 적용
-//                                var newScale = self.currentScale * delta
-//                                newScale = min(max(newScale, self.minScale), self.maxScale)
-//                                
-//                                let deltaScale = newScale - self.currentScale
-//                                
-//                                // 확대/축소 중심점 계산
-//                                let midX = geometry.size.width / 2
-//                                let midY = geometry.size.height / 2
-//                                
-//                                // offset 조정
-//                                self.currentOffset.width -= (midX - self.currentOffset.width) * deltaScale / newScale
-//                                self.currentOffset.height -= (midY - self.currentOffset.height) * deltaScale / newScale
-//                                
-//                                self.currentScale = newScale
-//                    }
-//                    .onEnded { value in self.previousScale = 1.0 }
-//                         
-//                )
-                .sheet(isPresented: $showAlertForStation, onDismiss: {
-                    // 변수 초기화
-                    isLoading = false
-                                      stationName = ""
-                                      stationLine = []
-                                      boardingPersonValue = []
-                                      AlightingPersonValue = []
-                                      BoardingPersondictionary = []
-                                      AlightinggPersondictionary = []
-                                      serverResponseBoardingPerson = []
-                                      serverResponseAlightingPerson = []
-                              })  {
-                                  SheetContentView(
-                                      isLoading: $isLoading,
-                                      stationName: $stationName,
-                                      stationLine: $stationLine,
-                                      showingcurrentTime: $showingcurrentTime,
-                                      boardingPersonValue: $boardingPersonValue,
-                                      AlightingPersonValue: $AlightingPersonValue,
-                                      BoardingPersondictionary: $BoardingPersondictionary,
-                                      AlightinggPersondictionary: $AlightinggPersondictionary,
-                                      serverResponseBoardingPerson: $serverResponseBoardingPerson,
-                                      serverResponseAlightingPerson:$serverResponseAlightingPerson
-                                  )
-                }//sheet
-        }// GeometryReader
+                )}//GeometryReader
+        .sheet(isPresented: $showAlertForStation, onDismiss: {
+            // 변수 초기화
+            isLoading = false
+            stationName = ""
+            stationLine = []
+            boardingPersonValue = []
+            AlightingPersonValue = []
+            BoardingPersondictionary = []
+            AlightinggPersondictionary = []
+            serverResponseBoardingPerson = []
+            serverResponseAlightingPerson = []
+        })  {
+            SheetContentView(
+                isLoading: $isLoading,
+                stationName: $stationName,
+                stationLine: $stationLine,
+                showingcurrentTime: $showingcurrentTime,
+                boardingPersonValue: $boardingPersonValue,
+                AlightingPersonValue: $AlightingPersonValue,
+                BoardingPersondictionary: $BoardingPersondictionary,
+                AlightinggPersondictionary: $AlightinggPersondictionary,
+                serverResponseBoardingPerson: $serverResponseBoardingPerson,
+                serverResponseAlightingPerson:$serverResponseAlightingPerson
+            )
+        }//sheet
+        //        }// GeometryReader
     }// View
     // MARK: Functions
-    //드레그 스피드 조정 함수
-    func limitSpeed(_ speed: CGFloat, min: CGFloat, max: CGFloat) -> CGFloat {
-        return Swift.max(min, Swift.min(speed, max))
-    }
     
     func handleStationClick(stationName: String, stationLines: [String]) {
         self.stationName = stationName
@@ -272,6 +219,9 @@ struct subwayImage : View {
         showingcurrentTime = timeString
         showingcurrentdate = dateString
         // 배열에 들어온 호선 수 만큼 반복
+        print("stationline-----------------")
+        print(stationLines)
+        print("stationline-----------------")
         for line in stationLines {
             // 승차인원
             fetchDataFromServerBoarding(stationName: stationName, date: dateString, time: timeString, stationLine: line) { responseString in
@@ -324,12 +274,9 @@ struct subwayImage : View {
                 }
             }
         }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.showAlertForStation = true
-        }
+        self.showAlertForStation = true
     }
-
+    
     // 현재시간 가져오는 함수
     func getCurrentDateTime() -> (String, String) {
         let currentDate = Date()
@@ -350,8 +297,12 @@ struct subwayImage : View {
     // Flask 통신을 위한 함수(승차인원)
     func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
         // 127.0.0.1
-        let url = URL(string: "http://127.0.0.1:8000/subway/subwayRide")!
-//        let url = URL(string: "http://127.0.0.1:5000/subwayRide")!
+        //개인 faskapi
+        let url = URL(string: "http://54.180.247.41:8000/subway/subwayRide")!
+        // 개인 flask
+        //        let url = URL(string: "http://127.0.0.1:5000/subwayRide")!
+        // aws flask
+        //        let url = URL(string: "http://54.180.247.41:5000/subwayRide")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -375,13 +326,17 @@ struct subwayImage : View {
         }
         task.resume()
     }
-
+    
     // Flask 통신을 위한 함수(하차인원)
     func fetchDataFromServerAlighting(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
         print(stationName,date,time,stationLine)
         //127.0.0.1 54.180.247.41:
-        let url = URL(string: "http://127.0.0.1:8000/subway/subwayAlighting")!
-//        let url = URL(string: "http://127.0.0.1:5000/subwayAlighting")!
+        //개인 fasdtapi
+        let url = URL(string: "http://54.180.247.41:8000/subway/subwayAlighting")!
+        //개인 flask
+        //        let url = URL(string: "http://127.0.0.1:5000/subwayAlighting")!
+        //aws flask
+        //        let url = URL(string: "http://54.180.247.41:5000/subwayAlighting")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -406,7 +361,7 @@ struct subwayImage : View {
         }
         task.resume()
     }
-
+    
     // 현재시간에 "시인원"을 더한 값을 key값으로 서버에서 받아온 JSON값에서 검색해서 값을 가져오는 함수
     func getValueForCurrentTime(jsonString: String, currentTime: String) -> Double {
         guard let jsonData = jsonString.data(using: .utf8) else { return 0.0 }
@@ -422,7 +377,7 @@ struct subwayImage : View {
         }
         return 0.0
     }
-
+    
     // JSON 데이터를 dictionary로 변환(차트그리기 위해서)
     func convertJSONStringToDictionary(_ jsonString: String) -> [String: Double]? {
         guard let jsonData = jsonString.data(using: .utf8) else {
@@ -438,7 +393,7 @@ struct subwayImage : View {
             return nil
         }
     }
-
+    
 }
 
 
