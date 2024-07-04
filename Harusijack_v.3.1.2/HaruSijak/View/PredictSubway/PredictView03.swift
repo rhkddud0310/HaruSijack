@@ -28,6 +28,7 @@
               2. 지하철 초기화면 위치,zoom scale 지정(이미지 좌측상단 -> 중앙)
          - 2024.07.01 by J.Park :
             * 1. Zoom,Drag시 기준 좌표 변경되는 오류 수정
+              2. sheet 호출시 async 삭제
  
  */
 
@@ -55,7 +56,7 @@ struct subwayImage : View {
     // MARK: Server request 변수
     @State var stationName: String = ""
     @State var stationLine: [String] = []
-
+    
     @State private var showAlertForStation = false
     // 승차인원 JSON 받아오는 변수(승차)
     @State var serverResponseBoardingPerson: [String] = []
@@ -74,17 +75,8 @@ struct subwayImage : View {
     //하차인원
     @State private var AlightinggPersondictionary: [[String: Double]] = []
     
-
-
-
-    
-    //
     //로딩중 화면
     @State private var isLoading = false
-    
-    // MARK: sheetview 통신 변수 (sheetview에서 보내온 호선으로 다시 계산후에 새로운 sheetview를 최신화함)
-    
-    
     
     // MARK: 화면조작 변수
     @State var currentScale: CGFloat = 0.5
@@ -99,7 +91,7 @@ struct subwayImage : View {
     @State var currentOffset = CGSize(width: -1500, height: -800)
     @State var previousOffset = CGSize.zero
     let line23 = SubwayList().totalStation
-//    let line23 = SubwayList().testStation
+    //    let line23 = SubwayList().testStation
     let imgWidth = UIImage(named: "subwayMap")!.size.width
     let imgHeight = UIImage(named: "subwayMap")!.size.height
     //이미지 크기 차이때문은 아닌거같음
@@ -120,16 +112,14 @@ struct subwayImage : View {
                             let stationLines = [station.3, station.4, station.5]
                                 .filter { $0 != 0 }// 호선값이 0이 아닐때만 반환
                                 .map { String($0) }// string으로 변환
-                            print("-------------------------111")
-                            print(stationLines)
-                            print("-------------------------111")
                             handleStationClick(stationName: station.0, stationLines: stationLines)
+                            //                            $showAlertForStation
                         }) {
                             Text("")
                                 .font(.system(size: 10))
                                 .bold()
-                                .frame(width: 10, height: 10)
-                                .background(Color.red)
+                                .frame(width: 15, height: 15)
+                                .background(Color.clear)
                         }
                         .position(  x: (station.2 * self.currentScale),
                                     y: (station.1 * self.currentScale))
@@ -139,10 +129,10 @@ struct subwayImage : View {
                 .aspectRatio(contentMode: .fill)
                 .offset(x: self.currentOffset.width, y: self.currentOffset.height)
                 .offset(dragState)
-//                .scaleEffect(scaleState)
-                .gesture(DragGesture()
+            //                .scaleEffect(scaleState)
+                .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                     .onChanged { value in
-                        let dragSpeed: CGFloat = 0.1
+                        let dragSpeed: CGFloat = 0.05
                         let newOffsetX = self.currentOffset.width + value.translation.width / self.currentScale * dragSpeed
                         let newOffsetY = self.currentOffset.height + value.translation.height / self.currentScale * dragSpeed
                         
@@ -165,7 +155,7 @@ struct subwayImage : View {
                          
                     .onEnded { value in self.previousOffset = CGSize.zero })
             
-                .gesture(MagnificationGesture()
+                .gesture(MagnificationGesture(minimumScaleDelta: 0)
                     .onChanged { value in
                         let delta = value / self.previousScale
                         self.previousScale = value
@@ -176,10 +166,10 @@ struct subwayImage : View {
                         let deltaScale = newScale / self.currentScale
                         
                         // 현재 터치 위치를 기준으로 확대/축소
-                               let touchPoint = CGPoint(
-                                   x: geometry.frame(in: .local).midX,
-                                   y: geometry.frame(in: .local).midY
-                               )
+                        let touchPoint = CGPoint(
+                            x: geometry.frame(in: .local).midX,
+                            y: geometry.frame(in: .local).midY
+                        )
                         print(imgWidth)
                         print(imgHeight)
                         withAnimation(.interpolatingSpring(stiffness: 300, damping: 30)) {
@@ -192,32 +182,32 @@ struct subwayImage : View {
                         self.previousScale = 1.0
                     }
                 )}//GeometryReader
-                .sheet(isPresented: $showAlertForStation, onDismiss: {
-                    // 변수 초기화
-                    isLoading = false
-                                      stationName = ""
-                                      stationLine = []
-                                      boardingPersonValue = []
-                                      AlightingPersonValue = []
-                                      BoardingPersondictionary = []
-                                      AlightinggPersondictionary = []
-                                      serverResponseBoardingPerson = []
-                                      serverResponseAlightingPerson = []
-                              })  {
-                                  SheetContentView(
-                                      isLoading: $isLoading,
-                                      stationName: $stationName,
-                                      stationLine: $stationLine,
-                                      showingcurrentTime: $showingcurrentTime,
-                                      boardingPersonValue: $boardingPersonValue,
-                                      AlightingPersonValue: $AlightingPersonValue,
-                                      BoardingPersondictionary: $BoardingPersondictionary,
-                                      AlightinggPersondictionary: $AlightinggPersondictionary,
-                                      serverResponseBoardingPerson: $serverResponseBoardingPerson,
-                                      serverResponseAlightingPerson:$serverResponseAlightingPerson
-                                  )
-                }//sheet
-//        }// GeometryReader
+        .sheet(isPresented: $showAlertForStation, onDismiss: {
+            // 변수 초기화
+            isLoading = false
+            stationName = ""
+            stationLine = []
+            boardingPersonValue = []
+            AlightingPersonValue = []
+            BoardingPersondictionary = []
+            AlightinggPersondictionary = []
+            serverResponseBoardingPerson = []
+            serverResponseAlightingPerson = []
+        })  {
+            SheetContentView(
+                isLoading: $isLoading,
+                stationName: $stationName,
+                stationLine: $stationLine,
+                showingcurrentTime: $showingcurrentTime,
+                boardingPersonValue: $boardingPersonValue,
+                AlightingPersonValue: $AlightingPersonValue,
+                BoardingPersondictionary: $BoardingPersondictionary,
+                AlightinggPersondictionary: $AlightinggPersondictionary,
+                serverResponseBoardingPerson: $serverResponseBoardingPerson,
+                serverResponseAlightingPerson:$serverResponseAlightingPerson
+            )
+        }//sheet
+        //        }// GeometryReader
     }// View
     // MARK: Functions
     
@@ -284,12 +274,9 @@ struct subwayImage : View {
                 }
             }
         }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.showAlertForStation = true
-        }
+        self.showAlertForStation = true
     }
-
+    
     // 현재시간 가져오는 함수
     func getCurrentDateTime() -> (String, String) {
         let currentDate = Date()
@@ -313,9 +300,9 @@ struct subwayImage : View {
         //개인 faskapi
         let url = URL(string: "http://54.180.247.41:8000/subway/subwayRide")!
         // 개인 flask
-//        let url = URL(string: "http://127.0.0.1:5000/subwayRide")!
+        //        let url = URL(string: "http://127.0.0.1:5000/subwayRide")!
         // aws flask
-//        let url = URL(string: "http://54.180.247.41:5000/subwayRide")!
+        //        let url = URL(string: "http://54.180.247.41:5000/subwayRide")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -339,7 +326,7 @@ struct subwayImage : View {
         }
         task.resume()
     }
-
+    
     // Flask 통신을 위한 함수(하차인원)
     func fetchDataFromServerAlighting(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
         print(stationName,date,time,stationLine)
@@ -347,9 +334,9 @@ struct subwayImage : View {
         //개인 fasdtapi
         let url = URL(string: "http://54.180.247.41:8000/subway/subwayAlighting")!
         //개인 flask
-//        let url = URL(string: "http://127.0.0.1:5000/subwayAlighting")!
+        //        let url = URL(string: "http://127.0.0.1:5000/subwayAlighting")!
         //aws flask
-//        let url = URL(string: "http://54.180.247.41:5000/subwayAlighting")!
+        //        let url = URL(string: "http://54.180.247.41:5000/subwayAlighting")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -374,7 +361,7 @@ struct subwayImage : View {
         }
         task.resume()
     }
-
+    
     // 현재시간에 "시인원"을 더한 값을 key값으로 서버에서 받아온 JSON값에서 검색해서 값을 가져오는 함수
     func getValueForCurrentTime(jsonString: String, currentTime: String) -> Double {
         guard let jsonData = jsonString.data(using: .utf8) else { return 0.0 }
@@ -390,7 +377,7 @@ struct subwayImage : View {
         }
         return 0.0
     }
-
+    
     // JSON 데이터를 dictionary로 변환(차트그리기 위해서)
     func convertJSONStringToDictionary(_ jsonString: String) -> [String: Double]? {
         guard let jsonData = jsonString.data(using: .utf8) else {
@@ -406,7 +393,7 @@ struct subwayImage : View {
             return nil
         }
     }
-
+    
 }
 
 
