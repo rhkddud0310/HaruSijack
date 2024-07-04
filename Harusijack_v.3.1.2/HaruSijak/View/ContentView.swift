@@ -22,7 +22,6 @@ struct ContentView: View {
     @State var selection = 0
     @State var showAlertForFloatingButton: Bool = false
     
-    
     // MARK: -- body
     var body: some View {
         NavigationView {
@@ -80,11 +79,12 @@ struct ContentView: View {
                 }
                 .padding(.bottom, 90)
                 .padding(.trailing, 10)
-                .fullScreenCover(isPresented: $showAlertForFloatingButton, content: {
+                .sheet(isPresented: $showAlertForFloatingButton, content: {
                     NavigationView {
                         ChatView()
                     }
                 })
+                
                 
             }) //Zstack
             
