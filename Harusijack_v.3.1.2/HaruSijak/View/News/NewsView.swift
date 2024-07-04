@@ -58,7 +58,7 @@ struct NewsView: View {
       
       .onAppear {
           let newsVM = NewsVM()
-          newsVM.loadData(url: URL(string: "http://54.180.247.41:5000/news")!) { result in
+          newsVM.loadData(url: URL(string: "http://127.0.0.1:5000/news")!) { result in
               switch result {
               case .success(let news):DispatchQueue.main.async {
                   newsList = news

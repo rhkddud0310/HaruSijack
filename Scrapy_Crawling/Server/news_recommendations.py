@@ -35,7 +35,27 @@
   - 2024.06.14. (Fri) G.Zen : Deep Learning(BERT Model, 코사인 유사도)을 활용하여 뉴스 추천 시스템 구현하기.
   - 2024.06.15. (Sat) G.Zen : 추천된 뉴스의 Title과 Link를 JSON Type으로 전송하기.
 """
+def CrawlInstalls():
+    import subprocess,sys
+    # pip가 없으면 pip를 설치한다.
+    try:import pip
+    except ImportError:
+        print("Install pip for python3")
+        subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
+    try:import selenium        
+    except ModuleNotFoundError:
+        print("Install Selenium in python3")
+        subprocess.call([sys.executable, "-m", "pip", "install", 'selenium'])
+    finally:import selenium 
 
+    try:import webdriver_manager
+    except ModuleNotFoundError: 
+        print("Install webdriver_manager")
+        subprocess.call([sys.executable, "-m", "pip", "install", 'webdriver_manager'])
+    finally:import webdriver_manager
+
+import os
+print("현재 작업 디렉토리:", os.getcwd())
 # Import Library Package
 ## Flask Server
 from flask import Flask, request, jsonify
@@ -239,7 +259,7 @@ app.config['JSON_AS_ASCII'] = False # for utf-8
 # final_recommended_news.to_csv("../Data/recommended_news.csv", index = False)
 
 final_recommended_news = pd.read_csv("../Data/recommended_news.csv")
-
+print("서버 실행됨")
 # 5. JSON 형식으로 반환하는 EndPorint 정의
 @app.route('/news', methods = ['GET', 'POST'])
 def get_recommendations () :
