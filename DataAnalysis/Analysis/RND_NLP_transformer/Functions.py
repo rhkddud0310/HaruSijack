@@ -167,7 +167,92 @@ class NLP_Service :
         print(NLP_Service.yellow(f"Vectorized Sentence :\n"),tfidf_vectorizer.transform(sentence).toarray())
         
 
+    def GPT_prompt(model = 2, template_go = False , prompt=""):
+        from pprint import pprint
+        import json
+        from openai import OpenAI
+        from pprint import pprint
+        import os
+        api_key=os.environ.get("OPENAI_API_KEY")
+        client = OpenAI(api_key=api_key)
+        
+        if template_go :
+            
+            template = """
+            당신은 번역함수이며, 반환값은 반드시 JSON 데이터 여야 합니다. 
+            STEP 별로 작업을 수행하면서 그 결과를 아래의 출력 결과 JSON 포맷에 작성하세요.
+            STEP-1. 아래 세 개의 백틱으로 구분된 텍스트를 원문 그대로 읽어 올것
+            STEP-2. 입력받은 텍스트가 긍정적이라면 True를 표기할것
+            STEP-3. 다음의 말투로 번역할 것: ["지구의 나이는 45억살이야.","세종 대왕은 조선의 위대한 국왕이야."]
+            ```{text}```
+            ---
+            출력결과 : {{"STEP-1":<입력텍스트>, "STEP-2": <true/false>, "STEP-3":<번역결과>}}
+            """
+            text = "William Shakespeare was an English playwrit, poet and actor.  He is widely regarded as the greatest writer in the English language and the world's pre-eminent dramatist."
+            
+            template = template.format(text=text)
+            context = [{"role": "user","content": template}]
+            model_1 = 'gpt-3.5-turbo-1106'
+            model_2 = 'gpt-4-0613'
+            response = client.chat.completions.create(
+                model=model_2 if model == 2 else model_1,
+                messages=context,
+                temperature=0,
+                top_p=0,
+                seed=1234
+            ).model_dump()
+            pprint(json.loads(response['choices'][0]['message']['content']))
+            return json.loads(response['choices'][0]['message']['content'])
+        else :
+            template = prompt
+            context = [{"role": "user","content": template}]
 
+            model_1 = 'gpt-3.5-turbo-1106'
+            model_2 = 'gpt-4-0613'
+            response = client.chat.completions.create(
+                model=model_2 if model == 2 else model_1,
+                messages=context,
+                temperature=0,
+                top_p=0,
+                seed=1234
+            ).model_dump()
+            pprint(response['choices'][0]['message']['content'])
+        
+        
+        # pprint(response.choices[0].message.content)
+        # GPT_prompt(prompt="너 바보야?")
+
+    def tokenization_eng(text, word_tkn = False, sent_tkn= False):
+        import subprocess,sys
+        import warnings ; warnings.filterwarnings('ignore')
+        # pip가 없으면 pip를 설치
+        try:import pip
+        except ImportError:
+            print("Install pip for python3")
+            subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
+        
+        # tweepy 없으면 tweepy 설치
+        try:import nltk        
+        except ModuleNotFoundError:
+            print("Install tweepy")
+            subprocess.call([sys.executable, "-m", "pip", "install", 'nltk'])
+        finally:import nltk 
+        import nltk
+        from nltk.tokenize import word_tokenize
+        from nltk.tokenize import sent_tokenize
+        from pprint import pprint 
+        word_list =[]
+        if sent_tkn:
+            for sentence in sent_tokenize(text):
+                for word in word_tokenize(sentence):
+                    word_list.append(word)
+            # pprint(word_list)        
+            return word_list
+        if word_tkn:
+            # pprint(word_tokenize(text))
+            return word_tokenize(text)
+        
+        
 class Service:
     
     def __init__(self) -> None:
