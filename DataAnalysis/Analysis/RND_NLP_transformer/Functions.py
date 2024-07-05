@@ -57,7 +57,7 @@
         - mlTableGen함 수 추가 
         - 통합 feature 테이블 형성하여 npy 저장함. 
     * 2024.07.05 by pdg:  자연어 처리용 함수 개발 
-    
+    --
     
 
 ---
@@ -65,7 +65,7 @@
 ## project data processing functions 
 # Service.Explaination(title,explain
 
-from sklearn.tree import DecisionTreeRegressor
+from sklearn.tree import DecisionTreeRegressor> 
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error, r2_score
 
