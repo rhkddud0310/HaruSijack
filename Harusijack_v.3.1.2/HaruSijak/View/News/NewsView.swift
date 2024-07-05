@@ -24,14 +24,46 @@ import SwiftUI
 
 struct NewsView: View {
   
-  // MARK: * Property *
-  @State var newsList: [NewsModel] = []
+    // MARK: * Property *
+    @State var newsList: [NewsModel] = []
+    @State var searchValue: String = ""
+    @FocusState var isTextFieldFocused: Bool
+    @State var selectedSegment: String = ""
+    @State var emotion: [String] = ["전체", "슬픈" , "기쁜", "사랑", "화남", "두려운", "놀라운"]
   
   var body: some View {
       
       
           ScrollView(content: {
               VStack(alignment:.leading,content: {
+                  
+                    //검색필드
+//                  HStack(content: {
+//                      Spacer()
+//                      TextField("검색어를 입력하세요.", text: $searchValue)
+//                          .frame(width: UIScreen.main.bounds.width*0.8)
+//                          .textFieldStyle(.roundedBorder)
+//                          .focused($isTextFieldFocused)
+//                      Button(action: {
+//                      }, label: {
+//                          Image(systemName: "magnifyingglass")
+//                              .font(.system(size: 25))
+//                              .foregroundStyle(.black)
+//                      })
+//                      Spacer()
+//                  })
+//                  .padding(.top, 30)
+                  
+                  Picker("감정 선택 ", selection: $selectedSegment) {
+                      ForEach(0..<emotion.count, id: \.self) { index in
+                          Text(emotion[index])
+                              .tag(index)
+                      }
+                  }
+                  .pickerStyle(SegmentedPickerStyle())
+                  .padding()
+                  
+                  
                   ForEach(newsList, id: \.self) { news in
                       NavigationLink(destination: NewsArticleView(newslink: news.Link), label: {
                           VStack(alignment:.leading,content:{
