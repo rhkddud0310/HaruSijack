@@ -87,7 +87,7 @@ struct ChatView: View {
         
         print("ddd : ", chatLogs[1])
         // 챗봇이 응답하도록 로직 구현
-        let response = generateChatBotResponse(humanInput)
+//        let response = generateChatBotResponse(humanInput)
 //        chatLogs.append("C:" + response)
         
         humanInput = ""
