@@ -42,7 +42,7 @@ struct ContentView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .navigationTitle("할 일")
 
-                        SettingView(stationName: "가디", time: 0)
+                        SettingView(stationName: "가디", line: 1, time: 0)
 
                             .tag(3)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)

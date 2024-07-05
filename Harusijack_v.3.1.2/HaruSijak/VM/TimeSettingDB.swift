@@ -26,7 +26,7 @@ class TimeSettingDB: ObservableObject {
             return
         }
         // Table 만들기
-        if sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS timeset (id INTEGER PRIMARY KEY AUTOINCREMENT, time INTEGER, station TEXT)", nil, nil, nil) != SQLITE_OK{
+        if sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS timeset (id INTEGER PRIMARY KEY AUTOINCREMENT, time INTEGER, station TEXT, line INTEGER)", nil, nil, nil) != SQLITE_OK{
             let errMsg = String(cString: sqlite3_errmsg(db)!)
             print("error creating table : \(errMsg)")
             return
@@ -51,8 +51,9 @@ class TimeSettingDB: ObservableObject {
             let id = Int(sqlite3_column_int(stmt, 0))
             let time = Int(sqlite3_column_int(stmt, 1))
             let station = String(cString: sqlite3_column_text(stmt, 2))
+            let line = Int(sqlite3_column_int(stmt, 3))
             
-            settingList.append(Time(id: id, time: time, station: station))
+            settingList.append(Time(id: id, time: time, line: line, station: station))
         }
         
         return settingList
@@ -60,21 +61,23 @@ class TimeSettingDB: ObservableObject {
     
     
     // 시간대 입력 쿼리
-    func insertDB(time: Int, station: String) {
+    func insertDB(time: Int, station: String, line: Int) {
         
         var stmt: OpaquePointer?
         let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
-        let queryString = "INSERT INTO timeset (time, station) VALUES (?,?)"
+        let queryString = "INSERT INTO timeset (time, station, line) VALUES (?,?, ?)"
         
         print("-------------")
         print("time : ", time)
         print("station : ", station)
+        print("line : ", line)
         print("-------------")
         
         sqlite3_prepare(db, queryString, -1, &stmt, nil)
         
         sqlite3_bind_int(stmt, 1, Int32(time))
         sqlite3_bind_text(stmt, 2, station, -1, SQLITE_TRANSIENT)
+        sqlite3_bind_int(stmt, 3, Int32(line))
         
         if sqlite3_step(stmt) == SQLITE_DONE{
             print("insert 성공")
@@ -84,14 +87,15 @@ class TimeSettingDB: ObservableObject {
     }
     
     // 시간대 수정 쿼리
-    func updateDB(time: Int, station: String ,id: Int) {
+    func updateDB(time: Int, station: String, line: Int ,id: Int) {
         var stmt: OpaquePointer?
         let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
-        let queryString = "UPDATE timeset SET time=? , station = ? where id = ?"
+        let queryString = "UPDATE timeset SET time=? , station = ?, line = ? where id = ?"
         
         print("-------------")
         print("time : ", time)
         print("station : ", station)
+        print("line : ", line)
         print("id : ", id)
         print("-------------")
         
@@ -99,7 +103,8 @@ class TimeSettingDB: ObservableObject {
         
         sqlite3_bind_int(stmt, 1, Int32(time))
         sqlite3_bind_text(stmt, 2, station, -1, SQLITE_TRANSIENT)
-        sqlite3_bind_int(stmt, 3, Int32(id))
+        sqlite3_bind_int(stmt, 3, Int32(line))
+        sqlite3_bind_int(stmt, 4, Int32(id))
         
         if sqlite3_step(stmt) == SQLITE_DONE{
             print("update 성공")
