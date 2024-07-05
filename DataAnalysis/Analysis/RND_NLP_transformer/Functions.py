@@ -56,6 +56,8 @@
         - 각함수에프린트를 넣어서 무엇을 실행하는 함수인지 print 한후 실행될수있도록 함. 
         - mlTableGen함 수 추가 
         - 통합 feature 테이블 형성하여 npy 저장함. 
+    * 2024.07.05 by pdg:  자연어 처리용 함수 개발 
+    
     
 
 ---
@@ -66,6 +68,106 @@
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error, r2_score
+
+class NLP_Service :
+    def __init__(self) -> None:
+        def NLPInstalls():
+            import subprocess,sys
+            import warnings ; warnings.filterwarnings('ignore')
+            # pip가 없으면 pip를 설치
+            try:import pip
+            except ImportError:
+                print("Install pip for python3")
+                subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
+            
+            # tweepy 없으면 tweepy 설치
+            try:import tweepy        
+            except ModuleNotFoundError:
+                print("Install tweepy")
+                subprocess.call([sys.executable, "-m", "pip", "install", 'tweepy==3.10.0'])
+            finally:import tweepy 
+            
+            # konlpy 없으면 konlpy 설치
+            try:import konlpy
+            except ModuleNotFoundError: 
+                print("Install konlpy")
+                subprocess.call([sys.executable, "-m", "pip", "install", 'konlpy'])
+            finally:import konlpy
+            
+            # eunjeon 없으면 eunjeon 설치
+            try:import eunjeon
+            except ModuleNotFoundError: 
+                print("Install eunjeon : eunjeon")
+                subprocess.call([sys.executable, "-m", "pip", "install", 'eunjeon'])
+            finally:import konlpy
+            
+            # datasets 없으면 datasets를 설치
+            try:import datasets
+            except ModuleNotFoundError: 
+                print("Install datasets : datasets")
+                subprocess.call([sys.executable, "-m", "pip", "install", 'datasets'])
+            finally:import datasets
+            
+            # pytorch 없으면 pytorch 설치
+            try:import torch
+            except ModuleNotFoundError: 
+                print("Install torch : pytorch")
+                subprocess.call([sys.executable, "-m", "pip", "install", 'pytorch'])
+            finally:import torch
+            
+            # transformers 없으면 transformers 설치
+            try:import transformers
+            except ModuleNotFoundError: 
+                print("Install transformer : transformers")
+                subprocess.call([sys.executable, "-m", "pip", "install", 'transformers'])
+            finally:import transformers
+                
+            # UMAP 없으면 UMAP 설치
+            try:import umap
+            except ModuleNotFoundError: 
+                print("Install umap : umap")
+                subprocess.call([sys.executable, "-m", "pip", "install", 'umap'])
+            finally:import umap
+                
+            # UMAP 없으면 UMAP 설치
+            try:from umap import UMAP
+            except ImportError: 
+                print("Install umap : umap-learn")
+                subprocess.call([sys.executable, "-m", "pip", "install", 'umap-learn'])
+            finally:import umap
+        NLPInstalls()
+        pass
+    def blue(str):return Service.colored_text(str,'blue')
+    def yellow(str):return Service.colored_text(str,'yellow')
+    def red(str):return Service.colored_text(str,'red')
+    def green(str):return Service.colored_text(str,'green')
+    def imd(str):return Service.imd(NLP_Service.green(str))
+    
+    def countVectorize(text_data):
+        from sklearn.feature_extraction.text import CountVectorizer
+        print(NLP_Service.blue(f"CountVectorize 함수로로 토큰화합니다. "))
+        count_vectorizer =CountVectorizer()
+        count_vectorizer.fit([text_data])
+        print(NLP_Service.yellow(f"vocab : \n"), NLP_Service.red(count_vectorizer.vocabulary_))
+        print()
+        sentence =[[text_data][0]] ## 
+        print(sentence)
+        print(NLP_Service.yellow(f"Vectorized Sentence :\n"),count_vectorizer.transform(sentence).toarray())
+    
+    
+    def tfidfVectorize(text_data):
+        from sklearn.feature_extraction.text import TfidfVectorizer
+        print(NLP_Service.blue(f"TF-IDF 함수로로 토큰화합니다. "))
+        tfidf_vectorizer =TfidfVectorizer()
+        tfidf_vectorizer.fit([text_data])
+        print(NLP_Service.yellow(f"vocab : \n"), NLP_Service.red(tfidf_vectorizer.vocabulary_))
+
+        sentence =[[text_data][0]] ## 
+        print(sentence)
+        print(NLP_Service.yellow(f"Vectorized Sentence :\n"),tfidf_vectorizer.transform(sentence).toarray())
+        
+
+
 class Service:
     
     def __init__(self) -> None:
