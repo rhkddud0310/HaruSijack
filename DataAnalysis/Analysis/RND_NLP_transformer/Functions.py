@@ -251,8 +251,44 @@ class NLP_Service :
         if word_tkn:
             # pprint(word_tokenize(text))
             return word_tokenize(text)
-        
-        
+    
+    def spacyTokenizer(sentence):
+        import subprocess,sys
+        from pprint import pprint
+        import warnings ; warnings.filterwarnings('ignore')
+        # pip가 없으면 pip를 설치
+        try:import pip
+        except ImportError:
+            print("Install pip for python3")
+            subprocess.call(['sudo', 'apt-get', 'install', 'python3-pip'])
+
+        # tweepy 없으면 tweepy 설치
+        try:import spacy        
+        except ModuleNotFoundError:
+            print("Install spacy")
+            subprocess.call([sys.executable, "-m", "pip", "install", 'spacy'])
+                # spacy 언어 모델 다운로드
+            subprocess.call([sys.executable, "-m", "spacy", "download", 'en'])
+        finally:
+            import spacy
+        import spacy
+
+        nlp = spacy.load("en_core_web_sm")
+        doc = nlp(sentence)
+        word_tokennized_sentence = [token.text for token in doc]
+        sentence_tokenized_list = [sent.text for sent in doc.sents]
+        print(word_tokennized_sentence)
+        pprint(sentence_tokenized_list)
+    
+    def pad_punctuation(s):
+        import re ## 
+        s = re.sub(r'\n', '', s)
+        s = re.sub(r'\t', '', s)
+        s = re.sub(r'\[', '', s)
+        s = re.sub(r'\]', '', s)
+        s = re.sub(' +', ' ', s)
+        return s
+            
 class Service:
     
     def __init__(self) -> None:
