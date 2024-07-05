@@ -30,6 +30,10 @@ struct NewsView: View {
     @FocusState var isTextFieldFocused: Bool
     @State var selectedSegment: String = ""
     @State var emotion: [String] = ["전체", "슬픈" , "기쁜", "사랑", "화남", "두려운", "놀라운"]
+    @State var positive: [String] = ["긍정적 기사", "부정적 기사"]
+    let emojis = ["😊", "😭", "🥰", "😠", "😱", "😲"]
+    let labels = ["기뻐요", "슬퍼요", "사랑해요", "화나요", "무서워요", "놀라워요"]
+    let percentages = ["80%", "30%", "20%", "15%", "50%", "20%"]
   
   var body: some View {
       
@@ -53,7 +57,10 @@ struct NewsView: View {
 //                      Spacer()
 //                  })
 //                  .padding(.top, 30)
-                  
+                  Text("     감정선택")
+                      .bold()
+                      .font(.system(size: 10))
+//                      .font(.custom("Ownglyph_noocar-Rg", size: 40))
                   Picker("감정 선택 ", selection: $selectedSegment) {
                       ForEach(0..<emotion.count, id: \.self) { index in
                           Text(emotion[index])
@@ -62,7 +69,17 @@ struct NewsView: View {
                   }
                   .pickerStyle(SegmentedPickerStyle())
                   .padding()
-                  
+                  Text("     긍정 부정선택(임시)")
+                      .bold()
+                      .font(.system(size: 10))
+                  Picker("감정 선택 ", selection: $selectedSegment) {
+                      ForEach(0..<positive.count, id: \.self) { index in
+                          Text(positive[index])
+                              .tag(index)
+                      }
+                  }
+                  .pickerStyle(SegmentedPickerStyle())
+                  .padding()
                   
                   ForEach(newsList, id: \.self) { news in
                       NavigationLink(destination: NewsArticleView(newslink: news.Link), label: {
@@ -70,17 +87,37 @@ struct NewsView: View {
                               Text(news.Press)
                                 .font(.headline)
                                 .padding([.top, .leading, .trailing])
-                                .foregroundColor(.primary)
+//                                .foregroundColor(.primary)
                               
                               Text(news.Title)
                                 .font(.subheadline)
                                 .padding([.leading, .bottom, .trailing])
                                 .frame(alignment:.leading)
-                                .foregroundStyle(Color.purple)
+//                                .foregroundStyle(Color.gray)
+                              HStack {
+                                  Text("기사 감성예측")
+                                  ForEach(0..<6) { index in
+                                      VStack {
+                                          Spacer()
+                                          
+                                          VStack {
+                                            
+                                              Text(emojis[index])
+                                                  .font(.system(size: 30))
+                                              Text(labels[index])
+                                                  .font(.system(size: 12))
+                                              Text(percentages[index])
+                                                  .font(.system(size: 10))
+                                              Spacer()
+                                          }
+                                          Spacer()
+                                      }
+                                  }
+                              }
+                              .frame(maxWidth: .infinity)
                           })//VS
                         .background(Color.white)
-                        .cornerRadius(8)
-                        .shadow(radius: 4)
+//                        .shadow(radius: 4)
                         .padding([.top, .horizontal])
                       })//NVLInk
                       .buttonStyle(PlainButtonStyle())
