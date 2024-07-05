@@ -65,7 +65,7 @@
 ## project data processing functions 
 # Service.Explaination(title,explain
 
-from sklearn.tree import DecisionTreeRegressor> 
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error, r2_score
 
