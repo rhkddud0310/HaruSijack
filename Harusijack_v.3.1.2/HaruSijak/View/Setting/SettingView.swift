@@ -30,6 +30,7 @@ struct SettingView: View {
     @Environment(\.dismiss) var dismiss         // 화면 이동을 위한 변수
     @State var alertType: SettingAlertType?        // 추가, 수정 alert
     @State var stationName: String
+    @State var line: Int
     @State var time: Int
     
     
@@ -58,8 +59,8 @@ struct SettingView: View {
                 }
                 
                 VStack(content: {
-                    if !dbModel.queryDB().isEmpty {
-                        Text("[출발역 : \(stationName)역, 설정시간 : \(time)시]") //저장되어있는 설정시간 보여주기
+                    if let firstResult = dbModel.queryDB().first {
+                        Text("[출발역 : \(firstResult.station)역 [\(firstResult.line)호선], 설정시간 : \(firstResult.time)시]") // 저장되어있는 설정시간 보여주기
                             .foregroundStyle(.gray)
                     }
                 })
@@ -91,7 +92,7 @@ struct SettingView: View {
 //                        .presentationDragIndicator(.visible)
 //                })
             .sheet(isPresented: $isShowSheet, content: {
-                TimeSettingView(titleName: "출발역, 시간대 설정하기")
+                TimeSettingView(titleName: "출발역, 시간대 설정하기", stationValue: $stationName, lineValue: $line)
                     .onDisappear{
                         fetchTasksForSelectedDate()
                     }
@@ -107,9 +108,10 @@ struct SettingView: View {
         guard let result = dbModel.queryDB().first else { return }
         stationName = result.station
         time = result.time
+        line = result.line
     }
 }
 
-#Preview {
-    SettingView(stationName: "가디", time: 1)
-}
+//#Preview {
+//    SettingView(stationName: "가디", line: 1, time: 1)
+//}
