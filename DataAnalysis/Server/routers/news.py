@@ -6,21 +6,44 @@
         - news 페이지 생성 및 초기 연결
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+import pymysql
+from typing import List
+
 router = APIRouter()
 
-# @app.post
-@router.get("/")
-async def read_root():
-    ## sync 방식
-    return {"message":"hello world!!!"}
+# 데이터베이스 연결 설정
+DB_CONFIG = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'qwer1234',
+    'db': 'news_analysis_db',
+    'charset': 'utf8mb4',
+    'cursorclass': pymysql.cursors.DictCursor
+}
 
-@router.get("/news")
-async def read_item( query_parameter: str = None):
-    
-    return {"message":" harusizack news service!"}
-å
+class NewsItem(BaseModel):
+    id: int
+    newContent: str
+    translated_content: str
+    sadness: float
+    joy: float
+    love: float
+    anger: float
+    fear: float
+    surprise: float
 
-
-
-# uvicorn fastapi_02:app --reload
+@router.get("/news", response_model=List[NewsItem])
+async def get_news():
+    try:
+        connection = pymysql.connect(**DB_CONFIG)
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM translated_news"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        connection.close()
