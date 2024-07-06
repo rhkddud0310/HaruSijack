@@ -10,6 +10,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import pymysql
 from typing import List
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
@@ -24,9 +25,18 @@ DB_CONFIG = {
 }
 
 class NewsItem(BaseModel):
-    id: int
+    date: str
+    title: str
+    link: str
+    content: str
     newContent: str
     translated_content: str
+    # emotion_sadness: float
+    # emotion_joy: float
+    # emotion_love: float
+    # emotion_anger: float
+    # emotion_fear: float
+    # emotion_surprise: float
     sadness: float
     joy: float
     love: float
@@ -36,13 +46,21 @@ class NewsItem(BaseModel):
 
 @router.get("/news", response_model=List[NewsItem])
 async def get_news():
+    print("뉴스 실행됨ㅋㅋ")
     try:
         connection = pymysql.connect(**DB_CONFIG)
         with connection.cursor() as cursor:
             sql = "SELECT * FROM translated_news"
             cursor.execute(sql)
             result = cursor.fetchall()
-        return result
+        
+        # 결과를 NewsItem 객체 리스트로 변환
+        news_items = [NewsItem(**item) for item in result]
+        print("*******************************")
+        print(news_items)
+        print("*******************************")
+        # JSONResponse로 반환
+        return JSONResponse(content=[item.dict() for item in news_items])
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
