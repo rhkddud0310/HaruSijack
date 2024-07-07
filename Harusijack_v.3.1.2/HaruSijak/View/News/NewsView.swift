@@ -28,11 +28,26 @@ struct NewsView: View {
     @State var newsList: [NewsModel_Fast] = []
     @State var searchValue: String = ""
     @FocusState var isTextFieldFocused: Bool
-    @State var selectedSegment: String = ""
-    @State var emotion: [String] = ["전체", "슬픈" , "기쁜", "사랑", "화남", "두려운", "놀라운"]
+    @State var selectedSegment_mood: Int = 0
+    @State var selectedSegment_pos_neg: Int = 0
+    let emotion: [String] = ["전체", "기쁜" , "슬픈", "사랑", "화남", "무서운", "놀라운"]
     @State var positive: [String] = ["긍정적 기사", "부정적 기사"]
     let emojis = ["😊", "😭", "🥰", "😠", "😱", "😲"]
     let labels = ["기뻐요", "슬퍼요", "사랑해요", "화나요", "무서워요", "놀라워요"]
+    
+    //필터링된 뉴스를 보여주기 위한 리스트
+    var filteredNews: [NewsModel_Fast] {
+        if selectedSegment_mood == 0 {
+               return newsList  // "전체" 선택 시 모든 뉴스 반환
+           } else {
+               return newsList.filter { news in
+                   let emotions = [news.joy, news.sadness, news.love, news.anger, news.fear, news.surprise]
+                   let maxEmotion = emotions.max() ?? 0
+                   let maxIndex = emotions.firstIndex(of: maxEmotion) ?? 0
+                   return maxIndex == selectedSegment_mood - 1
+               }
+           }
+       }
     
     var body: some View {
         ScrollView {
@@ -41,7 +56,7 @@ struct NewsView: View {
                     .bold()
                     .font(.system(size: 10))
                 
-                Picker("감정 선택 ", selection: $selectedSegment) {
+                Picker("감정 선택 ", selection: $selectedSegment_mood) {
                     ForEach(0..<emotion.count, id: \.self) { index in
                         Text(emotion[index])
                             .tag(index)
@@ -54,7 +69,7 @@ struct NewsView: View {
                     .bold()
                     .font(.system(size: 10))
                 
-                Picker("감정 선택 ", selection: $selectedSegment) {
+                Picker("감정 선택 ", selection: $selectedSegment_pos_neg) {
                     ForEach(0..<positive.count, id: \.self) { index in
                         Text(positive[index])
                             .tag(index)
@@ -63,7 +78,7 @@ struct NewsView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
                 
-                ForEach(newsList, id: \.link) { news in
+                ForEach(filteredNews, id: \.link) { news in
                     NavigationLink(destination: NewsArticleView(newslink: news.link)) {
                         VStack(alignment: .leading) {
                             Text(news.title)
@@ -85,6 +100,7 @@ struct NewsView: View {
                                                 .font(.system(size: 30))
                                             Text(labels[index])
                                                 .font(.system(size: 12))
+                                            //텍스트 안에 함수를 넣어 호출해 값 반환(신기방기)
                                             Text(getPercentage(for: index, news: news))
                                                 .font(.system(size: 10))
                                             Spacer()
@@ -116,7 +132,8 @@ struct NewsView: View {
             }
         }
     }
-    
+    // MARK: Functions
+    //뉴스모델에서 가져온 데이터를 퍼센트로 반환하는 함수
     func getPercentage(for index: Int, news: NewsModel_Fast) -> String {
         let percentage: Double
         switch index {
