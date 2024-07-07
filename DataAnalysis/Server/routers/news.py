@@ -16,8 +16,8 @@ router = APIRouter()
 
 # 데이터베이스 연결 설정
 DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
+    'host': 'harusijak-database.c30iq62oq32a.ap-northeast-2.rds.amazonaws.com',
+    'user': 'admin',
     'password': 'qwer1234',
     'db': 'news_analysis_db',
     'charset': 'utf8mb4',
@@ -59,7 +59,6 @@ async def get_news():
         print("*******************************")
         print(news_items)
         print("*******************************")
-        # JSONResponse로 반환
         return JSONResponse(content=[item.dict() for item in news_items])
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
