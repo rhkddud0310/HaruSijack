@@ -215,7 +215,7 @@ def chat_api():
     # chat_bot_service.add_response(response)
     # response_message = chat_bot_service.get_response_content()
     # print("response_message : ", response_message)
-    # return {"response_message": response_message}
+    return {"response_message": machine_learning_request}
     
     
     # return {"response_message": "나도 "+ request.json['request_message']}

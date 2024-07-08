@@ -28,6 +28,7 @@ struct ChatBotTest: View {
 
     func fetchResponse(message: String, completion: @escaping (Result<String, Error>) -> Void) {
         guard let url = URL(string: "http://127.0.0.1:5000/chat-api") else {
+            //"http://54.180.247.41:5000/chat-api"
             completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
             return
         }
