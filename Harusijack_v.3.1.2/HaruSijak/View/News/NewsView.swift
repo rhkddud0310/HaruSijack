@@ -133,7 +133,7 @@ struct NewsView: View {
         }
     }
     // MARK: Functions
-    //뉴스모델에서 가져온 데이터를 퍼센트로 반환하는 함수
+    //뉴스모델에서 가져온 데이터를 정수(반올림) 퍼센트로 반환하는 함수
     func getPercentage(for index: Int, news: NewsModel_Fast) -> String {
         let percentage: Double
         switch index {
