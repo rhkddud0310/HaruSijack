@@ -222,6 +222,28 @@ class NLP_Service :
         # pprint(response.choices[0].message.content)
         # GPT_prompt(prompt="너 바보야?")
 
+    def GPT_prompt_json(model = 2, template_go = False , prompt="", json_mode=True):
+        from pprint import pprint
+        import json
+        from openai import OpenAI
+        from pprint import pprint
+        import os
+        api_key=os.environ.get("OPENAI_API_KEY")
+        client = OpenAI(api_key=api_key)
+        model_1 = 'gpt-3.5-turbo-1106'
+        model_2 = 'gpt-4-0613'
+        context = [{"role": "user","content": "한국 초대 대통령 이름, 출생일자, 사망일자를 json 으로 기술하세요"}]
+        completion = client.chat.completions.create(
+            model= model_1,
+            messages = context,
+            response_format ={"type":"json_object"}
+        )
+        print(json.loads(completion.choices[0].message.content))
+        
+        # pprint(response.choices[0].message.content)
+    # GPT_prompt(prompt="너 바보야?")
+
+
     def tokenization_eng(text, word_tkn = False, sent_tkn= False):
         import subprocess,sys
         import warnings ; warnings.filterwarnings('ignore')
