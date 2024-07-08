@@ -148,6 +148,7 @@ app = FastAPI()
 # router 사용 
 app.include_router(subway.router, prefix="/subway", tags=["subway"])
 app.include_router(news.router, prefix="/news", tags=["news"])
+
 # app.include_router(chatbot.router, prefix="/chat-kakao", tags=["chat-kakao"])
 
 #서버실행 test

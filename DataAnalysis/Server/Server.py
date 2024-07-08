@@ -31,9 +31,10 @@
 
 ### IMportiong chat bot
 from chatbot import Chatbot
-from common import model 
+from common import get_model 
 
 ## instance  생성 
+model = get_model()
 chat_bot_service = Chatbot(model.basic)
 
 from flask import Flask, jsonify, request
@@ -201,18 +202,21 @@ def subwayAlighting():
         return jsonify({'error': str(e)})
 
 
-@app.route('/chat-kakao', methods=['POST'])
-def chat_kakao():
-    print("request.json : ",request.json)
-    response_to_kakao = format_response("반가워!")
-    return response_to_kakao
 
 
-
-@app.route("/chat-api", method =['POST'])
+@app.route("/chat-api", methods =['POST'])
 def chat_api():
-    requst_message = request.json['requst_message']
-    print('requst_message: ' ,requst_message)
+    requst_message = request.json['request_message']
+    print('request_message: ' ,requst_message)
+    chat_bot_service.add_user_message(requst_message)
+    response = chat_bot_service.send_request()
+    chat_bot_service.add_response(response)
+    response_message = chat_bot_service.get_response_content()
+    print("response_message : ", response_message)
+    return {"response_message": response_message}
+    
+    
+    # return {"response_message": "나도 "+ request.json['request_message']}
 
 
 

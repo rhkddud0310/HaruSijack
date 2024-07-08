@@ -52,6 +52,7 @@
 		FE2D7ADA2C2FE769006FD988 /* PredictView04.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2D7AD92C2FE769006FD988 /* PredictView04.swift */; };
 		FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE360DC42C16D79D007BA9AE /* JSONModel.swift */; };
 		FED251602C2CFDA10091D301 /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED2515F2C2CFDA10091D301 /* TabBarButton.swift */; };
+		FEE786C92C3BCAAF004DD49F /* ChatBotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE786C82C3BCAAF004DD49F /* ChatBotTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +104,7 @@
 		FE2D7AD92C2FE769006FD988 /* PredictView04.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictView04.swift; sourceTree = "<group>"; };
 		FE360DC42C16D79D007BA9AE /* JSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONModel.swift; sourceTree = "<group>"; };
 		FED2515F2C2CFDA10091D301 /* TabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
+		FEE786C82C3BCAAF004DD49F /* ChatBotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBotTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				548934FE2C338CC300EEE89A /* ChatView.swift */,
+				FEE786C82C3BCAAF004DD49F /* ChatBotTest.swift */,
 			);
 			path = Bot;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 				A77F740F2C39249D00751F06 /* newsTest.swift in Sources */,
 				546496582C183F7000B1FF48 /* CalendarDetailView.swift in Sources */,
 				A77F740B2C39221000751F06 /* NewsModel_Fast.swift in Sources */,
+				FEE786C92C3BCAAF004DD49F /* ChatBotTest.swift in Sources */,
 				FE22C5622C2D007F00267096 /* NewsArticleView.swift in Sources */,
 				5433378C2C16C781000809D9 /* DateModel.swift in Sources */,
 				5471ADB82C0D7A1B00D24E62 /* C_DatePicker.swift in Sources */,
@@ -548,7 +552,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
-				DEVELOPMENT_TEAM = P44G928HC2;
+				DEVELOPMENT_TEAM = ATM2B7QCY2;
 				ENABLE_CODE_COVERAGE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				ENABLE_PREVIEWS = YES;
@@ -591,7 +595,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HaruSijak/Preview Content\"";
-				DEVELOPMENT_TEAM = P44G928HC2;
+				DEVELOPMENT_TEAM = ATM2B7QCY2;
 				ENABLE_CODE_COVERAGE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				ENABLE_PREVIEWS = YES;
