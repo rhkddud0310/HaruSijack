@@ -47,7 +47,7 @@ class Chatbot:
         print(yellow("사용자가 말한 메세지 : "),self.context)
         import time, datetime
         today = datetime.date.today()
-        date = today.strftime("%Y%m%d")
+        date = today.strftime("%Y-%m-%d")
         template = """
             당신은 번역함수이며, 반환값은 반드시 JSON 데이터 여야 합니다. 
             
@@ -61,7 +61,7 @@ class Chatbot:
             ```{today}```
             
             ---
-            출력결과 : {{"STEP-1":<지하철역 이름>, "STEP-2": <호선> ,"STEP-3": <날짜>}}
+            출력결과 : {{"STEP-1":<지하철역 이름>, "STEP-2": <호선> ,"STEP-3": <4자리수년도-두자리수월-두자리수일>}}
             """
             
         template = template.format(text=self.context, today=date)
@@ -76,7 +76,8 @@ class Chatbot:
         ).model_dump()
         print(yellow("start"))
         print(yellow(response['choices'][0]['message']['content']))
-        return response
+        json_result =response['choices'][0]['message']['content']
+        return json_result
         
     def send_request(self):
         response = self.client.chat.completions.create(
