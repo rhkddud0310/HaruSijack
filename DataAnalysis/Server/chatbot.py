@@ -1,3 +1,25 @@
+
+"""
+ ## Desc : chat bot service api 
+## Author : harusizakc
+## update: 
+    * 2024.06.28 by pdg : service update
+        - nlp service update
+        - news service update 
+"""
+
+from fastapi import APIRouter
+router = APIRouter()
+@router.get("/chatbot")
+async def read_item( query_parameter: str = None):
+    
+    return {"message":" harusizack chat bot service!"}
+
+
+
+
+# uvicorn fastapi_02:app --reload
+
 from common import get_client, get_model
 from Functions import NLP_Service as N
 from pprint import pprint

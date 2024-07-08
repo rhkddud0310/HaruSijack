@@ -24,9 +24,17 @@
     2024.06.22 pdg : 모든 호선에 대한 머신러닝 모델 적용 
         - match case 사용 aws 에 맞춤 
          
+    2024.06.08 pdg : chat bot service 탑재
+        - 
 ---
 """
 
+### IMportiong chat bot
+from chatbot import Chatbot
+from common import model 
+
+## instance  생성 
+chat_bot_service = Chatbot(model.basic)
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -198,6 +206,17 @@ def chat_kakao():
     print("request.json : ",request.json)
     response_to_kakao = format_response("반가워!")
     return response_to_kakao
+
+
+
+@app.route("/chat-api", method =['POST'])
+def chat_api():
+    requst_message = request.json['requst_message']
+    print('requst_message: ' ,requst_message)
+
+
+
+
 
 def format_response(resp):
     data = {
