@@ -8,7 +8,7 @@ struct ChatBotTest: View {
         VStack {
             Text("Response: \(responseMessage)")
             Button(action: {
-                fetchResponse(message: "야 너 바보냐 ") { result in
+                fetchResponse(message: "오늘 동대문역사문화공원역 혼잡도 알려줘  ") { result in
                     switch result {
                     case .success(let response):
                         DispatchQueue.main.async {

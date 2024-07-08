@@ -208,12 +208,14 @@ def subwayAlighting():
 def chat_api():
     requst_message = request.json['request_message']
     print('request_message: ' ,requst_message)
+    
     chat_bot_service.add_user_message(requst_message)
-    response = chat_bot_service.send_request()
-    chat_bot_service.add_response(response)
-    response_message = chat_bot_service.get_response_content()
-    print("response_message : ", response_message)
-    return {"response_message": response_message}
+    machine_learning_request = chat_bot_service.determin_question_is_about_subway()
+    
+    # chat_bot_service.add_response(response)
+    # response_message = chat_bot_service.get_response_content()
+    # print("response_message : ", response_message)
+    # return {"response_message": response_message}
     
     
     # return {"response_message": "나도 "+ request.json['request_message']}

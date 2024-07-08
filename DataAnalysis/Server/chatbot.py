@@ -12,7 +12,6 @@ from fastapi import APIRouter
 router = APIRouter()
 @router.get("/chatbot")
 async def read_item( query_parameter: str = None):
-    
     return {"message":" harusizack chat bot service!"}
 
 
@@ -40,7 +39,44 @@ class Chatbot:
 
 
     def add_user_message(self,message):
+        self.context=[{"role":"system", "content":'You are a helpful assistant.'}]
         self.context.append({"role":"user", "content":message})
+        
+        
+    def determin_question_is_about_subway(self):
+        print(yellow("사용자가 말한 메세지 : "),self.context)
+        import time, datetime
+        today = datetime.date.today()
+        date = today.strftime("%Y%m%d")
+        template = """
+            당신은 번역함수이며, 반환값은 반드시 JSON 데이터 여야 합니다. 
+            
+            STEP 별로 작업을 수행하면서 그 결과를 아래의 출력 결과 JSON 포맷에 작성하세요.
+            STEP-1. 입력받은 텍스트 안에 서울 지하철 이름이 있으면 지하철역 이름 을 표기할것 
+            STEP-2. 입력받은 텍스트 안에 서울 지하철의 호선 정보가 았으면 몇호선인지 표기할것
+            STEP-3. 입력받은 텍스트 안에날짜로 추정되는 정보가 있으면  날짜를 yyyy-mm-dd 양식으로 표기할것 . 
+            오늘이라는 표현이 있으면 {today}를  yyyy-mm-dd 양식으로 표기할것
+            
+            ```{text}```
+            ```{today}```
+            
+            ---
+            출력결과 : {{"STEP-1":<지하철역 이름>, "STEP-2": <호선> ,"STEP-3": <날짜>}}
+            """
+            
+        template = template.format(text=self.context, today=date)
+        messages = [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": template}  # template 문자열을 JSON 객체로 변환
+        ]
+        response = self.client.chat.completions.create(
+            model =self.model.basic,
+            messages = messages,
+            response_format ={"type":"json_object"}
+        ).model_dump()
+        print(yellow("start"))
+        print(yellow(response['choices'][0]['message']['content']))
+        return response
         
     def send_request(self):
         response = self.client.chat.completions.create(
@@ -68,6 +104,9 @@ if __name__ =="__main__":
     
     ## 시나리오 1-4 : 현재 context 를 openai api 입력값으로 설정하여 전송
     response = chatbot.send_request()
+    print(yellow("함수실행 "))
+    ml_input_from_chat = chatbot.determin_question_is_about_subway()
+    # rrr = chatbot.determin_question_is_about_subway()
     
     # 시나리오 1-5 : 응답 메세지를 context 에 추가 
     chatbot.add_response(response)
@@ -79,9 +118,9 @@ if __name__ =="__main__":
     chatbot.add_user_message("그중에 제일 혼잡한 역은어디야?")
     
     # 다시 요청 보내기 
-    response = chatbot.send_request()
+    # response = chatbot.send_request()
     
     # 응답 메세지를 context 에 추가 
-    chatbot.add_response(response)
+    # chatbot.add_response(response)
     
     print(red("하루 : "),blue(chatbot.get_response_content()))
