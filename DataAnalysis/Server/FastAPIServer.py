@@ -138,7 +138,7 @@ project_root = os.path.dirname(data_analysis_dir)
 # 시스템 경로에 추가
 sys.path.append(data_analysis_dir)
 # sys.path.append(project_root)
-from routers import subway
+from routers import subway, news
 # from routers import chatbot
 # from routers import news
 
@@ -147,7 +147,7 @@ app = FastAPI()
 
 # router 사용 
 app.include_router(subway.router, prefix="/subway", tags=["subway"])
-# app.include_router(news.router, prefix="/news", tags=["news"])
+app.include_router(news.router, prefix="/news", tags=["news"])
 # app.include_router(chatbot.router, prefix="/chat-kakao", tags=["chat-kakao"])
 
 #서버실행 test
