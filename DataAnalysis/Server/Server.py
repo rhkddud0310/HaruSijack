@@ -208,8 +208,8 @@ def subwayAlighting():
 @app.route("/chat-api", methods =['POST'])
 def chat_api():
     print("asdfsdasdfsadfasd")
-    print('request_message: ' ,requst_message)
     requst_message = request.json['request_message']
+    print('request_message: ',requst_message)
     
     chat_bot_service.add_user_message(requst_message)
     ml_iunput_json_str = chat_bot_service.determin_question_is_about_subway()

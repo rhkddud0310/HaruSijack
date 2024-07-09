@@ -21,6 +21,7 @@ struct ChatView: View {
     @State var step1 = ""
     @State var step2 = ""
     @State var step3 = ""
+    
     // 챗봇 대답
     @State private var responseMessage: String = ""
     
@@ -44,11 +45,7 @@ struct ChatView: View {
                             if let chatBotTalk = log.split(separator: "@#@!!").last.map(String.init)?.trimmingCharacters(in: .whitespaces)
                             {
                                 showChatBotTalk(chatBotTalk)
-                                    
                             }
-             
-                            
-
                         }//else
                     }// for each
                 })
@@ -111,13 +108,12 @@ struct ChatView: View {
                     print("name:\(String(describing: name))")
                     print("line:\(String(describing: line))")
                     print("date:\(String(describing: date))")
-
                     
                     
                     /// Machine learning 돌리기
                     print("함수 실핸시작")
-                    let predictInstance = subwayImage()
-                     predictInstance.fetchDataFromServerBoarding(stationName: name, date: date, time: "", stationLine: line, completion: { responseString in
+                    
+                    fetchDataFromServerBoarding(stationName: name, date: date, time: "", stationLine: line, completion: { responseString in
                         print("-------------------1231231")
                          print(responseString)
                          print("-------------------1231231")
@@ -293,6 +289,37 @@ struct ChatView: View {
         .padding()
     } //showChatImage
     
+    func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
+        // 127.0.0.1
+        //개인 faskapi
+        let url = URL(string: "http://54.180.247.41:8000/subway/subwayRide")!
+        // 개인 flask
+        //        let url = URL(string: "http://127.0.0.1:5000/subwayRide")!
+        // aws flask
+        //        let url = URL(string: "http://54.180.247.41:5000/subwayRide")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let parameters: [String: Any] = [
+            "stationName": stationName,
+            "date": date,
+            "time": time,
+            "stationLine": stationLine
+        ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Error:", error ?? "Unknown error")
+                return
+            }
+            if let responseString = String(data: data, encoding: .utf8) {
+                completion(responseString)
+                print("승차인원 ::******************")
+                print(responseString)
+            }
+        }
+        task.resume()
+    }
     
 }
 
