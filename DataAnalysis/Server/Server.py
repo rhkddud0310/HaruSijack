@@ -209,7 +209,17 @@ def subwayAlighting():
 @app.route("/chat-api", methods =['POST'])
 def chat_api():
     requst_message = request.json['request_message']
-    if "승차:" in str(requst_message):
+    
+    
+    second_dict = requst_message[1]  # 두 번째 딕셔너리
+    content = second_dict['content']  # 두 번째 딕셔너리의 'content' 값
+
+    # 문자열을 JSON 형식으로 변환
+    content_json = json.loads(content)
+
+    
+    
+    if "승차" in content_json:
         print("📌 - request message 가 ML result 입니다. ")
         
         

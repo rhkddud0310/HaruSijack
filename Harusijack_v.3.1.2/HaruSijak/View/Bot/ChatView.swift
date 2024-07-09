@@ -101,11 +101,6 @@ struct ChatView: View {
                     print("JSON 데이터에서 값을 가져오지 못했습니다.")
                     return // 오류 발생 시 함수 종료
                 }
-//                print("name:\(String(describing: name))")
-//                print("line:\(String(describing: line))")
-//                print("date:\(String(describing: date))")
-                
-                print("함수 실핸시작ㅁㄴㅇㅁㄴㅇㅁㄴㅇ")
                 fetchDataFromServerBoarding(stationName: "\(String(name.dropLast()))", date: "\(date)", time: "", stationLine: "\(line)", completion: { responseString in
                     print()
                 })
@@ -113,9 +108,15 @@ struct ChatView: View {
                     print()
                 })
                 
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
 //                    print("r_a_predicted: \(r_a_predicted)")
+                    // Server 통신 코드
+                    print(" 📌 - machinelearning 결과를 서버에 보냅니다.")
+                    MLResponse(message: "\(r_a_predicted)", completion: { res in
+                        print(" server 와 통신완료")
+                        
+                    })
+                    
                     
                 }
                 
@@ -202,6 +203,64 @@ struct ChatView: View {
             task.resume()
         }
     
+    
+    func MLResponse(message: String, completion: @escaping (Result<String, Error>) -> Void) {
+            let server_ip="http://54.180.247.41:5000/chat-api"
+//            let local_ip="http://127.0.0.1:5000/chat-api"
+            guard let url = URL(string: server_ip ) else {
+                
+                completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
+                return
+            }
+            print("server request: \(url)")
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let requestBody: [String: Any] = ["request_message": message]
+            
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+            } catch {
+                completion(.failure(error))
+                return
+            }
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    completion(.failure(NSError(domain: "HTTP error", code: (response as? HTTPURLResponse)?.statusCode ?? -1, userInfo: nil)))
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "No data", code: -1, userInfo: nil)))
+                    return
+                }
+                
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let responseMessage = json["response_message"] as? String {
+                        completion(.success(responseMessage))
+                        print("test : ")
+                        print("-----------------------------------")
+                        print(completion(.success(responseMessage)))
+                        print("-----------------------------------")
+                        return completion(.success(responseMessage))
+                    } else {
+                        completion(.failure(NSError(domain: "Invalid response", code: -1, userInfo: nil)))
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            
+            task.resume()
+        }
     
     /* MARK: chatbot Image Circle & Talk */
     func showChatBotTalk(_ talk: String) -> some View {
