@@ -205,7 +205,7 @@ struct ChatView: View {
     
     
     func MLResponse(message: String, completion: @escaping (Result<String, Error>) -> Void) {
-            let server_ip="http://54.180.247.41:5000/chat-api"
+            let server_ip="http://54.180.247.41:5000/chat-api-ml"
 //            let local_ip="http://127.0.0.1:5000/chat-api"
             guard let url = URL(string: server_ip ) else {
                 

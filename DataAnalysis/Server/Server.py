@@ -209,34 +209,29 @@ def subwayAlighting():
 @app.route("/chat-api", methods =['POST'])
 def chat_api():
     requst_message = request.json['request_message']
-    print(requst_message)
-    second_dict = requst_message[1]  # 두 번째 딕셔너리
-    print(f"type:{type(second_dict)}",second_dict)
-    content = second_dict['content']  # 두 번째 딕셔너리의 'content' 값
-    print(content)
-    # 문자열을 JSON 형식으로 변환
-    content_json = json.loads(content)
-
+    # print("request message 가 일반 대화입니다. ")
+    print('request_message: ',requst_message)
     
+    chat_bot_service.add_user_message(requst_message)
+    ml_iunput_json_str = chat_bot_service.determin_question_is_about_subway()
     
-    if "승차" in content_json:
-        print("📌 - request message 가 ML result 입니다. ")
-        
-        
-    else:
-        print("request message 가 일반 대화입니다. ")
-        print('request_message: ',requst_message)
-        
-        chat_bot_service.add_user_message(requst_message)
-        ml_iunput_json_str = chat_bot_service.determin_question_is_about_subway()
-        
-        # chat_bot_service.add_response(response)
-        # response_message = chat_bot_service.get_response_content()
-        # print("response_message : ", response_message)
-        
-        return {"response_message": ml_iunput_json_str}
+    # chat_bot_service.add_response(response)
+    # response_message = chat_bot_service.get_response_content()
+    # print("response_message : ", response_message)
+    
+    return {"response_message": ml_iunput_json_str}
         
         # return {"response_message": "나도 "+ request.json['request_message']}
+
+@app.route("/chat-api-ml", methods =['POST'])
+def chat_api_ml():
+    requst_message = request.json['request_message']
+    print('request_message: ',requst_message)
+    chat_bot_service.add_ML_result(requst_message)
+    ml_chat_response = chat_bot_service.response_GPT_from_inputMLResult()
+    return {"response_message": ml_chat_response}
+
+
 
 def format_response(resp):
     data = {
