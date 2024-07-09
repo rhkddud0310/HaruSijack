@@ -1,4 +1,5 @@
 //
+//오늘 군자역 5호선 혼잡도 알려줘
 //  ChatView.swift
 //  HaruSijak
 //
@@ -7,6 +8,7 @@
 /* 2024.07.03 snr : 챗봇 화면 구성
         - ScrollView로 되게 구현해야됨
         - 텍스트 입력부분 Zstack으로 감싸기
+   2024
 */
 
 import SwiftUI
@@ -16,6 +18,9 @@ struct ChatView: View {
     @State var humanInput: String = ""
     @State var chatLogs: [String] = ["C:안녕하세요. 하루입니다. 무엇을 도와드릴까요?"]
     @FocusState var isTextFieldFocused: Bool
+    @State var step1 = ""
+    @State var step2 = ""
+    @State var step3 = ""
     // 챗봇 대답
     @State private var responseMessage: String = ""
     
@@ -23,27 +28,32 @@ struct ChatView: View {
         
         // ****** 이부분 ScrollView로 되게 수정해야됨
         VStack(content: {
-            Text("response message : \(responseMessage)")
             if showWelcomMessage {
-//                showChatBotTalk("안녕하세요. 하루입니다. 무엇을 도와드릴까요?")
                 
                 
                 // 대화 기록 표시
-                ForEach(chatLogs, id: \.self) { log in
-                    if log.starts(with: "H:") {
-                        if let humanTalk = log.split(separator: ":").last.map(String.init)?.trimmingCharacters(in: .whitespaces) {
-                            showHumanTalk(humanTalk)
-                            Text(humanTalk)
-                            
-                        }
-                    } else {
-                        if let chatBotTalk = log.split(separator: ":").last.map(String.init)?.trimmingCharacters(in: .whitespaces) {
-                            showChatBotTalk(chatBotTalk)
+                ScrollView(content: {
+                    ForEach(chatLogs, id: \.self) { log in
+                        if log.starts(with: "H:") {
+                            if let humanTalk = log.split(separator: ":").last.map(String.init)?.trimmingCharacters(in: .whitespaces) {
+                                showHumanTalk(humanTalk)
+                                Text(humanTalk)
                                 
-                        }
+                            }
+                        } else {
+//                            chatbot response log
+                            if let chatBotTalk = log.split(separator: "@#@!!").last.map(String.init)?.trimmingCharacters(in: .whitespaces)
+                            {
+                                showChatBotTalk(chatBotTalk)
+                                    
+                            }
+             
+                            
 
-                    }//else
-                }
+                        }//else
+                    }// for each
+                })
+              
             }// if
             Spacer()
             //****** 이부분 Zstack으로 수정해야되고
@@ -65,6 +75,7 @@ struct ChatView: View {
             })
             .padding(.horizontal, 20)
         })
+        
         .padding(.top, 40)
         .navigationTitle("하루챗봇")
         .navigationBarTitleDisplayMode(.inline)
@@ -89,8 +100,52 @@ struct ChatView: View {
                 
                 DispatchQueue.main.async {
                     self.responseMessage = response
-                    print(" dispatch 후 response : \(response)")
-                    chatLogs.append("C:" + String(response))
+                    
+                    // JSON 문자열을 Data로 변환
+                    guard let jsonData = response.data(using: .utf8) else {
+                        print("Failed to convert JSON string to Data.")
+                        return
+                    }
+
+                    do {
+                        // JSON 디코딩을 위한 Decodable 객체 정의
+                        struct StepData: Decodable {
+                            let STEP1: String
+                            let STEP2: String
+                            let STEP3: String
+                        }
+                        // JSON 키와 구조체 프로퍼티 이름이 일치하지 않을 경우 CodingKeys를 사용하여 매핑
+                        enum CodingKeys: String, CodingKey {
+                            case STEP1 = "STEP-1"
+                            case STEP2 = "STEP-2"
+                            case STEP3 = "STEP-3"
+                        }
+                        
+                        // JSON 디코딩
+                        let decodedData = try JSONDecoder().decode(StepData.self, from: jsonData)
+                        
+                        
+
+                        // 변수에 값 할당
+                        let step1Value = decodedData.STEP1
+                        let step2Value = decodedData.STEP2
+                        let step3Value = decodedData.STEP3
+                        
+                        // 값 출력
+                        print("STEP-1STEP-1STEP-1STEP-1STEP-1STEP-1STEP-1")
+                        print("STEP-1: \(step1Value)")
+                        print("STEP-2: \(step2Value)")
+                        print("STEP-3: \(step3Value)")
+                        print("STEP-1STEP-1STEP-1STEP-1STEP-1STEP-1STEP-1")
+                        
+                    } catch {
+                        print("Error decoding JSON: \(error)")
+                    }
+                    
+                    
+                    
+                    print(" dispatch 후 response : \(self.responseMessage)")
+                    chatLogs.append("C:" + "\(self.responseMessage)")
                 }
                 print("서버 통신 성공 :\(response)")
             case .failure(let error):
@@ -120,7 +175,7 @@ struct ChatView: View {
         }
         return ""
     }
-    // MARK:
+    // MARK: Fetch Response from Server
     func fetchResponse(message: String, completion: @escaping (Result<String, Error>) -> Void) {
             let server_ip="http://54.180.247.41:5000/chat-api"
             //let local_ip="http://127.0.0.1:5000/chat-api"
@@ -164,7 +219,9 @@ struct ChatView: View {
                        let responseMessage = json["response_message"] as? String {
                         completion(.success(responseMessage))
                         print("test : ")
+                        print("-----------------------------------")
                         print(completion(.success(responseMessage)))
+                        print("-----------------------------------")
                         return completion(.success(responseMessage))
                     } else {
                         completion(.failure(NSError(domain: "Invalid response", code: -1, userInfo: nil)))
@@ -180,6 +237,7 @@ struct ChatView: View {
     
     /* MARK: chatbot Image Circle & Talk */
     func showChatBotTalk(_ talk: String) -> some View {
+        
         VStack(content: {
             HStack {
                 ZStack {
@@ -194,17 +252,22 @@ struct ChatView: View {
                 Spacer()
             }
             //오늘 군자역 5호선 혼잡도 알려줘
+            
             HStack {
+                Text("")
+                    .onAppear{
+                        print("talk test :\(talk)")
+                        
+                    }
                 Text(talk)
+
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                     .background(Color.red)
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     .transition(.scale)
-//                    .frame(minWidth: 500)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .lineLimit(5)
-                    .fixedSize(horizontal: false, vertical: true)
+                    .fixedSize(horizontal: false, vertical: false)
                     .alignmentGuide(.leading) { _ in 0}
                 Spacer()
             }
