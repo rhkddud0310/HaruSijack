@@ -10,19 +10,20 @@
 */
 
 import SwiftUI
-
 struct ChatView: View {
-    
     @State var showWelcomMessage = false
     @State var isAnimation = false
     @State var humanInput: String = ""
     @State var chatLogs: [String] = ["C:안녕하세요. 하루입니다. 무엇을 도와드릴까요?"]
     @FocusState var isTextFieldFocused: Bool
+    // 챗봇 대답
+    @State private var responseMessage: String = ""
     
     var body: some View {
         
         // ****** 이부분 ScrollView로 되게 수정해야됨
         VStack(content: {
+            Text("response message : \(responseMessage)")
             if showWelcomMessage {
 //                showChatBotTalk("안녕하세요. 하루입니다. 무엇을 도와드릴까요?")
                 
@@ -32,22 +33,19 @@ struct ChatView: View {
                     if log.starts(with: "H:") {
                         if let humanTalk = log.split(separator: ":").last.map(String.init)?.trimmingCharacters(in: .whitespaces) {
                             showHumanTalk(humanTalk)
+                            Text(humanTalk)
+                            
                         }
                     } else {
                         if let chatBotTalk = log.split(separator: ":").last.map(String.init)?.trimmingCharacters(in: .whitespaces) {
                             showChatBotTalk(chatBotTalk)
+                                
                         }
-                    }
+
+                    }//else
                 }
-                        
-                    
-                
             }// if
-            
-            
             Spacer()
-            
-            
             //****** 이부분 Zstack으로 수정해야되고
             HStack(content: {
                 TextField("텍스트를 입력하세요.", text: $humanInput)
@@ -58,6 +56,7 @@ struct ChatView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 
                 Button(action: {
+                    print("\(humanInput)")
                     sendUserInput()
                 }, label: {
                     Image(systemName: "arrow.up.square.fill")
@@ -78,18 +77,35 @@ struct ChatView: View {
             }
         }
     }
-    
     // -------------------- functions ----------------------
-    
     // 사용자 입력 전송 및 처리
     func sendUserInput() {
+        print("sendUserInput start ")
         //사용자 입력 기록 추가
         chatLogs.append("H:" + humanInput)
+        fetchResponse(message: humanInput) { result in
+            switch result {
+            case .success(let response):
+                
+                DispatchQueue.main.async {
+                    self.responseMessage = response
+                    print(" dispatch 후 response : \(response)")
+                    chatLogs.append("C:" + String(response))
+                }
+                print("서버 통신 성공 :\(response)")
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.responseMessage = "Error: \(error.localizedDescription)"
+                    return
+                }
+            }
+        }
+        print()
+        print("response : \(responseMessage)")
+        print("Haru : ", chatLogs[1])
         
-        print("ddd : ", chatLogs[1])
         // 챗봇이 응답하도록 로직 구현
 //        let response = generateChatBotResponse(humanInput)
-//        chatLogs.append("C:" + response)
         
         humanInput = ""
     }
@@ -102,9 +118,65 @@ struct ChatView: View {
         } else if (quest.contains("일정") || quest.contains("스케줄") || quest.contains("스케쥴")) {
             // [일정], [스케쥴], [스케줄]라는 단어가 포함되어 있을 때 로직 => 사용자 입력텍스트에서 유사도를 체크해야되겠??
         }
-        
         return ""
     }
+    // MARK:
+    func fetchResponse(message: String, completion: @escaping (Result<String, Error>) -> Void) {
+            let server_ip="http://54.180.247.41:5000/chat-api"
+            //let local_ip="http://127.0.0.1:5000/chat-api"
+            guard let url = URL(string:server_ip ) else {
+                
+                completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
+                return
+            }
+            print("server request: \(url)")
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let requestBody: [String: Any] = ["request_message": message]
+            
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+            } catch {
+                completion(.failure(error))
+                return
+            }
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    completion(.failure(NSError(domain: "HTTP error", code: (response as? HTTPURLResponse)?.statusCode ?? -1, userInfo: nil)))
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "No data", code: -1, userInfo: nil)))
+                    return
+                }
+                
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let responseMessage = json["response_message"] as? String {
+                        completion(.success(responseMessage))
+                        print("test : ")
+                        print(completion(.success(responseMessage)))
+                        return completion(.success(responseMessage))
+                    } else {
+                        completion(.failure(NSError(domain: "Invalid response", code: -1, userInfo: nil)))
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            
+            task.resume()
+        }
+    
     
     /* MARK: chatbot Image Circle & Talk */
     func showChatBotTalk(_ talk: String) -> some View {
@@ -121,15 +193,19 @@ struct ChatView: View {
                 }
                 Spacer()
             }
-            
+            //오늘 군자역 5호선 혼잡도 알려줘
             HStack {
                 Text(talk)
                     .padding()
-                    .background(Color.blue)
+                    .background(Color.red)
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     .transition(.scale)
-                .alignmentGuide(.leading) { _ in 0}
+//                    .frame(minWidth: 500)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineLimit(5)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .alignmentGuide(.leading) { _ in 0}
                 Spacer()
             }
 //             Spacer()

@@ -201,9 +201,6 @@ def subwayAlighting():
     except Exception as e:
         return jsonify({'error': str(e)})
 
-
-
-
 @app.route("/chat-api", methods =['POST'])
 def chat_api():
     requst_message = request.json['request_message']
@@ -219,10 +216,6 @@ def chat_api():
     
     
     # return {"response_message": "나도 "+ request.json['request_message']}
-
-
-
-
 
 def format_response(resp):
     data = {
@@ -241,9 +234,6 @@ def format_response(resp):
 @app.route("/news")
 def news():
     return "news crawling"
-
-
-
 
 @app.route("/test")
 def test():
