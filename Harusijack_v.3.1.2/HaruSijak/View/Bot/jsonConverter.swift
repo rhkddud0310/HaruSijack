@@ -39,9 +39,9 @@ struct jsonConverter{
         }
         
         // 값 출력
-        print("STEP-1: \(STEP1 ?? "값 없음")")
-        print("STEP-2: \(STEP2 ?? "값 없음")")
-        print("STEP-3: \(STEP3 ?? "값 없음")")
+//        print("STEP-1: \(STEP1 ?? "값 없음")")
+//        print("STEP-2: \(STEP2 ?? "값 없음")")
+//        print("STEP-3: \(STEP3 ?? "값 없음")")
         return (STEP1,STEP2,STEP3)
     }
    
