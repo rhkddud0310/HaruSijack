@@ -36,6 +36,7 @@ class Chatbot:
         self.context = [{"role": "system", "content": "You are a helpful assistant."}]
         self.model  = get_model()
         self.client = get_client()  # client를 인스턴스 변수로 저장
+        self.r_a_dict = ""
 
 
     def add_user_message(self,message):
@@ -78,6 +79,41 @@ class Chatbot:
         print(yellow(response['choices'][0]['message']['content']))
         json_result =response['choices'][0]['message']['content']
         return json_result
+        
+    def response_GPT_from_inputMLResult(self):
+        print(yellow("사용자가 보낸 승하차 정보 : "),self.context)
+        template = """
+            당신은 번역함수이며, 반환값은 반드시 str 여야 합니다. 
+            
+            STEP 별로 작업을 수행하면서 그 결과를 아래의 출력 결과 JSON 포맷에 작성하세요.
+            STEP-1. 입력받은 텍스트 안에 서울 지하철 이름이 있으면 지하철역 이름 을 표기할것 
+            STEP-2. 입력받은 텍스트 안에 서울 지하철의 호선 정보가 았으면 몇호선인지 숫자를 str으로 표기할것
+            STEP-3. 입력받은 텍스트 안에날짜로 추정되는 정보가 있으면  날짜를 yyyy-mm-dd 양식으로 표기할것 . 
+            오늘이라는 표현이 있으면 {today}를  yyyy-mm-dd 양식으로 표기할것
+            
+            ```{text}```
+            ```{today}```
+            
+            ---
+            출력결과 : {{"stationName":<지하철역 이름>, "stationLine": <"숫자"> ,"date": <4자리수년도-두자리수월-두자리수일>}}
+            """
+            
+        template = template.format(text=self.context, today=date)
+        messages = [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": template}  # template 문자열을 JSON 객체로 변환
+        ]
+        response = self.client.chat.completions.create(
+            model =self.model.basic,
+            messages = messages,
+            response_format ={"type":"json_object"}
+        ).model_dump()
+        print(yellow("start"))
+        print(yellow(response['choices'][0]['message']['content']))
+        json_result =response['choices'][0]['message']['content']
+        return json_result
+        
+        
         
     def send_request(self):
         response = self.client.chat.completions.create(

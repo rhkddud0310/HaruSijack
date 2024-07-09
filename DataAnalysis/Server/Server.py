@@ -51,6 +51,7 @@ sys.path.append(parent_dir)
 
 # 이제 상위 폴더에 있는 Module 폴더 안의 Functions 모듈을 import한다.
 from Module.Functions import Service
+
 # my_functions 모듈의 함수를 사용할 수 있습니다.
 app = Flask(__name__) # 난 flask 서버야!! 
 app.config['JSON_AS_ASCII'] = False 
@@ -207,20 +208,25 @@ def subwayAlighting():
 
 @app.route("/chat-api", methods =['POST'])
 def chat_api():
-    print("asdfsdasdfsadfasd")
     requst_message = request.json['request_message']
-    print('request_message: ',requst_message)
-    
-    chat_bot_service.add_user_message(requst_message)
-    ml_iunput_json_str = chat_bot_service.determin_question_is_about_subway()
-    
-    # chat_bot_service.add_response(response)
-    # response_message = chat_bot_service.get_response_content()
-    # print("response_message : ", response_message)
-    return {"response_message": ml_iunput_json_str}
-    
-    
-    # return {"response_message": "나도 "+ request.json['request_message']}
+    if "승차:" in str(requst_message):
+        print("📌 - request message 가 ML result 입니다. ")
+        
+        
+    else:
+        print("request message 가 일반 대화입니다. ")
+        print('request_message: ',requst_message)
+        
+        chat_bot_service.add_user_message(requst_message)
+        ml_iunput_json_str = chat_bot_service.determin_question_is_about_subway()
+        
+        # chat_bot_service.add_response(response)
+        # response_message = chat_bot_service.get_response_content()
+        # print("response_message : ", response_message)
+        
+        return {"response_message": ml_iunput_json_str}
+        
+        # return {"response_message": "나도 "+ request.json['request_message']}
 
 def format_response(resp):
     data = {

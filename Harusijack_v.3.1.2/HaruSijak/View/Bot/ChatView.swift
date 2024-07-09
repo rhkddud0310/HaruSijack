@@ -21,7 +21,7 @@ struct ChatView: View {
     @State var step1 = ""
     @State var step2 = ""
     @State var step3 = ""
-    
+    @State var r_a_predicted: [String:String] = ["승차": "", "하차":""]
     // 챗봇 대답
     @State private var responseMessage: String = ""
     
@@ -84,48 +84,41 @@ struct ChatView: View {
             }
         }
     }
+    
+    
     // -------------------- functions ----------------------
     // 사용자 입력 전송 및 처리
     func sendUserInput() {
-        print("sendUserInput start ")
         //사용자 입력 기록 추가
         chatLogs.append("H:" + humanInput)
         fetchResponse(message: humanInput) { result in
             switch result {
             case .success(let response):
-                
-                DispatchQueue.main.async {
-                    self.responseMessage = response
-                    print("--------------------------")
-                    print(response)
-                    print("--------------------------")
-                    // Json data convert Instance 생성
-                    let jsonconvert = jsonConverter()
-                    guard case let (name?, line?, date?) = jsonconvert.StringToJson(jsonData: response) else {
-                        print("JSON 데이터에서 값을 가져오지 못했습니다.")
-                        return // 오류 발생 시 함수 종료
-                    }
-                    print("name:\(String(describing: name))")
-                    print("line:\(String(describing: line))")
-                    print("date:\(String(describing: date))")
-                    
-                    
-                    /// Machine learning 돌리기
-                    print("함수 실핸시작")
-                    
-                    fetchDataFromServerBoarding(stationName: name, date: date, time: "", stationLine: line, completion: { responseString in
-                        print("-------------------1231231")
-                         print(responseString)
-                         print("-------------------1231231")
-                    })
-                    print("함수 실행끝")
-                    
-                    
-                    
-                    
-                    chatLogs.append("C:" + "\(self.responseMessage)")
-                }
                 print("서버 통신 성공 :\(response)")
+                
+                let jsonconvert = jsonConverter()
+                guard case let (name?, line?, date?) = jsonconvert.StringToJson(jsonData: response) else {
+                    print("JSON 데이터에서 값을 가져오지 못했습니다.")
+                    return // 오류 발생 시 함수 종료
+                }
+//                print("name:\(String(describing: name))")
+//                print("line:\(String(describing: line))")
+//                print("date:\(String(describing: date))")
+                
+                print("함수 실핸시작ㅁㄴㅇㅁㄴㅇㅁㄴㅇ")
+                fetchDataFromServerBoarding(stationName: "\(String(name.dropLast()))", date: "\(date)", time: "", stationLine: "\(line)", completion: { responseString in
+                    print()
+                })
+                fetchDataFromServerAlighting(stationName: "\(String(name.dropLast()))", date: "\(date)", time: "", stationLine: "\(line)", completion: { responseString in
+                    print()
+                })
+                
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+//                    print("r_a_predicted: \(r_a_predicted)")
+                    
+                }
+                
             case .failure(let error):
                 DispatchQueue.main.async {
                     self.responseMessage = "Error: \(error.localizedDescription)"
@@ -133,13 +126,10 @@ struct ChatView: View {
                 }
             }
         }
-        print()
-        print("response : \(responseMessage)")
-        print("Haru : ", chatLogs[1])
+//        print("response : \(responseMessage)")
+//        print("Haru : ", chatLogs[1])
         
         // 챗봇이 응답하도록 로직 구현
-//        let response = generateChatBotResponse(humanInput)
-        
         humanInput = ""
     }
     
@@ -255,7 +245,6 @@ struct ChatView: View {
         .padding()
     } //showChatImage
     
-    
     /* MARK: Human Image Circle & Talk */
     func showHumanTalk(_ talk: String) -> some View {
         VStack(content: {
@@ -289,6 +278,7 @@ struct ChatView: View {
         .padding()
     } //showChatImage
     
+    /* MARK: 승차인워원 예측을 위한 서버통신 */
     func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
         // 127.0.0.1
         //개인 faskapi
@@ -314,11 +304,49 @@ struct ChatView: View {
             }
             if let responseString = String(data: data, encoding: .utf8) {
                 completion(responseString)
-                print("승차인원 ::******************")
-                print(responseString)
+                self.r_a_predicted["승차"] = responseString
+                print("📌 ---- ra 승차 인원 append 됨")
             }
         }
         task.resume()
+        completion("")
+    }
+    
+    /* MARK: 하차인워원 예측을 위한 서버통신 */
+    func fetchDataFromServerAlighting(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
+        print(stationName,date,time,stationLine)
+        //127.0.0.1 54.180.247.41:
+        //개인 fasdtapi
+        let url = URL(string: "http://54.180.247.41:8000/subway/subwayAlighting")!
+        //개인 flask
+        //        let url = URL(string: "http://127.0.0.1:5000/subwayAlighting")!
+        //aws flask
+        //        let url = URL(string: "http://54.180.247.41:5000/subwayAlighting")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let parameters: [String: Any] = [
+            "stationName": stationName,
+            "date": date,
+            "time": time,
+            "stationLine": stationLine
+        ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Error:", error ?? "Unknown error")
+                
+                return
+            }
+            if let responseString = String(data: data, encoding: .utf8) {
+                completion(responseString)
+                self.r_a_predicted["하차"] = responseString
+                print("📌 ---- ra 하차 인원 append 됨")
+            }
+            
+        }
+        task.resume()
+        completion("")
     }
     
 }
