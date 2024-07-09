@@ -38,7 +38,6 @@ struct ChatView: View {
                             if let humanTalk = log.split(separator: ":").last.map(String.init)?.trimmingCharacters(in: .whitespaces) {
                                 showHumanTalk(humanTalk)
                                 Text(humanTalk)
-                                
                             }
                         } else {
 //                            chatbot response log
@@ -100,51 +99,34 @@ struct ChatView: View {
                 
                 DispatchQueue.main.async {
                     self.responseMessage = response
-                    
-                    // JSON 문자열을 Data로 변환
-                    guard let jsonData = response.data(using: .utf8) else {
-                        print("Failed to convert JSON string to Data.")
-                        return
+                    print("--------------------------")
+                    print(response)
+                    print("--------------------------")
+                    // Json data convert Instance 생성
+                    let jsonconvert = jsonConverter()
+                    guard case let (name?, line?, date?) = jsonconvert.StringToJson(jsonData: response) else {
+                        print("JSON 데이터에서 값을 가져오지 못했습니다.")
+                        return // 오류 발생 시 함수 종료
                     }
+                    print("name:\(String(describing: name))")
+                    print("line:\(String(describing: line))")
+                    print("date:\(String(describing: date))")
 
-                    do {
-                        // JSON 디코딩을 위한 Decodable 객체 정의
-                        struct StepData: Decodable {
-                            let STEP1: String
-                            let STEP2: String
-                            let STEP3: String
-                        }
-                        // JSON 키와 구조체 프로퍼티 이름이 일치하지 않을 경우 CodingKeys를 사용하여 매핑
-                        enum CodingKeys: String, CodingKey {
-                            case STEP1 = "STEP-1"
-                            case STEP2 = "STEP-2"
-                            case STEP3 = "STEP-3"
-                        }
-                        
-                        // JSON 디코딩
-                        let decodedData = try JSONDecoder().decode(StepData.self, from: jsonData)
-                        
-                        
-
-                        // 변수에 값 할당
-                        let step1Value = decodedData.STEP1
-                        let step2Value = decodedData.STEP2
-                        let step3Value = decodedData.STEP3
-                        
-                        // 값 출력
-                        print("STEP-1STEP-1STEP-1STEP-1STEP-1STEP-1STEP-1")
-                        print("STEP-1: \(step1Value)")
-                        print("STEP-2: \(step2Value)")
-                        print("STEP-3: \(step3Value)")
-                        print("STEP-1STEP-1STEP-1STEP-1STEP-1STEP-1STEP-1")
-                        
-                    } catch {
-                        print("Error decoding JSON: \(error)")
-                    }
+                    
+                    
+                    /// Machine learning 돌리기
+                    print("함수 실핸시작")
+                    let predictInstance = subwayImage()
+                     predictInstance.fetchDataFromServerBoarding(stationName: name, date: date, time: "", stationLine: line, completion: { responseString in
+                        print("-------------------1231231")
+                         print(responseString)
+                         print("-------------------1231231")
+                    })
+                    print("함수 실행끝")
                     
                     
                     
-                    print(" dispatch 후 response : \(self.responseMessage)")
+                    
                     chatLogs.append("C:" + "\(self.responseMessage)")
                 }
                 print("서버 통신 성공 :\(response)")
@@ -178,8 +160,8 @@ struct ChatView: View {
     // MARK: Fetch Response from Server
     func fetchResponse(message: String, completion: @escaping (Result<String, Error>) -> Void) {
             let server_ip="http://54.180.247.41:5000/chat-api"
-            //let local_ip="http://127.0.0.1:5000/chat-api"
-            guard let url = URL(string:server_ip ) else {
+//            let local_ip="http://127.0.0.1:5000/chat-api"
+            guard let url = URL(string: server_ip ) else {
                 
                 completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
                 return

@@ -53,7 +53,7 @@ class Chatbot:
             
             STEP 별로 작업을 수행하면서 그 결과를 아래의 출력 결과 JSON 포맷에 작성하세요.
             STEP-1. 입력받은 텍스트 안에 서울 지하철 이름이 있으면 지하철역 이름 을 표기할것 
-            STEP-2. 입력받은 텍스트 안에 서울 지하철의 호선 정보가 았으면 몇호선인지 표기할것
+            STEP-2. 입력받은 텍스트 안에 서울 지하철의 호선 정보가 았으면 몇호선인지 숫자만 표기할것
             STEP-3. 입력받은 텍스트 안에날짜로 추정되는 정보가 있으면  날짜를 yyyy-mm-dd 양식으로 표기할것 . 
             오늘이라는 표현이 있으면 {today}를  yyyy-mm-dd 양식으로 표기할것
             
@@ -61,7 +61,7 @@ class Chatbot:
             ```{today}```
             
             ---
-            출력결과 : {{"STEP-1":<지하철역 이름>, "STEP-2": <호선> ,"STEP-3": <4자리수년도-두자리수월-두자리수일>}}
+            출력결과 : {{"stationName":<지하철역 이름>, "stationLine": <숫자> ,"date": <4자리수년도-두자리수월-두자리수일>}}
             """
             
         template = template.format(text=self.context, today=date)
