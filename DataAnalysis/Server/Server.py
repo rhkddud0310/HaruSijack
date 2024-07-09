@@ -55,6 +55,9 @@ from Module.Functions import Service
 app = Flask(__name__) # 난 flask 서버야!! 
 app.config['JSON_AS_ASCII'] = False 
 
+##def subwayPredict():
+    
+
 
 # CORS(app)  # 모든 출처에서 접근할 수 있도록 설정
 ## 해당일의 승차인원 정보
@@ -62,6 +65,7 @@ app.config['JSON_AS_ASCII'] = False
 def subway():
     
     data = request.get_json() # JSON 데이터 받기
+    print(data)
     station_name = data.get('stationName')
     date = data.get('date')
     time = data.get('time')
@@ -201,28 +205,22 @@ def subwayAlighting():
     except Exception as e:
         return jsonify({'error': str(e)})
 
-
-
-
 @app.route("/chat-api", methods =['POST'])
 def chat_api():
-    requst_message = request.json['request_message']
+    print("asdfsdasdfsadfasd")
     print('request_message: ' ,requst_message)
+    requst_message = request.json['request_message']
     
     chat_bot_service.add_user_message(requst_message)
-    machine_learning_request = chat_bot_service.determin_question_is_about_subway()
+    ml_iunput_json_str = chat_bot_service.determin_question_is_about_subway()
     
     # chat_bot_service.add_response(response)
     # response_message = chat_bot_service.get_response_content()
     # print("response_message : ", response_message)
-    return {"response_message": machine_learning_request}
+    return {"response_message": ml_iunput_json_str}
     
     
     # return {"response_message": "나도 "+ request.json['request_message']}
-
-
-
-
 
 def format_response(resp):
     data = {
@@ -242,11 +240,9 @@ def format_response(resp):
 def news():
     return "news crawling"
 
-
-
-
 @app.route("/test")
 def test():
+    print("test  실행됨")
     return "하루 시작1!"
 
 if __name__ == "__main__":

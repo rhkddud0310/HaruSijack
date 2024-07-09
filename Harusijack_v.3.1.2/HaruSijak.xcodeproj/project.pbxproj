@@ -51,6 +51,7 @@
 		FE22C5662C2D008D00267096 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE22C5652C2D008D00267096 /* NewsView.swift */; };
 		FE2D7ADA2C2FE769006FD988 /* PredictView04.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2D7AD92C2FE769006FD988 /* PredictView04.swift */; };
 		FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE360DC42C16D79D007BA9AE /* JSONModel.swift */; };
+		FEA4BC622C3CF5CD00BAA9DB /* jsonConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA4BC612C3CF5CD00BAA9DB /* jsonConverter.swift */; };
 		FED251602C2CFDA10091D301 /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED2515F2C2CFDA10091D301 /* TabBarButton.swift */; };
 		FEE786C92C3BCAAF004DD49F /* ChatBotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE786C82C3BCAAF004DD49F /* ChatBotTest.swift */; };
 /* End PBXBuildFile section */
@@ -103,6 +104,7 @@
 		FE22C5652C2D008D00267096 /* NewsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
 		FE2D7AD92C2FE769006FD988 /* PredictView04.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictView04.swift; sourceTree = "<group>"; };
 		FE360DC42C16D79D007BA9AE /* JSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONModel.swift; sourceTree = "<group>"; };
+		FEA4BC612C3CF5CD00BAA9DB /* jsonConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jsonConverter.swift; sourceTree = "<group>"; };
 		FED2515F2C2CFDA10091D301 /* TabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
 		FEE786C82C3BCAAF004DD49F /* ChatBotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBotTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -163,6 +165,7 @@
 			children = (
 				548934FE2C338CC300EEE89A /* ChatView.swift */,
 				FEE786C82C3BCAAF004DD49F /* ChatBotTest.swift */,
+				FEA4BC612C3CF5CD00BAA9DB /* jsonConverter.swift */,
 			);
 			path = Bot;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				543337902C16FE09000809D9 /* CalendarDB.swift in Sources */,
 				FE360DC52C16D79D007BA9AE /* JSONModel.swift in Sources */,
 				FE22C5642C2D007F00267096 /* NewsCell.swift in Sources */,
+				FEA4BC622C3CF5CD00BAA9DB /* jsonConverter.swift in Sources */,
 				FE17E7FF2C2C001100ACFCF0 /* CustomDatePicker.swift in Sources */,
 				A77F740F2C39249D00751F06 /* newsTest.swift in Sources */,
 				546496582C183F7000B1FF48 /* CalendarDetailView.swift in Sources */,

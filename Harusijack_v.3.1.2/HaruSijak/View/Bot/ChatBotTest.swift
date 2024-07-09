@@ -8,7 +8,7 @@ struct ChatBotTest: View {
         VStack {
             Text("Response: \(responseMessage)")
             Button(action: {
-                fetchResponse(message: "오늘 동대문역사문화공원역 혼잡도 알려줘  ") { result in
+                fetchResponse(message: "오늘 고덕역 5호선 혼잡도 알려줘  ") { result in
                     switch result {
                     case .success(let response):
                         DispatchQueue.main.async {
@@ -27,8 +27,10 @@ struct ChatBotTest: View {
     }
 
     func fetchResponse(message: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:5000/chat-api") else {
-            //"http://54.180.247.41:5000/chat-api"
+        let server_ip="http://54.180.247.41:5000/chat-api"
+//        let local_ip="http://127.0.0.1:5000/chat-api"
+        guard let url = URL(string:server_ip ) else {
+            
             completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
             return
         }
