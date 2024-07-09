@@ -88,44 +88,74 @@ struct ChatView: View {
     // 사용자 입력 전송 및 처리
     func sendUserInput() {
         print("sendUserInput start ")
+        
+        
+
+        
+        
+        
+        
         //사용자 입력 기록 추가
         chatLogs.append("H:" + humanInput)
         fetchResponse(message: humanInput) { result in
             switch result {
             case .success(let response):
+                print("success 와 dispatch 사이 ")
+//                DispatchQueue.global().async {
+//                    self.responseMessage = response
+//                    print("--------------------------")
+//                    print(response)
+//                    print("--------------------------")
+//                    // Json data convert Instance 생성
+//                    let jsonconvert = jsonConverter()
+//                    guard case let (name?, line?, date?) = jsonconvert.StringToJson(jsonData: response) else {
+//                        print("JSON 데이터에서 값을 가져오지 못했습니다.")
+//                        return // 오류 발생 시 함수 종료
+//                    }
+//                    print("name:\(String(describing: name))")
+//                    print("line:\(String(describing: line))")
+//                    print("date:\(String(describing: date))")
+//                    
+//                    
+//                    /// Machine learning 돌리기
+//                    print("함수 실핸시작")
+//                    
+//                    fetchDataFromServerBoarding(stationName: name, date: date, time: "", stationLine: line, completion: { responseString in
+//                        print("-------------------1231231")
+//                         print(responseString)
+//                         print("-------------------1231231")
+//                    })
+//                    // UI 업데이트를 위해 메인 스레드에서 코드 실행
+//                    DispatchQueue.main.async {
+//                        self.responseMessage = response
+//                        chatLogs.append("C:" + "\(self.responseMessage)")
+//                    }
+//                }
                 
-                DispatchQueue.main.async {
-                    self.responseMessage = response
-                    print("--------------------------")
-                    print(response)
-                    print("--------------------------")
-                    // Json data convert Instance 생성
-                    let jsonconvert = jsonConverter()
-                    guard case let (name?, line?, date?) = jsonconvert.StringToJson(jsonData: response) else {
-                        print("JSON 데이터에서 값을 가져오지 못했습니다.")
-                        return // 오류 발생 시 함수 종료
-                    }
+                print("서버 통신 성공 :\(response)")
+                let jsonconvert = jsonConverter()
+                guard case let (name?, line?, date?) = jsonconvert.StringToJson(jsonData: response) else {
+                    print("JSON 데이터에서 값을 가져오지 못했습니다.")
+                    return // 오류 발생 시 함수 종료
+                }
+                
+                print("name:\(String(describing: name))")
+                print("line:\(String(describing: line))")
+                print("date:\(String(describing: date))")
+                
+                print("함수 실핸시작ㅁㄴㅇㅁㄴㅇㅁㄴㅇ")
+                
+                fetchDataFromServerBoarding(stationName: "\(String(name.dropLast()))", date: "\(date)", time: "", stationLine: "\(line)", completion: { responseString in
+                    print("-------------------1231231")
                     print("name:\(String(describing: name))")
                     print("line:\(String(describing: line))")
                     print("date:\(String(describing: date))")
-                    
-                    
-                    /// Machine learning 돌리기
-                    print("함수 실핸시작")
-                    
-                    fetchDataFromServerBoarding(stationName: name, date: date, time: "", stationLine: line, completion: { responseString in
-                        print("-------------------1231231")
-                         print(responseString)
-                         print("-------------------1231231")
-                    })
-                    print("함수 실행끝")
-                    
-                    
-                    
-                    
-                    chatLogs.append("C:" + "\(self.responseMessage)")
-                }
-                print("서버 통신 성공 :\(response)")
+                     print(responseString)
+                     print("-------------------1231231")
+                })
+                print("함수 실행끝ㅁㄴㅇㅁㄴㅇㅁㄴㅇ")
+                
+                
             case .failure(let error):
                 DispatchQueue.main.async {
                     self.responseMessage = "Error: \(error.localizedDescription)"
