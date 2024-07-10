@@ -36,11 +36,15 @@ class Chatbot:
         self.context = [{"role": "system", "content": "You are a helpful assistant."}]
         self.model  = get_model()
         self.client = get_client()  # client를 인스턴스 변수로 저장
+        self.r_a_dict = ""
 
 
     def add_user_message(self,message):
         self.context=[{"role":"system", "content":'You are a helpful assistant.'}]
         self.context.append({"role":"user", "content":message})
+    def add_ML_result(self, r_a_dict):
+        self.r_a_dict=[{"role":"system", "content":'You are a helpful assistant.'}]
+        self.r_a_dict.append(r_a_dict)
         
         
     def determin_question_is_about_subway(self):
@@ -78,6 +82,43 @@ class Chatbot:
         print(yellow(response['choices'][0]['message']['content']))
         json_result =response['choices'][0]['message']['content']
         return json_result
+        
+    def response_GPT_from_inputMLResult(self):
+        print(yellow("사용자가 보낸 승하차 정보 : "),self.context)
+        import time, datetime
+        now = datetime.datetime.now()  # 현재 시각
+        hour = now.hour  # 시간대 추출 (0~23)
+        print(hour)  # 예를 들어 현재 시간이 오후 3시 15분이면 15가 출력됩니다.
+        template = """
+            반환값은 반드시 str 타입이어야합니다.
+            
+            STEP 별로 작업을 수행하여 출력결과를 작성하세요.
+            STEP-1. 받은 값에서 승하차 정보를 구분하여 {now}시간대에서ㅕ의 승하차 인원이 각각 몇 명인지 구분할것.
+            STEP-2. 
+            STEP-3. 
+            ```{text}```
+            ```{now}```
+            
+            ---
+            출력결과 : " 예상 승차인원은 <승차인원> 하차인원은  <승차인원>  입니다. "
+            """
+            
+        template = template.format(text=self.context, now=str(hour))
+        messages = [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": template}  # template 문자열을 JSON 객체로 변환
+        ]
+        response = self.client.chat.completions.create(
+            model =self.model.basic,
+            messages = messages,
+            response_format ={"type":"json_object"}
+        ).model_dump()
+        print(yellow("start"))
+        print(yellow(response['choices'][0]['message']['content']))
+        json_result =response['choices'][0]['message']['content']
+        return json_result
+        
+        
         
     def send_request(self):
         response = self.client.chat.completions.create(

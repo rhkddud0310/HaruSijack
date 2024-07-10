@@ -27,11 +27,11 @@ struct jsonConverter{
             let value = keyValue[1].trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\"", with: "")
             
             switch key {
-            case "STEP-1":
+            case "stationName":
                 STEP1 = value
-            case "STEP-2":
+            case "stationLine":
                 STEP2 = value
-            case "STEP-3":
+            case "date":
                 STEP3 = value
             default:
                 break
@@ -39,9 +39,9 @@ struct jsonConverter{
         }
         
         // 값 출력
-        print("STEP-1: \(STEP1 ?? "값 없음")")
-        print("STEP-2: \(STEP2 ?? "값 없음")")
-        print("STEP-3: \(STEP3 ?? "값 없음")")
+//        print("STEP-1: \(STEP1 ?? "값 없음")")
+//        print("STEP-2: \(STEP2 ?? "값 없음")")
+//        print("STEP-3: \(STEP3 ?? "값 없음")")
         return (STEP1,STEP2,STEP3)
     }
    
