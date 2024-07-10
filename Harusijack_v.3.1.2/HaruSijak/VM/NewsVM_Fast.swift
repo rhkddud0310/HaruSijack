@@ -2,7 +2,8 @@ import Foundation
 
 class NewsVM_Fast {
     func loadData(completion: @escaping (Result<[NewsModel_Fast], Error>) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:8000/news/news") else {
+        let serverIP = "54.180.247.41"
+        guard let url = URL(string: "http://\(serverIP):8000/news/news") else {
             completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
             return
         }

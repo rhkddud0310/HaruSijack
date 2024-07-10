@@ -79,7 +79,7 @@ struct subwayImage : View {
     @State private var isLoading = false
     
     // MARK: 화면조작 변수
-    @State var currentScale: CGFloat = 0.5
+    @State var currentScale: CGFloat = 0.3
     @State var previousScale: CGFloat = 1.0
     let minScale: CGFloat = 0.4
     let maxScale: CGFloat = 1.1
@@ -88,7 +88,7 @@ struct subwayImage : View {
     @GestureState private var scaleState: CGFloat = 1.0
     
     
-    @State var currentOffset = CGSize(width: -1500, height: -800)
+    @State var currentOffset = CGSize(width: -900, height: -400)
     @State var previousOffset = CGSize.zero
     let line23 = SubwayList().totalStation
     //    let line23 = SubwayList().testStation
@@ -296,6 +296,8 @@ struct subwayImage : View {
     
     // Flask 통신을 위한 함수(승차인원)
     func fetchDataFromServerBoarding(stationName: String, date: String, time: String, stationLine: String, completion: @escaping (String) -> Void) {
+        print("_____________________________-------------------")
+        print(date)
         // 127.0.0.1
         //개인 faskapi
         let url = URL(string: "http://54.180.247.41:8000/subway/subwayRide")!
