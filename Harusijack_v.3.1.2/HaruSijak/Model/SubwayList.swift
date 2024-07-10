@@ -16,7 +16,6 @@ struct  SubwayList{
         ("강남", 3312.0, 5384.0, 2)
     ]
     let totalStation: [(name: String, value1: Double, value2: Double, intValue1: Int, intValue2: Int, intValue3: Int)] = [
-//        ("강남", 3312.0, 5384.0, 2, 1),  => 이상치
         ("강남", 3326.0, 4185.0, 2, 0, 0),
         ("역삼", 3329.0, 4266.0, 2, 0, 0),
         ("선릉", 3331.0, 4359.0, 2, 0, 0),

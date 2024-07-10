@@ -80,7 +80,7 @@ struct SettingView: View {
                 
             })//Vstack
             .padding(.top, 30)
-            .font(.custom("Ownglyph_noocar-Rg", size: 20))
+//            .font(.custom("Ownglyph_noocar-Rg", size: 20))
             
             
             // 시간설정 sheet
