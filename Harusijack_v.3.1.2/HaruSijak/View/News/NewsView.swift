@@ -65,18 +65,18 @@ struct NewsView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
                 
-                Text("     긍정 부정선택(임시)")
-                    .bold()
-                    .font(.system(size: 10))
-                
-                Picker("감정 선택 ", selection: $selectedSegment_pos_neg) {
-                    ForEach(0..<positive.count, id: \.self) { index in
-                        Text(positive[index])
-                            .tag(index)
-                    }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
+//                Text("     긍정 부정선택(임시)")
+//                    .bold()
+//                    .font(.system(size: 10))
+//                
+//                Picker("감정 선택 ", selection: $selectedSegment_pos_neg) {
+//                    ForEach(0..<positive.count, id: \.self) { index in
+//                        Text(positive[index])
+//                            .tag(index)
+//                    }
+//                }
+//                .pickerStyle(SegmentedPickerStyle())
+//                .padding()
                 
                 ForEach(filteredNews, id: \.link) { news in
                     NavigationLink(destination: NewsArticleView(newslink: news.link)) {

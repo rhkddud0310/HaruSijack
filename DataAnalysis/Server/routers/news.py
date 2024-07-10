@@ -23,6 +23,14 @@ DB_CONFIG = {
     'charset': 'utf8mb4',
     'cursorclass': pymysql.cursors.DictCursor
 }
+# DB_CONFIG = {
+#     'host': '127.0.0.1',
+#     'user': 'root',
+#     'password': 'qwer1234',
+#     'db': 'news_analysis_db',
+#     'charset': 'utf8mb4',
+#     'cursorclass': pymysql.cursors.DictCursor
+# }
 
 class NewsItem(BaseModel):
     date: str
